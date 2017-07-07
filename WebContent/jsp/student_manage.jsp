@@ -60,7 +60,8 @@ body {
 
 			<div class="col-lg-12">
 
-				</a> <a href="${pageContext.request.contextPath }/lessonmanage"
+				</a> <a
+					href="${pageContext.request.contextPath }/student?method=lessons"
 					class="w3-btn btn-sq w3-lime w3-circle w3-xxxlarge w3-ripple">
 
 					<br> <br> <span class="glyphicon glyphicon-edit"></span><br />

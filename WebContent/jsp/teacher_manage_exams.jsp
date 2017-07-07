@@ -1,10 +1,12 @@
-﻿<%@ page language="java" import="edu.auburn.domain.*"
-	contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+﻿<%@ page language="java"  import="edu.auburn.domain.*" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>Lesson Operations</title>
+<title>Exam Management</title>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
  
@@ -29,13 +31,12 @@ body {
 		<div class="container-fluid">
 			   
 			<div class="navbar-header">
-				     <a class="navbar-brand"
-					href="${pageContext.request.contextPath }/teacher">ALT</a>     
+				      <a class="navbar-brand"
+					href="${pageContext.request.contextPath }/teacher">ALT</a>      
 			</div>
-			<%
+			   <%
 				Lesson l = (Lesson) (request.getAttribute("lesson"));
 			%>
-			   
 			<button
 				onclick="window.location.href='${pageContext.request.contextPath }/teacher'"
 				class="w3-button w3-blue">Return Main Page</button>
@@ -66,72 +67,74 @@ body {
 		</div>
 	</nav>
 	<div class="container">
-		<h1>
-			<%
-				out.print(l.getName());
-			%>
-		</h1>
-
-		<p>
-			<%
-				out.print(l.getDesc());
-			%>
-		</p>
+	<h1>Lesson:<%out.print(l.getName()); %></h1>
+	<hr>
+		<h2>Current Exams</h2>
 		<table class="table table-hover">
 			<thead>
 				<tr>
-					<th>File</th>
+					<th>Exam</th>
+					<th>Due Date</th>
+					<th>Created by</th>
 					<th>Action</th>
 				</tr>
 			</thead>
 			<tbody>
 				<c:forEach items="${list }" var="item" varStatus="counter">
 					<tr>
-						<td>${item.name }</td>
-						<td><a
-							href="${pageContext.request.contextPath }/teacher?method=deletef&fid=${item.fid }&lid=<% out.print(l.getLid());%>">x</a></td>
+						<td><a href="${pageContext.request.contextPath }/teacher?method=examdetails&lid=<%out.print(l.getLid()); %>&eid=${item.eid}"><c:out
+									value="${item.name }" /></a></td>
+						<td>${item.edue }</td>
+						<td>${item.uname }</td>
+						<td><a href="${pageContext.request.contextPath }/teacher?method=delexam&lid=<%out.print(l.getLid()); %>&eid=${item.eid}">x</a></td>
 					</tr>
+
 				</c:forEach>
 			</tbody>
 		</table>
-		<p>Support for only TXT, MP4, WAV, DOC, DOCX, PDF</p>
 		<div class="wells">
-			<form class="form-horizontal" name="l_file"
-				action="${pageContext.request.contextPath }/teacher?method=upload&lid=<% out.print(l.getLid());%>"
-				method="post" enctype="multipart/form-data">
+			<form class="form-horizontal" action="${pageContext.request.contextPath }/teacher?method=addexam&lid=<%out.print(l.getLid()); %>"
+				method="post">
 				<div class="form-group">
-					<label class="control-label col-sm-2" for="upload">File
-						description: </label>
+					<label class="control-label col-sm-2" for="level">Choose the level:</label>
 					<div class="col-sm-10">
-						<input type="text" class="form-control" id="upload"
-							placeholder="Please describe the file" name="fdesc">
+						<select name="etype">
+							<option value="1">1</option>
+							<option value="2">2</option>
+							<option value="3">3</option>
+							<option value="4">4</option>
+						</select>
 					</div>
 				</div>
-
-				<div>
-					<label class="control-label col-sm-2" for="upload"></label>
+				<div class="form-group">
+					<label class="control-label col-sm-2" for="examName">Exam
+						Name:</label>
 					<div class="col-sm-10">
-						<input type="file" id="upload" name="filename" >
+						<input type="examName" class="form-control" id="examName"
+							placeholder="Enter Exam Name" name="ename">
 					</div>
-					
 				</div>
-
-
-				<div class="w3-center">
-					<br> <input class="w3-button w3-circle w3-green" type="submit"
-						value="+" />
+				<div class="form-group">
+					<label class="control-label col-sm-2" for="examDescription">Exam
+						Description:</label>
+					<div class="col-sm-10">
+						<input type="examDescription" class="form-control"
+							id="examDescription" placeholder="Enter Exam Desciprtion"
+							name="edesc">
+					</div>
 				</div>
-
+				<div class="form-inline">
+					<label class="control-label col-sm-2" for="dueDate">Due
+						Date:</label>
+					<div class="col-sm-10">
+						<input type="datetime-local" class="form-control" id="date"
+							placeholder="Enter Due Date" name="edue">
+					</div>
+					<div class="w3-center">
+						<button class="w3-button w3-circle w3-green">+</button>
+					</div>
 			</form>
 		</div>
-		<p>
-			<%
-			String message = (String)request.getAttribute("message");
-				if (message != null) {
-					out.println(message);
-				}
-			%>
-		</p>
 	</div>
 </body>
 </html>

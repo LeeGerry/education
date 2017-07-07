@@ -31,21 +31,6 @@ create table lesson_student(
 	stype integer
 )engine = myisam  default charset = utf8;
 
-
-
-
-drop table if exists `exam`;
-create table exam(
-	eid integer auto_increment primary key,
-	name varchar(50),
-	ldesc varchar(200),
-	edue datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-	etype integer,
-	lid integer
-)engine = myisam  default charset = utf8;
-
-
-
 drop table if exists `lesson_file`;
 create table lesson_file(
 	fid integer auto_increment primary key,
@@ -56,16 +41,38 @@ create table lesson_file(
 	lid integer
 )engine = myisam  default charset = utf8;
 
-drop table if exists `exam_file`;
-create table exam_file(
+drop table if exists `exam`;
+create table exam(
+	eid integer auto_increment primary key,
+	name varchar(50),
+	edesc varchar(200),
+	edue datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	etype integer,
+	lid integer,
+	uid integer
+)engine = myisam  default charset = utf8;
+
+drop table if exists `exam_video`;
+create table exam_video(
 	fid integer auto_increment primary key,
 	name varchar(100),
-	path varchar(100),
+	path varchar(1000),
 	ftype varchar(10),
 	fdesc varchar(2000),
 	eid integer
 )engine = myisam  default charset = utf8;
 
+
+drop table if exists `exam_word`;
+create table exam_word(
+	fid integer auto_increment primary key,
+	name varchar(100),
+	pronunciation varchar(100),
+	path varchar(1000),
+	ftype varchar(10),
+	fdesc varchar(2000),
+	eid integer
+)engine = myisam  default charset = utf8;
 
 
 

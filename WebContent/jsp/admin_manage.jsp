@@ -41,8 +41,8 @@ body {
 				<li><a href="#"><span class="glyphicon glyphicon-user"></span>
 						<%
 							if (session == null || session.getAttribute("user") == null) {
-						%> <input type="submit" value="LogIn"> <input type="submit"
-						value="SignUp"> <%
+						%> <input type="submit" value="LogIn"> <input
+						type="submit" value="SignUp"> <%
  	}
  	if (session.getAttribute("user") != null) {
  		out.println("hello, " + session.getAttribute("user"));

@@ -59,21 +59,23 @@ body {
 		<div class="row">
 
 			<div class="col-lg-12">
-
-				<a href="${pageContext.request.contextPath }/exammanage"
-					class="w3-btn btn-sq w3-cyan w3-circle w3-xxxlarge w3-ripple">
-					<br> <br> <span class="glyphicon glyphicon-inbox"></span><br />
-
-					Manage Exams <br>
-
-				</a> <a
+				<a
 					href="${pageContext.request.contextPath }/teacher?method=lessonlist"
 					class="w3-btn btn-sq w3-lime w3-circle w3-xxxlarge w3-ripple">
 
 					<br> <br> <span class="glyphicon glyphicon-edit"></span><br />
 					Edit Lessons <br>
+					
+				</a> 
+				<!--
+				<a href="${pageContext.request.contextPath }/teacher?method=examlist"
+					class="w3-btn btn-sq w3-cyan w3-circle w3-xxxlarge w3-ripple">
+					<br> <br> <span class="glyphicon glyphicon-inbox"></span><br />
+
+					Manage Exams <br>
+
 				</a>
-				<!-- 
+				 
 				<a href="${pageContext.request.contextPath }/usermanage"
 					class="w3-btn btn-sq w3-pink w3-circle w3-xxxlarge w3-ripple">
 					<br> <br> <span class="glyphicon glyphicon-user"></span><br />

@@ -33,7 +33,7 @@ public class JDBCUtil {
 	}
 	public static Connection getConnection(){
 		try {
-			return (Connection) DriverManager.getConnection(url,user,pwd);
+			return (Connection) DriverManager.getConnection(url, user, pwd);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

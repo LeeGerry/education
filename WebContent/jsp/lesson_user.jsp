@@ -28,8 +28,8 @@ body {
 		 
 		<div class="container-fluid">
 			   <%
-			Lesson l = (Lesson) (request.getAttribute("lesson"));
-		%>
+		Lesson l = (Lesson) (request.getAttribute("lesson"));
+	%>
 			<div class="navbar-header">
 				     <a class="navbar-brand"
 					href="${pageContext.request.contextPath }/teacher">ALT</a>     
@@ -41,8 +41,12 @@ body {
 			<button onclick="window.location.href='#'" class="w3-button w3-pink">Manage
 				Users</button>
 
-			<button onclick="window.location.href='${pageContext.request.contextPath }/teacher?method=details&lid=<%out.print(l.getLid()); %>'" class="w3-button w3-green">Manage
-				Files</button>
+			<button
+				onclick="window.location.href='${pageContext.request.contextPath }/teacher?method=details&lid=<%out.print(l.getLid()); %>'"
+				class="w3-button w3-green">Manage Files</button>
+			<button
+				onclick="window.location.href='${pageContext.request.contextPath }/teacher?method=examlist&lid=<% out.print(l.getLid());%>'"
+				class="w3-button w3-yellow">Manage Exams</button>
 			<ul class="nav navbar-nav navbar-right">
 				      
 				<li><a href="#"><span class="glyphicon glyphicon-user"></span>
@@ -62,7 +66,7 @@ body {
 	</nav>
 	<div class="container">
 
-		
+
 		<h1>
 			<%
 				out.print(l.getName());

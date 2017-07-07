@@ -34,8 +34,8 @@ body {
 					href="${pageContext.request.contextPath }/admin">ALT</a>
 				   
 			</div>
+			<button onclick="window.location.href='${pageContext.request.contextPath }/admin'" class="w3-button w3-blue">Return Main Page</button>
 			<!-- 
-			<button onclick="window.location.href='/edu_system/QuizServlet'" class="w3-button w3-blue">Manage Exams</button>
 			<button onclick="window.location.href='/edu_system/LessonManageServlet'" class="w3-button w3-green">Edit Lessons</button>
 			 -->
 			<ul class="nav navbar-nav navbar-right">
