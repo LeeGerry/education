@@ -1,9 +1,12 @@
-﻿<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+﻿<%@ page language="java" import="edu.auburn.domain.*"
+	contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>Welcome</title>
+<title>Exam Management</title>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
  
@@ -11,11 +14,6 @@
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <style>
-.btn-sq {
-	width: 400px;
-	height: 400px;
-}
-
 body {
 	background-image: url("gray.jpg");
 }
@@ -28,15 +26,20 @@ body {
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
-
 	<nav class="navbar navbar-inverse">
 		 
 		<div class="container-fluid">
 			   
 			<div class="navbar-header">
 				      <a class="navbar-brand"
-					href="${pageContext.request.contextPath }/student">ALT</a>    
+					href="${pageContext.request.contextPath }/student">ALT</a>      
 			</div>
+			   <%
+		Lesson l = (Lesson) (request.getAttribute("lesson"));
+	%>
+			<button
+				onclick="window.location.href='${pageContext.request.contextPath }/student'"
+				class="w3-button w3-blue">Return Main Page</button>
 			<ul class="nav navbar-nav navbar-right">
 				      
 				<li><a href="#"><span class="glyphicon glyphicon-user"></span>
@@ -54,30 +57,35 @@ body {
 			 
 		</div>
 	</nav>
-	<div class="container w3-center">
+	<div class="container">
+		<h1>
+			Lesson:<%
+			out.print(l.getName());
+		%>
+		</h1>
+		<hr>
+		<h2>Current Exams</h2>
+		<table class="table table-hover">
+			<thead>
+				<tr>
+					<th>Exam</th>
+					<th>Due Date</th>
+					<th>Created by</th>
+				</tr>
+			</thead>
+			<tbody>
+				<c:forEach items="${exams }" var="item" varStatus="counter">
+					<tr>
+						<td><a
+							href="${pageContext.request.contextPath }/student?method=examup&lid=<%out.print(l.getLid()); %>&eid=${item.eid}"><c:out
+									value="${item.name }" /></a></td>
+						<td>${item.edue }</td>
+						<td>${item.uname }</td>
+					</tr>
 
-		<div class="row">
-
-			<div class="col-lg-12">
-
-				</a> <a
-					href="${pageContext.request.contextPath }/student?method=lessons"
-					class="w3-btn btn-sq w3-lime w3-circle w3-xxxlarge w3-ripple">
-
-					<br> <br> <span class="glyphicon glyphicon-edit"></span><br />
-					Learn Lessons <br> 
-				<%-- <a href="${pageContext.request.contextPath }/exammanage"
-					class="w3-btn btn-sq w3-cyan w3-circle w3-xxxlarge w3-ripple">
-						<br> <br> <span class="glyphicon glyphicon-inbox"></span><br />
-						Take Exams <br></a>  --%>
-				
-				<a href="${pageContext.request.contextPath }/logout"
-					class="w3-btn btn-sq w3-red w3-round-xlarge w3-xxxlarge w3-ripple">
-						<br> <br> <span class="glyphicon glyphicon-off"></span><br />
-						Logout <br>
-				</a>
-			</div>
-		</div>
+				</c:forEach>
+			</tbody>
+		</table>
 	</div>
 </body>
 </html>

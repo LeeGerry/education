@@ -9,4 +9,5 @@ public interface ILessonDao {
 	boolean delLessonById(int id);
 	List<Lesson> getLessonsByUid(int uid);
 	Lesson getLessonById(int lid);
+	List<Lesson> getAllLessons();
 }

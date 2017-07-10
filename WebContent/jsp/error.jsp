@@ -1,9 +1,11 @@
 ﻿<%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+	
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>Welcome</title>
+<title>Not approved</title>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
  
@@ -11,11 +13,6 @@
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <style>
-.btn-sq {
-	width: 400px;
-	height: 400px;
-}
-
 body {
 	background-image: url("gray.jpg");
 }
@@ -28,15 +25,17 @@ body {
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
-
 	<nav class="navbar navbar-inverse">
 		 
 		<div class="container-fluid">
 			   
 			<div class="navbar-header">
 				      <a class="navbar-brand"
-					href="${pageContext.request.contextPath }/student">ALT</a>    
+					href="${pageContext.request.contextPath }/non">ALT</a>    
 			</div>
+			   
+			<button class="w3-button w3-green">Learn Lessons</button>
+			<button class="w3-button w3-blue">Take Exams</button>
 			<ul class="nav navbar-nav navbar-right">
 				      
 				<li><a href="#"><span class="glyphicon glyphicon-user"></span>
@@ -54,30 +53,19 @@ body {
 			 
 		</div>
 	</nav>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<%String message = (String)request.getAttribute("message"); %>
 	<div class="container w3-center">
+		<h3>${message }</h3>
+		</br> </br> </br>
 
-		<div class="row">
-
-			<div class="col-lg-12">
-
-				</a> <a
-					href="${pageContext.request.contextPath }/student?method=lessons"
-					class="w3-btn btn-sq w3-lime w3-circle w3-xxxlarge w3-ripple">
-
-					<br> <br> <span class="glyphicon glyphicon-edit"></span><br />
-					Learn Lessons <br> 
-				<%-- <a href="${pageContext.request.contextPath }/exammanage"
-					class="w3-btn btn-sq w3-cyan w3-circle w3-xxxlarge w3-ripple">
-						<br> <br> <span class="glyphicon glyphicon-inbox"></span><br />
-						Take Exams <br></a>  --%>
-				
-				<a href="${pageContext.request.contextPath }/logout"
-					class="w3-btn btn-sq w3-red w3-round-xlarge w3-xxxlarge w3-ripple">
-						<br> <br> <span class="glyphicon glyphicon-off"></span><br />
-						Logout <br>
-				</a>
-			</div>
-		</div>
 	</div>
 </body>
-</html>

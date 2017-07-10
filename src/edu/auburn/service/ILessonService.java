@@ -9,4 +9,5 @@ public interface ILessonService {
 	boolean delLessonById(int id);
 	List<Lesson> getLessonsByUid(int uid);
 	Lesson getLessonByLid(int lid);
+	List<Lesson> getAllLessons();
 }

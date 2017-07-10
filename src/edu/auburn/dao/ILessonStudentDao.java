@@ -9,5 +9,8 @@ public interface ILessonStudentDao {
 	List<LessonStudent> getLSBySid(int sid);
 	boolean updateToTaByLidAndSid(int lid, int sid);
 	boolean updateToStuByLidAndSid(int lid, int sid);
-	
+	boolean checkRegLesson(int lid, int uid);
+	boolean addLessonStudent(int lid, int sid);
+	boolean delLessonStudent(int lid, int sid);
+	LessonStudent getRoleByLidAndUid(int lid, int uid);
 }

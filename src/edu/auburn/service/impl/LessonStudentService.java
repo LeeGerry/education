@@ -33,4 +33,27 @@ public class LessonStudentService implements ILessonStudentService {
 		return sd.updateToStuByLidAndSid(lid, sid);
 	}
 
+	@Override
+	public boolean checkRegLesson(int lid, int uid) {
+		// TODO Auto-generated method stub
+		return sd.checkRegLesson(lid, uid);
+	}
+
+	@Override
+	public boolean addLessonStudent(int lid, int sid) {
+		// TODO Auto-generated method stub
+		return sd.addLessonStudent(lid, sid);
+	}
+
+	@Override
+	public boolean delLessonStudent(int lid, int sid) {
+		// TODO Auto-generated method stub
+		return sd.delLessonStudent(lid, sid);
+	}
+
+	@Override
+	public LessonStudent getLSByUidAndLid(int uid, int lid) {
+		// TODO Auto-generated method stub
+		return sd.getRoleByLidAndUid(lid, uid);
+	}
 }

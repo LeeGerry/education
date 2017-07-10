@@ -15,4 +15,8 @@ public class LessonStudentDaoTest {
 	public void testFindBySid(){
 		System.out.println(dao.getLSBySid(6));
 	}
+	@Test
+	public void testCheckReg(){
+		System.out.println(dao.checkRegLesson(15, 6));
+	}
 }

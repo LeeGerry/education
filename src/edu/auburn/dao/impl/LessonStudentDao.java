@@ -19,10 +19,6 @@ import edu.auburn.utils.JDBCUtil;
 
 public class LessonStudentDao implements ILessonStudentDao {
 
-//	id integer auto_increment primary key,
-//	lid integer,
-//	sid integer,
-//	role integer
 	@Override
 	public List<LessonStudent> getLSByLid(int lid) {
 		String sql = "select * from lesson_student where lid = ? order by sid";
@@ -48,13 +44,13 @@ public class LessonStudentDao implements ILessonStudentDao {
 				ls.setLname(lname);
 				EduUser u = udao.getUserById(uid);
 				String uname = "";
-				if(null != u && !StringUtils.isNullOrEmpty(u.getName())){
+				if (null != u && !StringUtils.isNullOrEmpty(u.getName())) {
 					uname = u.getName();
 				}
 				ls.setSname(uname);
 				int type = rs.getInt("stype");
 				ls.setType(type);
-				ls.setRole(type==1?"ta":"student");
+				ls.setRole(type == 1 ? "ta" : "student");
 				result.add(ls);
 			}
 			return result;
@@ -81,7 +77,7 @@ public class LessonStudentDao implements ILessonStudentDao {
 			ILessonDao ldao = new LessonDao();
 			EduUser eu = udao.getUserById(sid);
 			String uname = "";
-			if(null != eu && !StringUtils.isNullOrEmpty(eu.getName())){
+			if (null != eu && !StringUtils.isNullOrEmpty(eu.getName())) {
 				uname = eu.getName();
 			}
 			while (rs.next()) {
@@ -92,14 +88,14 @@ public class LessonStudentDao implements ILessonStudentDao {
 				ls.setSid(sid);
 				String lname = "";
 				Lesson l = ldao.getLessonById(lid);
-				if(null != l && !StringUtils.isNullOrEmpty(l.getName())){
+				if (null != l && !StringUtils.isNullOrEmpty(l.getName())) {
 					lname = l.getName();
 				}
 				ls.setLname(lname);
 				ls.setSname(uname);
 				int type = rs.getInt("stype");
 				ls.setType(type);
-				ls.setRole(type==1?"ta":"student");
+				ls.setRole(type == 1 ? "ta" : "student");
 				result.add(ls);
 			}
 			return result;
@@ -138,6 +134,97 @@ public class LessonStudentDao implements ILessonStudentDao {
 	@Override
 	public boolean updateToStuByLidAndSid(int lid, int sid) {
 		return changeType(lid, sid, 2);
+	}
+
+	@Override
+	public boolean checkRegLesson(int lid, int uid) {
+		// ;
+		String sql = "select * from lesson_student where sid = ? and lid = ?";
+		Connection connection = JDBCUtil.getConnection();
+		PreparedStatement ps = null;
+		try {
+			ps = (PreparedStatement) connection.prepareStatement(sql);
+			ps.setInt(1, uid);
+			ps.setInt(2, lid);
+			ResultSet rs = ps.executeQuery();
+			return rs.next();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		} finally {
+			JDBCUtil.close(connection, ps);
+		}
+	}
+
+	@Override
+	public boolean addLessonStudent(int lid, int sid) {
+		String sql = "insert into lesson_student (lid, sid, stype) values (?, ?, ?)";
+		Connection connection = JDBCUtil.getConnection();
+		PreparedStatement ps = null;
+		try {
+			ps = (PreparedStatement) connection.prepareStatement(sql);
+			ps.setInt(1, lid);
+			ps.setInt(2, sid);
+			ps.setInt(3, 2);
+			int result = ps.executeUpdate();
+			return result > 0;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		} finally {
+			JDBCUtil.close(connection, ps);
+		}
+	}
+
+	@Override
+	public boolean delLessonStudent(int lid, int sid) {
+		String sql = "delete from lesson_student where lid = ? and sid = ?";
+		Connection connection = JDBCUtil.getConnection();
+		PreparedStatement ps = null;
+		try {
+			ps = (PreparedStatement) connection.prepareStatement(sql);
+			ps.setInt(1, lid);
+			ps.setInt(2, sid);
+			int result = ps.executeUpdate();
+			return result > 0;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		} finally {
+			JDBCUtil.close(connection, ps);
+		}
+	}
+
+	@Override
+	public LessonStudent getRoleByLidAndUid(int lid, int uid) {
+		String sql = "select * from lesson_student where sid = ? and lid = ?";
+		Connection connection = JDBCUtil.getConnection();
+		PreparedStatement ps = null;
+		try {
+			ps = (PreparedStatement) connection.prepareStatement(sql);
+			ps.setInt(1, uid);
+			ps.setInt(2, lid);
+			ResultSet rs = ps.executeQuery();
+			ILessonDao ldao = new LessonDao();
+			Lesson lesson = ldao.getLessonById(lid);
+			LessonStudent ls = null;
+			if (rs.next()) {
+				ls = new LessonStudent();
+				ls.setLid(lid);
+				ls.setSid(uid);
+				ls.setId(rs.getInt("id"));
+				int type = rs.getInt("stype");
+				ls.setType(type);
+				ls.setLname(lesson.getName());
+				ls.setRole(type == 1 ? "ta" : "student");
+			}
+			return ls;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		} finally {
+			JDBCUtil.close(connection, ps);
+		}
 	}
 
 }

@@ -16,7 +16,7 @@
   	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
   	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
-<body>
+<body style="text-align: center;">
 	<nav class="navbar navbar-inverse">
   		<div class="container-fluid">
     			<div class="navbar-header">
@@ -24,9 +24,9 @@
     			</div>
   		</div>
 	</nav>
-	<div class="w3-container">
-		<div class="row">
-			<div class="col-lg-6 w3-gray w3-round-large">
+	<div class="w3-container" style="margin:0 auto">
+		<div class="row" style="text-align: center;">
+			<div class="col-lg-6 w3-gray w3-round-large" >
 				<h1 class="w3-center">Login</h1>
 				<br>
 				<form class="form-horizontal" action="${pageContext.request.contextPath }/user?method=login" method="post">
@@ -54,7 +54,7 @@
 				<br>
   				</form>
 			</div>
-			<div class="col-lg-6 w3-blue w3-round-large">	
+			<div class="col-lg-6 w3-blue w3-round-large" >	
 				<h1 class="w3-center">Register</h1>
 				<form class="form-horizontal" action="${pageContext.request.contextPath }/user?method=register" method="post">
     					<div class="form-group">

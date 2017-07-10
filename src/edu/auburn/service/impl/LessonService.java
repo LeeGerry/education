@@ -33,4 +33,10 @@ public class LessonService implements ILessonService{
 		return dao.getLessonById(lid);
 	}
 
+	@Override
+	public List<Lesson> getAllLessons() {
+		// TODO Auto-generated method stub
+		return dao.getAllLessons();
+	}
+
 }
