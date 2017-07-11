@@ -31,11 +31,10 @@ body {
 			   
 			<div class="navbar-header">
 				      <a class="navbar-brand"
-					href="${pageContext.request.contextPath }/non">ALT</a>    
+					href="${pageContext.request.contextPath }">ALT</a>    
 			</div>
 			   
-			<button class="w3-button w3-green">Learn Lessons</button>
-			<button class="w3-button w3-blue">Take Exams</button>
+		<!-- 	<button class="w3-button w3-green"></button> -->
 			<ul class="nav navbar-nav navbar-right">
 				      
 				<li><a href="#"><span class="glyphicon glyphicon-user"></span>

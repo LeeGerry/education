@@ -174,10 +174,10 @@ public class StudentServlet extends HttpServlet {
 	private void taAddWord(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		// req.setCharacterEncoding("utf-8");
 		String lessonid = req.getParameter("lid");
-		// int lid = Integer.parseInt(lessonid);
+		 int lid = Integer.parseInt(lessonid);
 		String examId = req.getParameter("eid");
 		int eid = Integer.parseInt(examId);
-		// Lesson lesson = lessonService.getLessonByLid(lid);
+		 Lesson lesson = lessonService.getLessonByLid(lid);
 		Exam exam = examService.getExamById(eid);
 		FileItemFactory factory = new DiskFileItemFactory();
 		ServletFileUpload upload = new ServletFileUpload(factory);
@@ -207,7 +207,7 @@ public class StudentServlet extends HttpServlet {
 							req.setAttribute("message", message);
 							// forward
 						} else {
-							String basePath = getServletContext().getRealPath("/upload/" + exam.getName() + "/");
+							String basePath = getServletContext().getRealPath("/upload/" + lesson.getName() + "/" + exam.getName() + "/");
 							File dir = new File(basePath);
 							if (!dir.exists() && !dir.isDirectory()) {
 								dir.mkdirs();
@@ -297,7 +297,7 @@ public class StudentServlet extends HttpServlet {
 							req.getRequestDispatcher("/jsp/error.jsp").forward(req, resp);
 							// forward
 						} else {
-							String basePath = getServletContext().getRealPath("/upload/" + exam.getName() + "/");
+							String basePath = getServletContext().getRealPath("/upload/" + lesson.getName()+"/"+ exam.getName() + "/");
 							File dir = new File(basePath);
 							if (!dir.exists() && !dir.isDirectory()) {
 								dir.mkdirs();
