@@ -49,19 +49,20 @@ body {
  		out.println("hello, " + session.getAttribute("user"));
  %> <%
  	}
- %> </a></li>     
+ %> </a></li>   
+ <li>
+					<button
+						onclick="window.location.href='${pageContext.request.contextPath }/logout'"
+						class="btn btn-danger navbar-btn">
+						<span class="glyphicon glyphicon-log-out">Logout 
+					</button>
+				</li>   
 			</ul>
 			 
 		</div>
 	</nav>
 	<div class="container w3-center">
-
-		<div class="row">
-
-			<div class="col-lg-12">
-
-				</a> <a
-					href="${pageContext.request.contextPath }/student?method=lessons"
+				<a href="${pageContext.request.contextPath }/student?method=lessons"
 					class="w3-btn btn-sq w3-lime w3-circle w3-xxxlarge w3-ripple">
 
 					<br> <br> <span class="glyphicon glyphicon-edit"></span><br />
@@ -71,13 +72,8 @@ body {
 						<br> <br> <span class="glyphicon glyphicon-inbox"></span><br />
 						Take Exams <br></a>  --%>
 				
-				<a href="${pageContext.request.contextPath }/logout"
-					class="w3-btn btn-sq w3-red w3-round-xlarge w3-xxxlarge w3-ripple">
-						<br> <br> <span class="glyphicon glyphicon-off"></span><br />
-						Logout <br>
-				</a>
-			</div>
+				<a></a>
 		</div>
-	</div>
+	
 </body>
 </html>

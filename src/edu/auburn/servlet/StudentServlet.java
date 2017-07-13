@@ -20,13 +20,17 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 import com.mysql.jdbc.StringUtils;
 
+import edu.auburn.domain.DisplayStudentExamResult;
 import edu.auburn.domain.EduUser;
 import edu.auburn.domain.Exam;
+import edu.auburn.domain.ExamResult;
+import edu.auburn.domain.ExamScore;
 import edu.auburn.domain.ExamVideo;
 import edu.auburn.domain.ExamWord;
 import edu.auburn.domain.Lesson;
 import edu.auburn.domain.LessonFile;
 import edu.auburn.domain.LessonStudent;
+import edu.auburn.service.IExamResultService;
 import edu.auburn.service.IExamService;
 import edu.auburn.service.IExamVideoService;
 import edu.auburn.service.IExamWordService;
@@ -34,6 +38,7 @@ import edu.auburn.service.ILessonFileService;
 import edu.auburn.service.ILessonService;
 import edu.auburn.service.ILessonStudentService;
 import edu.auburn.service.IUserService;
+import edu.auburn.service.impl.ExamResultService;
 import edu.auburn.service.impl.ExamService;
 import edu.auburn.service.impl.ExamVideoService;
 import edu.auburn.service.impl.ExamWordService;
@@ -53,6 +58,8 @@ public class StudentServlet extends HttpServlet {
 	private IExamService examService = new ExamService();
 	private IExamVideoService examVideoService = new ExamVideoService();
 	private IExamWordService wordService = new ExamWordService();
+	private IExamResultService resultService = new ExamResultService();
+	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		req.setCharacterEncoding("utf-8");
@@ -103,8 +110,9 @@ public class StudentServlet extends HttpServlet {
 						} else if (method.equals("studentexamlist")){
 							studentExamList(req, resp);
 						} else if (method.equals("takeexam")){
-							resp.getWriter().write("comming...");
-							//studentTakeExam(req, resp);
+							studentTakeExam(req, resp);
+						} else if (method.equals("result")){
+							examResult(req, resp);
 						}
 					} else {
 						resp.sendRedirect(req.getContextPath() + "");
@@ -113,9 +121,32 @@ public class StudentServlet extends HttpServlet {
 			}
 		}
 	}
-	
 	/**
-	 * 
+	 * student-exam-result
+	 * @param req
+	 * @param resp
+	 * @throws ServletException
+	 * @throws IOException
+	 */
+	private void examResult(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		String id = req.getParameter("eid");
+		int eid = Integer.parseInt(id);
+		Exam exam = examService.getExamById(eid);
+		ExamResult er = new ExamResult();
+		String result = req.getParameter("result");
+		//String[] results = result.split("/");
+		er.setAnswer(result);
+		er.setUid(uid);
+		er.setEid(eid);
+		resultService.addResult(er);
+		List<DisplayStudentExamResult> displayResult = resultService.getDisplayResult(uid, eid);
+		req.setAttribute("exam", exam);
+		req.setAttribute("ds", displayResult);
+		req.getRequestDispatcher("/jsp/student_exam_result.jsp").forward(req, resp);
+		//System.out.println(results.length);
+	}
+	/**
+	 * student-take-exam
 	 * @param req
 	 * @param resp
 	 * @throws ServletException
@@ -124,7 +155,39 @@ public class StudentServlet extends HttpServlet {
 	private void studentTakeExam(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		String examId = req.getParameter("eid");
 		int eid = Integer.parseInt(examId);
-		req.getRequestDispatcher("/jsp/takingexam.jsp").forward(req, resp);
+		Exam exam = examService.getExamById(eid); 
+		ExamResult examResult = resultService.getResultByUidAndEid(uid, eid);
+		if(examResult != null){ // has taken the exam, show result
+			List<DisplayStudentExamResult> displayResult = resultService.getDisplayResult(uid, eid);
+			req.setAttribute("exam", exam);
+			req.setAttribute("ds", displayResult);
+			req.getRequestDispatcher("/jsp/student_exam_result.jsp").forward(req, resp);
+		}else{ // go to take the exam
+			List<ExamVideo> videos = examVideoService.getAllVideosByEid(eid);
+			List<ExamWord> words = wordService.getAllWordsByEid(eid);
+			for(int i = 0; i < words.size(); i++){
+				ExamWord word = words.get(i);
+				String path = word.getPath();
+				int index = path.indexOf("/upload");
+				String p = req.getContextPath() + path.substring(index);
+				word.setPath(p);
+			}
+			for(int i = 0; i < videos.size(); i++){
+				ExamVideo v = videos.get(i);
+				String path = v.getPath();
+				int index = path.indexOf("/upload/");
+				String p = req.getContextPath() + path.substring(index);
+				v.setPath(p);
+			}
+//			System.out.println(req.getContextPath());
+			req.setAttribute("videos", videos);
+			req.setAttribute("words", words);
+			req.setAttribute("exam", exam);
+			req.getRequestDispatcher("/jsp/takingexam.jsp").forward(req, resp);
+		}
+		
+		
+		
 	}
 	
 	

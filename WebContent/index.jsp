@@ -20,13 +20,14 @@
 	<nav class="navbar navbar-inverse">
   		<div class="container-fluid">
     			<div class="navbar-header">
-      				<a class="navbar-brand" href="#">WebSite Name</a>
+      				<a class="navbar-brand" href="#">ALT</a>
     			</div>
   		</div>
 	</nav>
-	<div class="w3-container" style="margin:0 auto">
-		<div class="row" style="text-align: center;">
-			<div class="col-lg-6 w3-gray w3-round-large" >
+	<div class="w3-container" >
+		<div class="row">
+		<div class="col-lg-1 w3-gray w3-round-large" ></div>
+			<div class="col-lg-5 w3-gray w3-round-large"  >
 				<h1 class="w3-center">Login</h1>
 				<br>
 				<form class="form-horizontal" action="${pageContext.request.contextPath }/user?method=login" method="post">
@@ -47,15 +48,17 @@
     					<div class="form-group">        
       						<div class="col-sm-offset-2 col-sm-10">
         						<button type="submit" class="btn btn-default">Submit</button>
-							<a href="#">Forgot Password?</a>
+							<a href="#" hidden="true">Forgot Password?</a>
       						</div>
     					</div>
 				<br>
 				<br>
   				</form>
 			</div>
-			<div class="col-lg-6 w3-blue w3-round-large" >	
+			<div class="col-lg-5 w3-blue w3-round-large" >	
 				<h1 class="w3-center">Register</h1>
+				<p>Please register with AU mail to make it successfully.</p>
+				<br>
 				<form class="form-horizontal" action="${pageContext.request.contextPath }/user?method=register" method="post">
     					<div class="form-group">
       						<label class="control-label col-sm-2" for="email">Email:</label>
@@ -70,7 +73,7 @@
       						</div>
     					</div>
 					<div class="form-group">
-      						<label class="control-label col-sm-2" for="pwd">Confirm Password:</label>
+      						<label class="control-label col-sm-2" for="pwd">Confirm:</label>
       						<div class="col-sm-10">          
         						<input type="password" class="form-control" id="pwd" placeholder="Enter password" name="confirm">
       						</div>
@@ -88,7 +91,11 @@
     					</div>
   				</form>
 			</div>
+			<div class="col-lg-1 w3-gray w3-round-large" ></div>
+			
 		</div>
+		<br>
+		<h2>Please use Google Chrome browser.</h2>
 	</div>
 </body>
 </html>

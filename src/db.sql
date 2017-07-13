@@ -74,7 +74,13 @@ create table exam_word(
 	eid integer
 )engine = myisam  default charset = utf8;
 
-
+drop table if exists `exam_result`;
+create table exam_result(
+	rid integer auto_increment primary key,
+	uid integer,
+	eid integer,
+	answer varchar(2000)
+)engine = myisam  default charset = utf8;
 
 
 

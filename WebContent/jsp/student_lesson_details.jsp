@@ -55,7 +55,14 @@ body {
  		out.println("hello, " + session.getAttribute("user"));
  %> <%
  	}
- %> </a></li>     
+ %> </a></li>   
+ <li>
+					<button
+						onclick="window.location.href='${pageContext.request.contextPath }/logout'"
+						class="btn btn-danger navbar-btn">
+						<span class="glyphicon glyphicon-log-out">Logout 
+					</button>
+				</li>   
 			</ul>
 			 
 		</div>

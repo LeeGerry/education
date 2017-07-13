@@ -1,5 +1,10 @@
-﻿<%@ page language="java" contentType="text/html; charset=UTF-8"
+﻿<%@page import="edu.auburn.domain.Exam"%>
+<%@page import="edu.auburn.domain.ExamWord"%>
+<%@page import="java.util.List"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -43,6 +48,12 @@ hr {
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
+<%
+		List<ExamWord> wordList = (List<ExamWord>) (request.getAttribute("words"));
+		int num = wordList.size();
+		Exam exam = (Exam)request.getAttribute("exam");
+		int eid = exam.getEid();
+	%>
 	<script type="text/javascript">
 		var undo = "";
 		function copyText(value) {
@@ -59,6 +70,41 @@ hr {
 		}
 		function clean() {
 			document.getElementById("ta").value = "";
+		}
+		
+		
+		function save() {
+			var select = document.getElementById("select");
+			var index = select.selectedIndex ;  
+			var showIndex = "answer" + index;
+			var showLabel = document.getElementById(showIndex);
+			var ans = document.getElementById("ta");
+			showLabel.innerHTML = ans.value;
+		}
+		
+		
+		function submitResult(number) {
+	       var arr = "";
+	       for (var i = 0; i < number; i++) {  
+	        	var showIndex = "answer" + i;
+				var showLabel = document.getElementById(showIndex);
+				arr += showLabel.innerHTML + "/";
+	        } 
+	       var url = document.getElementById("sub").value;
+	       //url += "&result="+arr;
+	       /* alert(result); */
+	      	/* alert(arr); */
+			var myForm = document.createElement("form");  
+	        myForm.method = "post";  
+	        myForm.action = url;  
+	        
+	        var myInput = document.createElement("input");  
+	        myInput.name = "result";
+	        myInput.value = arr;
+	        myForm.appendChild(myInput);  
+	        document.body.appendChild(myForm);  
+	        myForm.submit();  
+	        return myForm;
 		}
 	</script>
 
@@ -77,37 +123,63 @@ hr {
 			<ul class="nav navbar-nav navbar-right">
 				      
 				<li><a href="#"><span class="glyphicon glyphicon-user"></span>
-						Hello, <%
-				out.println(session.getAttribute("user"));
-			%></a></li>
-				<li>
+						<%
+							if (session == null || session.getAttribute("user") == null) {
+						%> <input type="submit" value="LogIn"> <input
+						type="submit" value="SignUp"> <%
+ 	}
+ 	if (session.getAttribute("user") != null) {
+ 		out.println("hello, " + session.getAttribute("user"));
+ %> <%
+ 	}
+ %> </a></li>   
+ <li>
 					<button
 						onclick="window.location.href='${pageContext.request.contextPath }/logout'"
 						class="btn btn-danger navbar-btn">
 						<span class="glyphicon glyphicon-log-out">Logout 
 					</button>
-				</li>     
+				</li>   
 			</ul>
 			 
 		</div>
 	</nav>
+	
 	<div class="container">
 		<h3>Watch these videos to help take your exam:</h3>
-		<video height="30%" width="30%" controls="controls">
-			<source src="/i/movie.ogg" type="video/ogg" />
-			<source
-				src="http://192.168.1.104:8080/education/upload/lesson111/spring.mp4"
-				type="video/mp4" />
-			Your browser does not support the video tag.
-		</video>
-		<br> 
+
+		<c:forEach items="${videos }" var="item" varStatus="counter">
+			<video height="30%" width="30%" controls="controls">
+				<source src="${item.path}" type="video/ogg" />
+				<source src="${item.path}" type="video/mp4" />
+				Your browser does not support the video tag.
+			</video>
+		</c:forEach>
+		<br>
 		<hr>
+
 		<h3>Take exam</h3>
-		
-		<div class="row">
+		<script type="text/javascript">
+			function playA($id) {
+				var audio = document.getElementById($id);
+				audio.play();
+			}
+		</script>
+		<c:forEach items="${words }" var="item" varStatus="counter">
+			<c:out value="${counter.index+1}" />. 
+			<audio hidden="true" id="${item.fid }" src="${item.path }"
+				controls="controls">
+			</audio>
+			<button onclick="playA(${item.fid})"
+				class="w3-button w3-circle w3-teal  w3-small">
+				<span class="glyphicon glyphicon-play-circle"></span>
+			</button>
+			<label id="answer${counter.index }">answer</label>
+		</c:forEach>
+		<!-- <div class="row">
 				<button class="w3-button w3-pink">Prev</button>
 			
-			<audio  id="mp3" src="basketball.wav"
+			<audio  id="mp3" src="basketball.wav" 
 				controls="controls">
 			</audio>
 			<script type="text/javascript">
@@ -124,7 +196,7 @@ hr {
 			</script>
 			<button onclick="play()" class="w3-button w3-blue">Next</button>
 			
-		</div>
+		</div> -->
 		<br>
 		<div class="row w3-center">
 
@@ -233,20 +305,26 @@ hr {
 		</div>
 		<br>
 		<div class="row w3-center">
-			<form class="form-horizontal" action="#" method="post">
-				<div class="form-group">
-					<label class="control-label col-sm-2" for="email"></label>
-					<div class="col-sm-10">
-						<input type="text" class="form-control" id="ta"
-							placeholder="Enter Answer" name="studentanswer">
-
-					</div>
+			Select word index : <select id="select" name="index">
+				<c:forEach items="${words }" var="item" varStatus="counter">
+					<option value="${counter.index+1}">${counter.index+1}</option>
+				</c:forEach>
+			</select>
+			<div class="form-group">
+				<div class="col-sm-8">
+					<input type="text" class="form-control" id="ta"
+						placeholder="Enter Answer" name="studentanswer">
 				</div>
-				<button class="w3-button w3-teal w3-round-large w3-center"
-					onclick="clean()">Clear</button>
-				<button type="submit"
-					class="w3-button w3-teal w3-round-large w3-center">Submit</button>
-			</form>
+				<div class="col-sm-4">
+					<button class="w3-button w3-teal w3-round-large w3-center"
+						onclick="clean()">Clear</button>
+					<button onclick="save()"
+						class="w3-button w3-teal w3-round-large w3-center">Save</button>
+				</div>
+			</div>
+
+			<button id="sub" onclick="submitResult(<%=num%>)" value="${pageContext.request.contextPath }/student?method=result&eid=<%out.print(eid);%>"
+				class="w3-button w3-teal w3-round-large w3-center">Submit</button>
 
 		</div>
 	</div>

@@ -40,15 +40,23 @@ body {
 			<ul class="nav navbar-nav navbar-right">
 				      
 				<li><a href="#"><span class="glyphicon glyphicon-user"></span>
-						Hello, <%
-				out.println(session.getAttribute("user"));
-			%></a></li>
-				<li>
-					<button onclick="window.location.href='${pageContext.request.contextPath }/logout'"
+						<%
+							if (session == null || session.getAttribute("user") == null) {
+						%> <input type="submit" value="LogIn"> <input
+						type="submit" value="SignUp"> <%
+ 	}
+ 	if (session.getAttribute("user") != null) {
+ 		out.println("hello, " + session.getAttribute("user"));
+ %> <%
+ 	}
+ %> </a></li>   
+ <li>
+					<button
+						onclick="window.location.href='${pageContext.request.contextPath }/logout'"
 						class="btn btn-danger navbar-btn">
 						<span class="glyphicon glyphicon-log-out">Logout 
 					</button>
-				</li>     
+				</li>   
 			</ul>
 			 
 		</div>
