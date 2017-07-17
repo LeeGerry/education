@@ -94,7 +94,14 @@ body {
 			<tbody>
 				<c:forEach items="${list }" var="item" varStatus="counter">
 					<tr>
-						<td>${item.name }</td>
+						<td>
+						<c:url var="url" value="/teacher">
+								<c:param name="method" value="teacher_download"></c:param>
+								<c:param name="fid" value="${item.fid }"></c:param>
+							</c:url> <a href="${url }">${item.name }</a>
+						
+						
+						</td>
 						<td><a
 							href="${pageContext.request.contextPath }/teacher?method=deletef&fid=${item.fid }&lid=<% out.print(l.getLid());%>">x</a></td>
 					</tr>

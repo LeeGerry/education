@@ -39,7 +39,7 @@ body {
 			<button
 				onclick="window.location.href='${pageContext.request.contextPath }/student'"
 				class="w3-button w3-blue">Main Page</button>
-				<button
+			<button
 				onclick="window.location.href='${pageContext.request.contextPath }/student?method=lessons'"
 				class="w3-button w3-pink">Lesson List</button>
 			<button
@@ -67,7 +67,7 @@ body {
  %> <%
  	}
  %> </a></li>   
- <li>
+				<li>
 					<button
 						onclick="window.location.href='${pageContext.request.contextPath }/logout'"
 						class="btn btn-danger navbar-btn">
@@ -94,12 +94,17 @@ body {
 			<thead>
 				<tr>
 					<th>File</th>
+					<th>Action</th>
 				</tr>
 			</thead>
 			<tbody>
 				<c:forEach items="${files }" var="item" varStatus="counter">
 					<tr>
 						<td>${item.name }</td>
+						<td><c:url var="url" value="/student">
+								<c:param name="method" value="download"></c:param>
+								<c:param name="fid" value="${item.fid }"></c:param>
+							</c:url> <a href="${url }">download</a></td>
 					</tr>
 				</c:forEach>
 			</tbody>

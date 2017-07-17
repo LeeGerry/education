@@ -44,6 +44,7 @@ import edu.auburn.service.impl.LessonFileService;
 import edu.auburn.service.impl.LessonService;
 import edu.auburn.service.impl.LessonStudentService;
 import edu.auburn.service.impl.UserService;
+import edu.auburn.utils.DownloadUtils;
 import edu.auburn.utils.LessonFileType;
 import edu.auburn.utils.StringConfig;
 
@@ -118,13 +119,37 @@ public class TeacherServlet extends HttpServlet {
 					addWord(req, resp);
 				} else if (method.equals("delw")) {
 					deleteWord(req, resp);
+				} else if (method.equals("teacher_download")){
+					teacherDownLoad(req, resp);
 				}
 			} else {
 				resp.sendRedirect(req.getContextPath() + "");
 			}
 		}
 	}
-
+	/**
+	 * teacher-download-lesson-file
+	 * @param req
+	 * @param resp
+	 * @throws ServletException
+	 * @throws IOException
+	 */
+	private void teacherDownLoad(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		String id = req.getParameter("fid");
+		int fid = Integer.parseInt(id);
+		LessonFile file = fileService.getFileByFid(fid);
+		String name = file.getName();
+		String path = file.getPath();
+		DownloadUtils utils = new DownloadUtils();
+		utils.down(path,name, req, resp);
+	}
+	/**
+	 * teacher-add-word-file
+	 * @param req
+	 * @param resp
+	 * @throws ServletException
+	 * @throws IOException
+	 */
 	private void addWord(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		// req.setCharacterEncoding("utf-8");
 		String lessonid = req.getParameter("lid");
