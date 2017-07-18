@@ -23,13 +23,17 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 import com.mysql.jdbc.StringUtils;
 
+import edu.auburn.domain.DisplayStudentExamResult;
 import edu.auburn.domain.EduUser;
 import edu.auburn.domain.Exam;
+import edu.auburn.domain.ExamResult;
+import edu.auburn.domain.ExamTeacherResult;
 import edu.auburn.domain.ExamVideo;
 import edu.auburn.domain.ExamWord;
 import edu.auburn.domain.Lesson;
 import edu.auburn.domain.LessonFile;
 import edu.auburn.domain.LessonStudent;
+import edu.auburn.service.IExamResultService;
 import edu.auburn.service.IExamService;
 import edu.auburn.service.IExamVideoService;
 import edu.auburn.service.IExamWordService;
@@ -37,6 +41,7 @@ import edu.auburn.service.ILessonFileService;
 import edu.auburn.service.ILessonService;
 import edu.auburn.service.ILessonStudentService;
 import edu.auburn.service.IUserService;
+import edu.auburn.service.impl.ExamResultService;
 import edu.auburn.service.impl.ExamService;
 import edu.auburn.service.impl.ExamVideoService;
 import edu.auburn.service.impl.ExamWordService;
@@ -58,7 +63,7 @@ public class TeacherServlet extends HttpServlet {
 	private IExamService examService = new ExamService();
 	private IExamVideoService videoService = new ExamVideoService();
 	private IExamWordService wordService = new ExamWordService();
-
+	private IExamResultService resultService = new ExamResultService();
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		req.setCharacterEncoding("utf-8");
@@ -121,12 +126,55 @@ public class TeacherServlet extends HttpServlet {
 					deleteWord(req, resp);
 				} else if (method.equals("teacher_download")){
 					teacherDownLoad(req, resp);
+				} else if (method.equals("checke")){
+					examResult(req, resp);
+				} else if (method.equals("checkse")){
+					checkStudentExamResult(req, resp);
 				}
 			} else {
 				resp.sendRedirect(req.getContextPath() + "");
 			}
 		}
 	}
+	/**
+	 * teacher-check-student-exam-details
+	 * @param req
+	 * @param resp
+	 * @throws ServletException
+	 * @throws IOException
+	 */
+	private void checkStudentExamResult(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		String id = req.getParameter("eid");
+		int eid = Integer.parseInt(id);
+		id = req.getParameter("uid");
+		int uid = Integer.parseInt(id);
+		EduUser user = userService.getUserById(uid);
+		Exam exam = examService.getExamById(eid);
+		List<DisplayStudentExamResult> displayResult = resultService.getDisplayResult(uid, eid);
+		req.setAttribute("exam", exam);
+		req.setAttribute("uname", user.getName());
+		req.setAttribute("ds", displayResult);
+		req.getRequestDispatcher("/jsp/teacher_check_student_exam_details.jsp").forward(req, resp);
+	}
+	
+	/**
+	 * teacher-check-exam-result
+	 * @param req
+	 * @param resp
+	 * @throws ServletException
+	 * @throws IOException
+	 */
+	private void examResult(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		String id = req.getParameter("eid");
+		int eid = Integer.parseInt(id);
+		Exam exam = examService.getExamById(eid);
+		List<ExamTeacherResult> teacherCheckResultList = resultService.teacherCheckResultByEid(eid);
+		req.setAttribute("results", teacherCheckResultList);
+		req.setAttribute("exam", exam);
+//		resp.getWriter().write(teacherCheckResultList.toString());
+		req.getRequestDispatcher("/jsp/teacher_exam_result.jsp").forward(req, resp);
+	}
+	
 	/**
 	 * teacher-download-lesson-file
 	 * @param req

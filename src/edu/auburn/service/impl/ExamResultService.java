@@ -16,6 +16,7 @@ import edu.auburn.domain.EduUser;
 import edu.auburn.domain.Exam;
 import edu.auburn.domain.ExamResult;
 import edu.auburn.domain.ExamScore;
+import edu.auburn.domain.ExamTeacherResult;
 import edu.auburn.domain.ExamWord;
 import edu.auburn.service.IExamResultService;
 import edu.auburn.utils.CalculateScore;
@@ -74,6 +75,29 @@ public class ExamResultService implements IExamResultService {
 			r.settAnswer(words.get(i).getPron());
 			r.setScore(s.get(i));
 			result.add(r);
+		}
+		return result;
+	}
+
+	@Override
+	public List<ExamTeacherResult> teacherCheckResultByEid(int eid) {
+		ArrayList<ExamTeacherResult> result = new ArrayList<>();
+		List<ExamResult> examResultList = resultDao.teacherCheckResultByEid(eid);
+		ExamTeacherResult tr = new ExamTeacherResult();
+		for(int i = 0; i<examResultList.size(); i++){
+			ExamResult examResult = examResultList.get(i);
+			tr.setEid(eid);
+			tr.setSid(examResult.getUid());
+			int uid = examResult.getUid();
+			List<DisplayStudentExamResult> displayResult = getDisplayResult(uid, eid);
+			float score = 0;
+			for(int j = 0; j<displayResult.size();j++){
+				score += displayResult.get(i).getScore();
+			}
+			EduUser user = userDao.getUserById(uid);
+			tr.setStuName(user.getName());
+			tr.setScore(score);
+			result.add(tr);
 		}
 		return result;
 	}

@@ -60,7 +60,7 @@ public class StudentServlet extends HttpServlet {
 	private IExamVideoService examVideoService = new ExamVideoService();
 	private IExamWordService wordService = new ExamWordService();
 	private IExamResultService resultService = new ExamResultService();
-	
+
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		req.setCharacterEncoding("utf-8");
@@ -92,31 +92,31 @@ public class StudentServlet extends HttpServlet {
 							unregLesson(req, resp);
 						} else if (method.equals("learnlesson")) {
 							learnLesson(req, resp);
-						} else if (method.equals("uploadl")){
+						} else if (method.equals("uploadl")) {
 							taUploadLessonFile(req, resp);
-						} else if (method.equals("deletef")){
+						} else if (method.equals("deletef")) {
 							taDelLessonFile(req, resp);
-						} else if (method.equals("tme")){
+						} else if (method.equals("tme")) {
 							taManageExam(req, resp);
-						} else if (method.equals("examup")){
+						} else if (method.equals("examup")) {
 							taUploadExam(req, resp);
-						} else if (method.equals("uploadv")){
+						} else if (method.equals("uploadv")) {
 							taUploadVideo(req, resp);
-						} else if (method.equals("uploadw")){
+						} else if (method.equals("uploadw")) {
 							taAddWord(req, resp);
-						} else if (method.equals("deletev")){
+						} else if (method.equals("deletev")) {
 							taDelVideo(req, resp);
-						} else if (method.equals("deletew")){
+						} else if (method.equals("deletew")) {
 							taDelWord(req, resp);
-						} else if (method.equals("studentexamlist")){
+						} else if (method.equals("studentexamlist")) {
 							studentExamList(req, resp);
-						} else if (method.equals("takeexam")){
+						} else if (method.equals("takeexam")) {
 							studentTakeExam(req, resp);
-						} else if (method.equals("result")){
+						} else if (method.equals("result")) {
 							examResult(req, resp);
-						} else if (method.equals("download")){
+						} else if (method.equals("download")) {
 							downLoad(req, resp);
-						} else if (method.equals("ta_download")){
+						} else if (method.equals("ta_download")) {
 							downLoad(req, resp);
 						}
 					} else {
@@ -126,8 +126,10 @@ public class StudentServlet extends HttpServlet {
 			}
 		}
 	}
+
 	/**
 	 * student-download-lesson-file
+	 * 
 	 * @param req
 	 * @param resp
 	 * @throws ServletException
@@ -140,10 +142,12 @@ public class StudentServlet extends HttpServlet {
 		String name = file.getName();
 		String path = file.getPath();
 		DownloadUtils utils = new DownloadUtils();
-		utils.down(path,name, req, resp);
+		utils.down(path, name, req, resp);
 	}
+
 	/**
 	 * student-exam-result
+	 * 
 	 * @param req
 	 * @param resp
 	 * @throws ServletException
@@ -155,7 +159,7 @@ public class StudentServlet extends HttpServlet {
 		Exam exam = examService.getExamById(eid);
 		ExamResult er = new ExamResult();
 		String result = req.getParameter("result");
-		//String[] results = result.split("/");
+		// String[] results = result.split("/");
 		er.setAnswer(result);
 		er.setUid(uid);
 		er.setEid(eid);
@@ -164,66 +168,69 @@ public class StudentServlet extends HttpServlet {
 		req.setAttribute("exam", exam);
 		req.setAttribute("ds", displayResult);
 		req.getRequestDispatcher("/jsp/student_exam_result.jsp").forward(req, resp);
-		//System.out.println(results.length);
+		// System.out.println(results.length);
 	}
-	
-	
-	
+
 	/**
 	 * student-take-exam
+	 * 
 	 * @param req
 	 * @param resp
 	 * @throws ServletException
 	 * @throws IOException
 	 */
-	private void studentTakeExam(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	private void studentTakeExam(HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
 		String examId = req.getParameter("eid");
 		int eid = Integer.parseInt(examId);
-		Exam exam = examService.getExamById(eid); 
+		Exam exam = examService.getExamById(eid);
 		ExamResult examResult = resultService.getResultByUidAndEid(uid, eid);
-		if(examResult != null){ // has taken the exam, show result
+		if (examResult != null) { // has taken the exam, show result
 			List<DisplayStudentExamResult> displayResult = resultService.getDisplayResult(uid, eid);
 			req.setAttribute("exam", exam);
 			req.setAttribute("ds", displayResult);
 			req.getRequestDispatcher("/jsp/student_exam_result.jsp").forward(req, resp);
-		}else{ // go to take the exam
+		} else { // go to take the exam
 			List<ExamVideo> videos = examVideoService.getAllVideosByEid(eid);
 			List<ExamWord> words = wordService.getAllWordsByEid(eid);
-			for(int i = 0; i < words.size(); i++){
-				ExamWord word = words.get(i);
-				String path = word.getPath();
-				int index = path.indexOf("/upload");
-				String p = req.getContextPath() + path.substring(index);
-				word.setPath(p);
+			if (words == null || words.size() == 0) {
+				req.setAttribute("message", "the exam has not been published");
+				req.getRequestDispatcher("/jsp/non_student.jsp").forward(req, resp);
+			} else {
+				for (int i = 0; i < words.size(); i++) {
+					ExamWord word = words.get(i);
+					String path = word.getPath();
+					int index = path.indexOf("/upload");
+					String p = req.getContextPath() + path.substring(index);
+					word.setPath(p);
+				}
+				for (int i = 0; i < videos.size(); i++) {
+					ExamVideo v = videos.get(i);
+					String path = v.getPath();
+					int index = path.indexOf("/upload/");
+					String p = req.getContextPath() + path.substring(index);
+					v.setPath(p);
+				}
+				req.setAttribute("videos", videos);
+				req.setAttribute("words", words);
+				req.setAttribute("exam", exam);
+				req.getRequestDispatcher("/jsp/takingexam.jsp").forward(req, resp);
 			}
-			for(int i = 0; i < videos.size(); i++){
-				ExamVideo v = videos.get(i);
-				String path = v.getPath();
-				int index = path.indexOf("/upload/");
-				String p = req.getContextPath() + path.substring(index);
-				v.setPath(p);
-			}
-//			System.out.println(req.getContextPath());
-			req.setAttribute("videos", videos);
-			req.setAttribute("words", words);
-			req.setAttribute("exam", exam);
-			req.getRequestDispatcher("/jsp/takingexam.jsp").forward(req, resp);
+
 		}
-		
-		
-		
+
 	}
-	
-	
-	
+
 	/**
 	 * student-exam-list
+	 * 
 	 * @param req
 	 * @param resp
 	 * @throws ServletException
 	 * @throws IOException
 	 */
-	private void studentExamList(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	private void studentExamList(HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
 		String lessonId = req.getParameter("lid");
 		int lid = Integer.parseInt(lessonId);
 		Lesson lesson = lessonService.getLessonByLid(lid);
@@ -233,7 +240,6 @@ public class StudentServlet extends HttpServlet {
 		req.getRequestDispatcher("/jsp/student_exam_list.jsp").forward(req, resp);
 	}
 
-	
 	/**
 	 * ta-delete-exam-word
 	 * 
@@ -248,11 +254,10 @@ public class StudentServlet extends HttpServlet {
 		wordService.delWordById(fid);
 		taUploadExam(req, resp);
 	}
-	
-	
-	
+
 	/**
 	 * ta-exam-add-word
+	 * 
 	 * @param req
 	 * @param resp
 	 * @throws ServletException
@@ -261,10 +266,10 @@ public class StudentServlet extends HttpServlet {
 	private void taAddWord(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		// req.setCharacterEncoding("utf-8");
 		String lessonid = req.getParameter("lid");
-		 int lid = Integer.parseInt(lessonid);
+		int lid = Integer.parseInt(lessonid);
 		String examId = req.getParameter("eid");
 		int eid = Integer.parseInt(examId);
-		 Lesson lesson = lessonService.getLessonByLid(lid);
+		Lesson lesson = lessonService.getLessonByLid(lid);
 		Exam exam = examService.getExamById(eid);
 		FileItemFactory factory = new DiskFileItemFactory();
 		ServletFileUpload upload = new ServletFileUpload(factory);
@@ -294,7 +299,8 @@ public class StudentServlet extends HttpServlet {
 							req.setAttribute("message", message);
 							// forward
 						} else {
-							String basePath = getServletContext().getRealPath("/upload/" + lesson.getName() + "/" + exam.getName() + "/");
+							String basePath = getServletContext()
+									.getRealPath("/upload/" + lesson.getName() + "/" + exam.getName() + "/");
 							File dir = new File(basePath);
 							if (!dir.exists() && !dir.isDirectory()) {
 								dir.mkdirs();
@@ -319,8 +325,7 @@ public class StudentServlet extends HttpServlet {
 
 		taUploadExam(req, resp);
 	}
-	
-	
+
 	/**
 	 * ta-delete-exam-video
 	 * 
@@ -335,12 +340,10 @@ public class StudentServlet extends HttpServlet {
 		examVideoService.delVideoById(vid);
 		taUploadExam(req, resp);
 	}
-	
-	
-	
-	
+
 	/**
 	 * ta-exam-upload-video
+	 * 
 	 * @param req
 	 * @param resp
 	 * @throws ServletException
@@ -384,7 +387,8 @@ public class StudentServlet extends HttpServlet {
 							req.getRequestDispatcher("/jsp/error.jsp").forward(req, resp);
 							// forward
 						} else {
-							String basePath = getServletContext().getRealPath("/upload/" + lesson.getName()+"/"+ exam.getName() + "/");
+							String basePath = getServletContext()
+									.getRealPath("/upload/" + lesson.getName() + "/" + exam.getName() + "/");
 							File dir = new File(basePath);
 							if (!dir.exists() && !dir.isDirectory()) {
 								dir.mkdirs();
@@ -410,11 +414,9 @@ public class StudentServlet extends HttpServlet {
 		taUploadExam(req, resp);
 	}
 
-	
-	
-	
 	/**
 	 * ta-exam-upload-file
+	 * 
 	 * @param req
 	 * @param resp
 	 * @throws ServletException
@@ -435,7 +437,7 @@ public class StudentServlet extends HttpServlet {
 		req.setAttribute("words", words);
 		req.getRequestDispatcher("/jsp/ta_exam_manage.jsp").forward(req, resp);
 	}
-	
+
 	/**
 	 * calculate file type by file extend name
 	 * 
@@ -460,31 +462,33 @@ public class StudentServlet extends HttpServlet {
 			return LessonFileType.NON.toString();
 		}
 	}
-	
-	
+
 	/**
 	 * ta-Del-lesson-file
+	 * 
 	 * @param req
 	 * @param resp
 	 * @throws ServletException
 	 * @throws IOException
 	 */
-	private void taDelLessonFile(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	private void taDelLessonFile(HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
 		String fileId = req.getParameter("fid");
 		int fid = Integer.parseInt(fileId);
 		lessonFileService.delFileById(fid);
 		learnLesson(req, resp);
 	}
 
-	
 	/**
 	 * ta-upload-lesson-file
+	 * 
 	 * @param req
 	 * @param resp
 	 * @throws ServletException
 	 * @throws IOException
 	 */
-	private void taUploadLessonFile(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	private void taUploadLessonFile(HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
 		String lessonid = req.getParameter("lid");
 		int lid = Integer.parseInt(lessonid);
 		Lesson lesson = lessonService.getLessonByLid(lid);
@@ -548,12 +552,10 @@ public class StudentServlet extends HttpServlet {
 		}
 		learnLesson(req, resp);
 	}
-	
-	
-	
-	
+
 	/**
 	 * ta-manage-exam
+	 * 
 	 * @param req
 	 * @param resp
 	 * @throws ServletException
@@ -568,8 +570,10 @@ public class StudentServlet extends HttpServlet {
 		req.setAttribute("exams", exams);
 		req.getRequestDispatcher("/jsp/ta_exam_list.jsp").forward(req, resp);
 	}
+
 	/**
 	 * student-learn-lesson
+	 * 
 	 * @param req
 	 * @param resp
 	 * @throws ServletException
@@ -584,9 +588,9 @@ public class StudentServlet extends HttpServlet {
 		List<LessonFile> files = lessonFileService.getAllFileByLid(lid);
 		req.setAttribute("files", files);
 		LessonStudent lessonStudent = lsService.getLSByUidAndLid(uid, lid);
-		if(1 == lessonStudent.getType()){// ta
+		if (1 == lessonStudent.getType()) {// ta
 			req.getRequestDispatcher("/jsp/ta_lesson_detail.jsp").forward(req, resp);
-		}else{// student
+		} else {// student
 			req.getRequestDispatcher("/jsp/student_study_lesson.jsp").forward(req, resp);
 		}
 	}

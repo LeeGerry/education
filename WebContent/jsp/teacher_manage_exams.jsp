@@ -83,7 +83,8 @@ body {
 					<th>Exam</th>
 					<th>Due Date</th>
 					<th>Created by</th>
-					<th>Action</th>
+					<th>Delete</th>
+					<th>Result</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -94,6 +95,7 @@ body {
 						<td>${item.edue }</td>
 						<td>${item.uname }</td>
 						<td><a href="${pageContext.request.contextPath }/teacher?method=delexam&lid=<%out.print(l.getLid()); %>&eid=${item.eid}">x</a></td>
+						<td><a href="${pageContext.request.contextPath }/teacher?method=checke&lid=<%out.print(l.getLid()); %>&eid=${item.eid}">check</a></td>
 					</tr>
 
 				</c:forEach>

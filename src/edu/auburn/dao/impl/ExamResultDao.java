@@ -2,6 +2,8 @@ package edu.auburn.dao.impl;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.PreparedStatement;
@@ -57,6 +59,34 @@ public class ExamResultDao implements IExamResultDao {
 				e.setUid(rs.getInt("uid"));
 			}
 			return e;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		} finally {
+			JDBCUtil.close(connection, ps);
+		}
+	}
+
+	@Override
+	public List<ExamResult> teacherCheckResultByEid(int eid) {
+		String sql = "select * from exam_result where eid = ?";
+		Connection connection = JDBCUtil.getConnection();
+		PreparedStatement ps = null;
+		try {
+			ps = (PreparedStatement) connection.prepareStatement(sql);
+			ps.setInt(1, eid);
+			ResultSet rs = ps.executeQuery();
+			ExamResult e = null;
+			List<ExamResult> result = new ArrayList<>();
+			while (rs.next()) {
+				e = new ExamResult();
+				e.setEid(rs.getInt("eid"));
+				e.setAnswer(rs.getString("answer"));
+				e.setRid(rs.getInt("rid"));
+				e.setUid(rs.getInt("uid"));
+				result.add(e);
+			}
+			return result;
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new RuntimeException(e);
