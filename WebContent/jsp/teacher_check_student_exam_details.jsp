@@ -38,7 +38,7 @@ body {
 			   <%
 		Exam e = (Exam) (request.getAttribute("exam"));
 		String uname = (String) (request.getAttribute("uname"));
-		List<DisplayStudentExamResult> ds = (List<DisplayStudentExamResult>) (request.getAttribute("ds"));
+		String total = (String) (request.getAttribute("total"));
 	%>
 			<button
 				onclick="window.location.href='${pageContext.request.contextPath }/teacher'"
@@ -84,7 +84,7 @@ body {
 				</tr>
 			</thead>
 			<tbody>
-				<c:forEach items="${ds }" var="item" varStatus="counter">
+				<c:forEach items="${result }" var="item" varStatus="counter">
 					<tr>
 						<td>${item.sAnswer }</td>
 						<td>${item.tAnswer }</td>
@@ -93,6 +93,7 @@ body {
 				</c:forEach>
 			</tbody>
 		</table>
+		<p>Total score: ${total}</p>
 	</div>
 </body>
 </html>

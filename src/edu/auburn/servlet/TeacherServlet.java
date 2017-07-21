@@ -6,6 +6,7 @@ import java.sql.Date;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -150,10 +151,23 @@ public class TeacherServlet extends HttpServlet {
 		int uid = Integer.parseInt(id);
 		EduUser user = userService.getUserById(uid);
 		Exam exam = examService.getExamById(eid);
-		List<DisplayStudentExamResult> displayResult = resultService.getDisplayResult(uid, eid);
+		ExamResult examResult = resultService.getResultByUidAndEid(uid, eid);
+		
+		List<DisplayStudentExamResult> ds = new ArrayList<>();
+		List<String> sAnswer = examResult.getsAnswers();
+		List<String> tAnswer = examResult.gettAnswers();
+		List<Float> scores = examResult.getScoreList();
+		for(int i = 0; i < sAnswer.size(); i++){
+			DisplayStudentExamResult r = new DisplayStudentExamResult();
+			r.setsAnswer(sAnswer.get(i));
+			r.settAnswer(tAnswer.get(i));
+			r.setScore(scores.get(i));
+			ds.add(r);
+		}
+		req.setAttribute("result", ds);
+		req.setAttribute("total", examResult.getTotal()+"");
 		req.setAttribute("exam", exam);
 		req.setAttribute("uname", user.getName());
-		req.setAttribute("ds", displayResult);
 		req.getRequestDispatcher("/jsp/teacher_check_student_exam_details.jsp").forward(req, resp);
 	}
 	
@@ -168,10 +182,23 @@ public class TeacherServlet extends HttpServlet {
 		String id = req.getParameter("eid");
 		int eid = Integer.parseInt(id);
 		Exam exam = examService.getExamById(eid);
-		List<ExamTeacherResult> teacherCheckResultList = resultService.teacherCheckResultByEid(eid);
-		req.setAttribute("results", teacherCheckResultList);
+		List<ExamResult> teacherCheckResultList = resultService.teacherCheckResultByEid(eid);
+		List<ExamTeacherResult> result = new ArrayList<>();
+		for(int i = 0; i<teacherCheckResultList.size(); i++){
+			ExamResult er = teacherCheckResultList.get(i);
+			int uid = er.getUid();
+			EduUser user = userService.getUserById(uid);
+			String name = user.getName();
+			float score = er.getTotal();
+			ExamTeacherResult tr = new ExamTeacherResult();
+			tr.setEid(eid);
+			tr.setSid(uid);
+			tr.setScore(score);
+			tr.setStuName(name);
+			result.add(tr);
+		}
+		req.setAttribute("result", result);
 		req.setAttribute("exam", exam);
-//		resp.getWriter().write(teacherCheckResultList.toString());
 		req.getRequestDispatcher("/jsp/teacher_exam_result.jsp").forward(req, resp);
 	}
 	

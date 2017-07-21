@@ -157,18 +157,24 @@ public class StudentServlet extends HttpServlet {
 		String id = req.getParameter("eid");
 		int eid = Integer.parseInt(id);
 		Exam exam = examService.getExamById(eid);
-		ExamResult er = new ExamResult();
 		String result = req.getParameter("result");
-		// String[] results = result.split("/");
-		er.setAnswer(result);
-		er.setUid(uid);
-		er.setEid(eid);
-		resultService.addResult(er);
-		List<DisplayStudentExamResult> displayResult = resultService.getDisplayResult(uid, eid);
+		resultService.addResult(uid, eid, result);
+		ExamResult examResult = resultService.getResultByUidAndEid(uid, eid);
+		List<DisplayStudentExamResult> ds = new ArrayList<>();
+		List<String> sAnswer = examResult.getsAnswers();
+		List<String> tAnswer = examResult.gettAnswers();
+		List<Float> scores = examResult.getScoreList();
+		for(int i = 0; i < sAnswer.size(); i++){
+			DisplayStudentExamResult r = new DisplayStudentExamResult();
+			r.setsAnswer(sAnswer.get(i));
+			r.settAnswer(tAnswer.get(i));
+			r.setScore(scores.get(i));
+			ds.add(r);
+		}
 		req.setAttribute("exam", exam);
-		req.setAttribute("ds", displayResult);
+		req.setAttribute("result", ds);
+		req.setAttribute("total", examResult.getTotal()+"");
 		req.getRequestDispatcher("/jsp/student_exam_result.jsp").forward(req, resp);
-		// System.out.println(results.length);
 	}
 
 	/**
@@ -185,10 +191,22 @@ public class StudentServlet extends HttpServlet {
 		int eid = Integer.parseInt(examId);
 		Exam exam = examService.getExamById(eid);
 		ExamResult examResult = resultService.getResultByUidAndEid(uid, eid);
+		
 		if (examResult != null) { // has taken the exam, show result
-			List<DisplayStudentExamResult> displayResult = resultService.getDisplayResult(uid, eid);
+			List<DisplayStudentExamResult> ds = new ArrayList<>();
+			List<String> sAnswer = examResult.getsAnswers();
+			List<String> tAnswer = examResult.gettAnswers();
+			List<Float> scores = examResult.getScoreList();
+			for(int i = 0; i < sAnswer.size(); i++){
+				DisplayStudentExamResult r = new DisplayStudentExamResult();
+				r.setsAnswer(sAnswer.get(i));
+				r.settAnswer(tAnswer.get(i));
+				r.setScore(scores.get(i));
+				ds.add(r);
+			}
+			req.setAttribute("result", ds);
+			req.setAttribute("total", examResult.getTotal()+"");
 			req.setAttribute("exam", exam);
-			req.setAttribute("ds", displayResult);
 			req.getRequestDispatcher("/jsp/student_exam_result.jsp").forward(req, resp);
 		} else { // go to take the exam
 			List<ExamVideo> videos = examVideoService.getAllVideosByEid(eid);
