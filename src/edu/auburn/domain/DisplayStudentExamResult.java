@@ -1,9 +1,25 @@
 package edu.auburn.domain;
 
 public class DisplayStudentExamResult {
+	private int wid;
+	private int sid;
 	private String sAnswer;
 	private String tAnswer;
 	private float score;
+	
+	
+	public int getWid() {
+		return wid;
+	}
+	public void setWid(int wid) {
+		this.wid = wid;
+	}
+	public int getSid() {
+		return sid;
+	}
+	public void setSid(int sid) {
+		this.sid = sid;
+	}
 	public String getsAnswer() {
 		return sAnswer;
 	}

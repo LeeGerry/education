@@ -63,6 +63,9 @@ create table exam_video(
 )engine = myisam  default charset = utf8;
 
 
+
+
+
 drop table if exists `exam_word`;
 create table exam_word(
 	fid integer auto_increment primary key,
@@ -74,6 +77,19 @@ create table exam_word(
 	eid integer
 )engine = myisam  default charset = utf8;
 
+
+drop table if exists `word_video`;
+create table word_video(
+	fid integer auto_increment primary key,
+	wid integer,
+	eid integer,
+	name varchar(100),
+	path varchar(1000),
+	fdesc varchar(2000)
+)engine = myisam  default charset = utf8;
+
+
+
 drop table if exists `exam_result`;
 create table exam_result(
 	rid integer auto_increment primary key,
@@ -84,7 +100,23 @@ create table exam_result(
 	total float
 )engine = myisam  default charset = utf8;
 
+drop table if exists `student_exam`;
+create table student_exam(
+	seid integer auto_increment primary key,
+	sid integer,
+	eid integer,
+	taken integer default 0
+)engine = myisam  default charset = utf8;
 
+drop table if exists `word_student`;
+create table word_student(
+	wsid integer auto_increment primary key,
+	sid integer,
+	wid integer,
+	eid integer,
+	answer varchar(200),
+	score float 
+)engine = myisam  default charset = utf8;
 
 
 

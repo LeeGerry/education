@@ -64,6 +64,16 @@ public class ExamResultService implements IExamResultService {
 		// TODO Auto-generated method stub
 		return resultDao.teacherCheckResultByEid(eid);
 	}
+	@Override
+	public boolean addResult(ExamResult er) {
+		// TODO Auto-generated method stub
+		ExamResult e = resultDao.getResultByUidAndEid(er.getUid(), er.getEid());
+		if(null != e && e.getEid() > 0 && e.getUid() > 0){
+			resultDao.deleteResult(er.getUid(), er.getEid());
+			return resultDao.addResult(er);
+		}
+		return resultDao.addResult(er);
+	}
 
 	
 }
