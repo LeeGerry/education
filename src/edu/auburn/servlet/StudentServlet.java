@@ -950,6 +950,13 @@ public class StudentServlet extends HttpServlet {
 		Lesson lesson = lessonService.getLessonByLid(lid);
 		req.setAttribute("lesson", lesson);
 		List<LessonFile> files = lessonFileService.getAllFileByLid(lid);
+		for(int i = 0; i<files.size(); i++){
+			LessonFile f = files.get(i);
+			String oldPath = f.getPath();
+			int index = oldPath.indexOf("/upload/");
+			String path = req.getContextPath()+oldPath.substring(index);
+			f.setPath(path);
+		}
 		req.setAttribute("files", files);
 		LessonStudent lessonStudent = lsService.getLSByUidAndLid(uid, lid);
 		if (1 == lessonStudent.getType()) {// ta

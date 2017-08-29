@@ -108,7 +108,7 @@ body {
 				</c:forEach>
 			</tbody>
 		</table>
-		<p>Support for only TXT, MP4, WAV, DOC, DOCX, PDF</p>
+		<p>Support for only MP4</p>
 		<div class="wells">
 			<form class="form-horizontal" name="l_file"
 				action="${pageContext.request.contextPath }/teacher?method=upload&lid=<% out.print(l.getLid());%>"

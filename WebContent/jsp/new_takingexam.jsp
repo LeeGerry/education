@@ -20,7 +20,17 @@
 body {
 	background-image: url("gray.jpg");
 }
+video::-internal-media-controls-download-button {
+    display:none;
+}
 
+video::-webkit-media-controls-enclosure {
+    overflow:hidden;
+}
+
+video::-webkit-media-controls-panel {
+    width: calc(100% + 30px); /* Adjust as needed */
+}
 hr {
 	display: block;
 	margin-top: 0.5em;

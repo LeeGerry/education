@@ -11,12 +11,24 @@
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
 <style>
 body {
 	background-image: url("gray.jpg");
 }
+video::-internal-media-controls-download-button {
+    display:none;
+}
+
+video::-webkit-media-controls-enclosure {
+    overflow:hidden;
+}
+
+video::-webkit-media-controls-panel {
+    width: calc(100% + 30px); /* Adjust as needed */
+}
 </style>
- 
+
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
  
@@ -90,17 +102,19 @@ body {
 				out.print(l.getDesc());
 			%>
 		</p>
-		<table class="table table-hover">
+		<%-- <table class="table table-hover">
 			<thead>
 				<tr>
 					<th>File</th>
-					<th>Action</th>
+					<!-- <th>Action</th> -->
 				</tr>
 			</thead>
 			<tbody>
+
+
 				<c:forEach items="${files }" var="item" varStatus="counter">
 					<tr>
-						<td>${item.name }</td>
+						<td>${item.path }</td>
 						<td><c:url var="url" value="/student">
 								<c:param name="method" value="download"></c:param>
 								<c:param name="fid" value="${item.fid }"></c:param>
@@ -108,7 +122,18 @@ body {
 					</tr>
 				</c:forEach>
 			</tbody>
-		</table>
+			
+		</table> --%>
+		
+		<c:forEach items="${files }" var="item" varStatus="counter">
+			<video height="30%" width="30%" controls="controls">
+				<source src="${item.path}" type="video/ogg" />
+				<source src="${item.path}" type="video/mp4" />
+				Your browser does not support the video tag.
+			</video>
+			<br>
+		</c:forEach>
 	</div>
+
 </body>
 </html>
