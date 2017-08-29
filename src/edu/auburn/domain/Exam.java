@@ -21,7 +21,13 @@ public class Exam {
 	private int uid;
 	private String lname;
 	private String uname;
-	
+	private int ifPractice;
+	public int getIfPractice() {
+		return ifPractice;
+	}
+	public void setIfPractice(int ifPractice) {
+		this.ifPractice = ifPractice;
+	}
 	public String getLname() {
 		return lname;
 	}

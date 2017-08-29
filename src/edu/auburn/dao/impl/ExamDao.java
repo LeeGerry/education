@@ -31,7 +31,7 @@ public class ExamDao implements IExamDao {
 		// lid integer,
 		// uid integer
 		// )engine = myisam default charset = utf8;
-		String sql = "insert into exam (name, edesc, edue, etype, lid, uid) values (?,?,?,?,?,?)";
+		String sql = "insert into exam (name, edesc, edue, etype, lid, uid, ispractice) values (?,?,?,?,?,?,?)";
 		Connection connection = JDBCUtil.getConnection();
 		PreparedStatement ps = null;
 		try {
@@ -42,6 +42,7 @@ public class ExamDao implements IExamDao {
 			ps.setInt(4, exam.getEtype());
 			ps.setInt(5, exam.getLid());
 			ps.setInt(6, exam.getUid());
+			ps.setInt(7, exam.getIfPractice());
 			int result = ps.executeUpdate();
 			return result > 0;
 		} catch (SQLException e) {
@@ -93,6 +94,7 @@ public class ExamDao implements IExamDao {
 				e.setEdesc(rs.getString("edesc"));
 				e.setEdue(rs.getDate("edue"));
 				e.setEtype(rs.getInt("etype"));
+				e.setIfPractice(rs.getInt("ispractice"));
 				e.setLid(lid);
 				e.setLname(lname);
 				int uid = rs.getInt("uid");
@@ -134,6 +136,7 @@ public class ExamDao implements IExamDao {
 				e.setEdue(rs.getDate("edue"));
 				e.setEtype(rs.getInt("etype"));
 				int lid = rs.getInt("lid");
+				e.setIfPractice(rs.getInt("ispractice"));
 				e.setLid(lid);
 				Lesson l = ldao.getLessonById(lid);
 				String lname = "";

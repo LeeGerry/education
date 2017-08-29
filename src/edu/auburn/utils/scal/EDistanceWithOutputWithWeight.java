@@ -1,6 +1,7 @@
 package edu.auburn.utils.scal;
 
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import java.util.List;
@@ -10,6 +11,7 @@ import java.util.List;
 public class EDistanceWithOutputWithWeight {
 
 	private Phonetic phonetic = new Phonetic();
+	
 	
 	private double[][] T;
 	
@@ -29,40 +31,40 @@ public class EDistanceWithOutputWithWeight {
 	/**
 	 * Uses bottom up DP to find the edit distance
 	 */
-	public double dynamicEditDistance(String string1, String string2) {
-		char[] str1 = string1.toCharArray();
-		char[] str2 = string2.toCharArray();
-		double temp[][] = new double[str1.length + 1][str2.length + 1];
+	public double dynamicEditDistance(List<String> strs1, List<String> strs2) {
+		//char[] str1 = string1.toCharArray();
+		//char[] str2 = string2.toCharArray();
+		double temp[][] = new double[strs1.size() + 1][strs2.size() + 1];
 		for (int i = 0; i < temp[0].length; i++) {
 			temp[0][i] = i;
 		}
 		for (int i = 0; i < temp.length; i++) {
 			temp[i][0] = i;
 		}
-		for (int i = 1; i <= str1.length; i++) {
-			for (int j = 1; j <= str2.length; j++) {
-				if (str1[i - 1] == str2[j - 1]) {
+		for (int i = 1; i <= strs1.size(); i++) {
+			for (int j = 1; j <= strs2.size(); j++) {
+				if ( strs1.get(i - 1).equals(strs2.get(j-1)) ) {
 					temp[i][j] = temp[i - 1][j - 1];
 					//System.out.print(temp[i][j] + " ");
 				} else {
 					
-					double cost_dist = Character.isDigit(str2[j - 1]) ? 0.5 : 1.0;
+					double cost_dist = Arrays.asList(phonetic.getNumber()).contains( String.valueOf(strs2.get(j-1) )) ? 0.5 : 1.0;
 					double sub_cost = 0.0;
 					
-					if 	( Arrays.asList(phonetic.getVowels()).contains(String.valueOf(str1[i-1])) && 
-							Arrays.asList(phonetic.getConsonants()).contains(String.valueOf(str2[j-1])) ) 
+					if 	( Arrays.asList(phonetic.getVowels()).contains(String.valueOf(strs1.get(i-1))) && 
+							Arrays.asList(phonetic.getConsonants()).contains(String.valueOf(strs2.get(j-1) )) ) 
 						sub_cost = 100.0;
 						
-					else if ( Arrays.asList(phonetic.getConsonants()).contains(String.valueOf(str1[i-1])) && 
-									Arrays.asList(phonetic.getVowels()).contains(String.valueOf(str2[j-1])) ) 
+					else if ( Arrays.asList(phonetic.getConsonants()).contains(String.valueOf(strs1.get(i-1))) && 
+									Arrays.asList(phonetic.getVowels()).contains(String.valueOf(strs2.get(j-1) )) ) 
 						sub_cost = 100.0;
 					
-					else if 	( Arrays.asList(phonetic.getVowels()).contains(String.valueOf(str1[i-1])) && 
-							Arrays.asList(phonetic.getVowels()).contains(String.valueOf(str2[j-1])) ) 
+					else if 	( Arrays.asList(phonetic.getVowels()).contains(String.valueOf(strs1.get(i-1))) && 
+							Arrays.asList(phonetic.getVowels()).contains(String.valueOf(strs2.get(j-1) )) ) 
 						sub_cost = 0.0;
 					
-					else if (Arrays.asList(phonetic.getConsonants()).contains(String.valueOf(str1[i-1])) && 
-							Arrays.asList(phonetic.getConsonants()).contains(String.valueOf(str2[j-1])) ) 
+					else if (Arrays.asList(phonetic.getConsonants()).contains(String.valueOf(strs1.get(i-1))) && 
+							Arrays.asList(phonetic.getConsonants()).contains(String.valueOf(strs2.get(j-1) )) ) 
 						sub_cost = 0.0;
 					
 					
@@ -76,15 +78,15 @@ public class EDistanceWithOutputWithWeight {
 		
 		T = temp;
 		//System.out.println(printActualEdits(str1, str2));
-		return temp[str1.length][str2.length];
+		return temp[strs1.size()][strs2.size()];
 	}
 
 	/**
 	 * Prints the actual edits which needs to be done.
 	 */
-	public String printActualEdits(String string1, String string2) {
-		char[] str1 = string1.toCharArray();
-		char[] str2 = string2.toCharArray();
+	public String printActualEdits(List<String> strs1, List<String> strs2) {
+		//char[] str1 = string1.toCharArray();
+		//char[] str2 = string2.toCharArray();
 		
 		int i = T.length - 1;
 		int j = T[0].length - 1;
@@ -109,9 +111,9 @@ public class EDistanceWithOutputWithWeight {
 				i--;
 				continue;
 			}
-			if (str1[i - 1] == str2[j - 1]) {
-				if (Arrays.asList(phonetic.getConsonants()).contains(String.valueOf(str1[i-1])) && 
-						Arrays.asList(phonetic.getConsonants()).contains(String.valueOf(str2[j-1]))){
+			if (strs1.get(i-1).equals(strs2.get(j-1))) {
+				if (Arrays.asList(phonetic.getConsonants()).contains(String.valueOf(String.valueOf( strs1.get(i-1) ))) && 
+						Arrays.asList(phonetic.getConsonants()).contains(String.valueOf(strs2.get(j-1)))){
 					result.append("|");
 				}
 				else {
@@ -132,7 +134,7 @@ public class EDistanceWithOutputWithWeight {
 				i = i - 1;
 			} else if (T[i][j] == T[i][j - 1] + 1) {
 				//System.out.println("Delete in string2 " + str2[j - 1]);
-				if (Arrays.asList(phonetic.getConsonants()).contains(String.valueOf(str2[j-1]))) result.append("%");
+				if (Arrays.asList(phonetic.getConsonants()).contains(String.valueOf(strs2.get(j-1) ))) result.append("%");
 				
 				else result.append("i");	
 				j = j - 1;
@@ -160,19 +162,26 @@ public class EDistanceWithOutputWithWeight {
 		double l = Math.min(a, b);
 		return Math.min(l, c);
 	}
+	
+	
+	
 
 	public static void main(String args[]) {
 		String str1 = "kitten";
-		String str2 = "sitting";
+		String str2 = "sittig";
+		String str3 = "\u0276\u0276\u0234\u02A7";
+		String str4 = "\u0276\u0276\u0288\u0153";
+		System.out.println(str3.length());
 		System.out.println(str1);
 		System.out.println(str2);
+		System.out.println(str3);
 		EDistanceWithOutputWithWeight editDistance = new EDistanceWithOutputWithWeight();
 		
-		double result = editDistance.dynamicEditDistance(str1, str2);
-		String symbol = editDistance.printActualEdits(str1, str2);
-		System.out.print(result);
+		//double result = editDistance.dynamicEditDistance(str3, str4);
+		//String symbol = editDistance.printActualEdits(str3, str4);
+		//System.out.print(result);
 		System.out.println();
-		System.out.println(symbol);
+		//System.out.println(symbol);
 	}
 
 }

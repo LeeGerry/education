@@ -80,7 +80,8 @@ body {
 		<table class="table table-hover">
 			<thead>
 				<tr>
-					<th>Exam</th>
+					<th>Name</th>
+					<th>0:Exam/1:Practice</th>
 					<th>Due Date</th>
 					<th>Created by</th>
 					<th>Delete</th>
@@ -92,6 +93,7 @@ body {
 					<tr>
 						<td><a href="${pageContext.request.contextPath }/teacher?method=examdetails&lid=<%out.print(l.getLid()); %>&eid=${item.eid}"><c:out
 									value="${item.name }" /></a></td>
+						<td>${item.ifPractice}</td>
 						<td>${item.edue }</td>
 						<td>${item.uname }</td>
 						<td><a href="${pageContext.request.contextPath }/teacher?method=delexam&lid=<%out.print(l.getLid()); %>&eid=${item.eid}">x</a></td>
@@ -104,6 +106,15 @@ body {
 		<div class="wells">
 			<form class="form-horizontal" action="${pageContext.request.contextPath }/teacher?method=addexam&lid=<%out.print(l.getLid()); %>"
 				method="post">
+				<div class="form-group">
+					<label class="control-label col-sm-2" for="level">Choose type</label>
+					<div class="col-sm-10">
+						<select name="isprac">
+							<option value="0">exam</option>
+							<option value="1">practice</option>
+						</select>
+					</div>
+				</div>
 				<div class="form-group">
 					<label class="control-label col-sm-2" for="level">Choose the level:</label>
 					<div class="col-sm-10">

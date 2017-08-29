@@ -73,6 +73,7 @@ public class StudentServlet extends HttpServlet {
 	private IStudentExamService studentExamService = new StudentExamService();
 	private IWordStudentService wordStudentService = new WordStudentService();
 	private IExamResultService examResultService = new ExamResultService();
+
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		req.setCharacterEncoding("utf-8");
@@ -130,17 +131,17 @@ public class StudentServlet extends HttpServlet {
 							downLoad(req, resp);
 						} else if (method.equals("ta_download")) {
 							downLoad(req, resp);
-						} else if (method.equals("wordDetails")){
+						} else if (method.equals("wordDetails")) {
 							wordDetails(req, resp);
-						} else if (method.equals("wordAddVideo")){
+						} else if (method.equals("wordAddVideo")) {
 							wordAddVideo(req, resp);
-						} else if (method.equals("deleteWordVideo")){
+						} else if (method.equals("deleteWordVideo")) {
 							deleteWordVideo(req, resp);
-						} else if (method.equals("takeexamspe")){
+						} else if (method.equals("takeexamspe")) {
 							studentTakeExamSpe(req, resp);
-						} else if (method.equals("saveanswer")){
+						} else if (method.equals("saveanswer")) {
 							studentSaveAnswer(req, resp);
-						} else if (method.equals("submitresult")){
+						} else if (method.equals("submitresult")) {
 							studentSubmitResult(req, resp);
 						}
 					} else {
@@ -153,12 +154,14 @@ public class StudentServlet extends HttpServlet {
 
 	/**
 	 * ta-new-word-delete-video
+	 * 
 	 * @param req
 	 * @param resp
 	 * @throws ServletException
 	 * @throws IOException
 	 */
-	private void deleteWordVideo(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	private void deleteWordVideo(HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
 		String id = req.getParameter("wid");
 		int wid = Integer.parseInt(id);
 		id = req.getParameter("eid");
@@ -170,9 +173,10 @@ public class StudentServlet extends HttpServlet {
 		wordVideoService.delVideoById(vid);
 		wordDetails(req, resp);
 	}
-	
+
 	/**
 	 * ta-new-word-add-videos
+	 * 
 	 * @param req
 	 * @param resp
 	 * @throws ServletException
@@ -190,7 +194,7 @@ public class StudentServlet extends HttpServlet {
 		Lesson lesson = lessonService.getLessonByLid(lid);
 		Exam exam = examService.getExamById(eid);
 		ExamWord word = wordService.getExamWordByFid(wid);
-		
+
 		FileItemFactory factory = new DiskFileItemFactory();
 		ServletFileUpload upload = new ServletFileUpload(factory);
 		long size = 1024 * 1024 * 1024;
@@ -219,7 +223,9 @@ public class StudentServlet extends HttpServlet {
 							req.setAttribute("message", message);
 							// forward
 						} else {
-							String basePath = getServletContext().getRealPath("/upload/" + lesson.getName().replaceAll(" ", "_") + "/" + exam.getName().replaceAll(" ", "_") + "/" + word.getFid() + "/");
+							String basePath = getServletContext()
+									.getRealPath("/upload/" + lesson.getName().replaceAll(" ", "_") + "/"
+											+ exam.getName().replaceAll(" ", "_") + "/" + word.getFid() + "/");
 							File dir = new File(basePath);
 							if (!dir.exists() && !dir.isDirectory()) {
 								dir.mkdirs();
@@ -243,11 +249,9 @@ public class StudentServlet extends HttpServlet {
 		}
 
 		wordDetails(req, resp);
-		
-		
-		
+
 	}
-	
+
 	/**
 	 * ta-new-exam-details
 	 * 
@@ -324,14 +328,17 @@ public class StudentServlet extends HttpServlet {
 		req.setAttribute("total", examResult.getTotal() + "");
 		req.getRequestDispatcher("/jsp/student_exam_result.jsp").forward(req, resp);
 	}
+
 	/**
 	 * student-take-exam-specific-question
+	 * 
 	 * @param req
 	 * @param resp
 	 * @throws ServletException
 	 * @throws IOException
 	 */
-	private void studentTakeExamSpe(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	private void studentTakeExamSpe(HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
 		String id = req.getParameter("eid");
 		int eid = Integer.parseInt(id);
 		id = req.getParameter("current");
@@ -345,7 +352,7 @@ public class StudentServlet extends HttpServlet {
 		int index = path.indexOf("/upload");
 		String p = req.getContextPath() + path.substring(index);
 		word.setPath(p);
-		
+
 		for (int i = 0; i < videos.size(); i++) {
 			WordVideo v = videos.get(i);
 			String vPath = v.getPath();
@@ -354,8 +361,8 @@ public class StudentServlet extends HttpServlet {
 			v.setPath(pa);
 		}
 		String answer = "";
-		WordStudent wordStudent =  wordStudentService.getStudentAnswerModelBySidAndWid(uid, word.getFid());
-		if(wordStudent != null && !"".equals(wordStudent.getAnswer())){
+		WordStudent wordStudent = wordStudentService.getStudentAnswerModelBySidAndWid(uid, word.getFid());
+		if (wordStudent != null && !"".equals(wordStudent.getAnswer())) {
 			answer = wordStudent.getAnswer();
 		}
 		req.setAttribute("answer", answer);
@@ -367,9 +374,10 @@ public class StudentServlet extends HttpServlet {
 		req.setAttribute("words", words);
 		req.getRequestDispatcher("/jsp/new_takingexam.jsp").forward(req, resp);
 	}
-	
-	/**here*********
-	 * student-submit-result
+
+	/**
+	 * here********* student-submit-result
+	 * 
 	 * @param req
 	 * @param resp
 	 * @throws ServletException
@@ -380,13 +388,13 @@ public class StudentServlet extends HttpServlet {
 		String id = req.getParameter("eid");
 		int eid = Integer.parseInt(id);
 		List<WordStudent> list = wordStudentService.getStudentAnswerListBySidAndEid(uid, eid);
-		
+
 		studentExamService.takeExam(eid, uid);
 		Exam exam = examService.getExamById(eid);
 		float tScore = 0;
-		//result 
+		// result
 		List<DisplayStudentExamResult> ds = new ArrayList<>();
-		for(int i = 0; i<list.size(); i++){
+		for (int i = 0; i < list.size(); i++) {
 			WordStudent ws = list.get(i);
 			String teacherAnswer = wordService.getExamWordByFid(ws.getWid()).getPron();
 			DisplayStudentExamResult displayStudentExamResult = new DisplayStudentExamResult();
@@ -397,23 +405,41 @@ public class StudentServlet extends HttpServlet {
 			displayStudentExamResult.setWid(ws.getWid());
 			ds.add(displayStudentExamResult);
 			tScore += ws.getScore();
-			
+
 		}
-		
+
 		ExamResult er = new ExamResult();
 		er.setEid(eid);
 		er.setUid(uid);
 		er.setTotal(tScore);
 		examResultService.addResult(er);
-		
-		req.setAttribute("exam", exam);
-		req.setAttribute("result", ds);
-		req.setAttribute("total", er.getTotal()+"");
-		req.getRequestDispatcher("/jsp/student_exam_result.jsp").forward(req, resp);
+		if (exam.getIfPractice() == 1) {// practice, then show the result with
+										// answer.
+			req.setAttribute("exam", exam);
+			req.setAttribute("result", ds);
+			req.setAttribute("total", er.getTotal() + "");
+			req.getRequestDispatcher("/jsp/student_exam_result.jsp").forward(req, resp);
+		} else {// exam
+			long currentTime = System.currentTimeMillis();
+			long dueDate = exam.getEdue().getTime();
+			// if after exam due data, show
+			if (currentTime > dueDate) {
+				req.setAttribute("exam", exam);
+				req.setAttribute("result", ds);
+				req.setAttribute("total", er.getTotal() + "");
+				req.getRequestDispatcher("/jsp/student_exam_result.jsp").forward(req, resp);
+			} else {
+				// else show nothing.
+				req.setAttribute("message", StringConfig.SCORE_NOT_PUBLISHED);
+				req.getRequestDispatcher("/jsp/non_student.jsp").forward(req, resp);
+			}
+
+		}
 	}
-	
+
 	/**
 	 * student-save-answer
+	 * 
 	 * @param req
 	 * @param resp
 	 * @throws ServletException
@@ -433,24 +459,23 @@ public class StudentServlet extends HttpServlet {
 		ws.setWid(wid);
 		ExamWord word = wordService.getExamWordByFid(wid);
 		float score = 0;
-		try{
+		try {
 			score = CalculateScore.getScore(answer, word.getPron());
-		}catch(Exception e){
+		} catch (Exception e) {
 			req.setAttribute("message", StringConfig.SCORE_CALCULATE_ERROR);
 			req.getRequestDispatcher("/jsp/non_student.jsp").forward(req, resp);
 		}
-		
+
 		ws.setScore(score);
 		WordStudent exist = wordStudentService.getStudentAnswerModelBySidAndWid(uid, wid);
-		if(null != exist && !"".equals(exist.getAnswer())){
+		if (null != exist && !"".equals(exist.getAnswer())) {
 			wordStudentService.updateAnswer(ws);
-		}else{
+		} else {
 			wordStudentService.addStudentAnswerForWord(ws);
 		}
 		studentTakeExamSpe(req, resp);
 	}
-	
-	
+
 	/**
 	 * student-take-exam
 	 * 
@@ -466,33 +491,41 @@ public class StudentServlet extends HttpServlet {
 		Exam exam = examService.getExamById(eid);
 		boolean taken = studentExamService.checkIfExamTakenByStudent(eid, uid);
 		if (taken) { // has taken the exam, show result
-			List<WordStudent> list = wordStudentService.getStudentAnswerListBySidAndEid(uid, eid);
-			List<DisplayStudentExamResult> ds = new ArrayList<>();
-			float tScore = 0;
-			for(int i = 0; i<list.size(); i++){
-				WordStudent ws = list.get(i);
-				String teacherAnswer = wordService.getExamWordByFid(ws.getWid()).getPron();
-				DisplayStudentExamResult displayStudentExamResult = new DisplayStudentExamResult();
-				displayStudentExamResult.setsAnswer(ws.getAnswer());
-				displayStudentExamResult.settAnswer(teacherAnswer);
-				displayStudentExamResult.setScore(ws.getScore());
-				displayStudentExamResult.setSid(ws.getSid());
-				displayStudentExamResult.setWid(ws.getWid());
-				ds.add(displayStudentExamResult);
-				tScore += ws.getScore();
+			if ((exam.getIfPractice() == 1) // is practice
+					|| // or is exam && past the due date
+					(exam.getIfPractice() == 0 && System.currentTimeMillis() > exam.getEdue().getTime())) {
+				// show result
+				List<WordStudent> list = wordStudentService.getStudentAnswerListBySidAndEid(uid, eid);
+				List<DisplayStudentExamResult> ds = new ArrayList<>();
+				float tScore = 0;
+				for (int i = 0; i < list.size(); i++) {
+					WordStudent ws = list.get(i);
+					String teacherAnswer = wordService.getExamWordByFid(ws.getWid()).getPron();
+					DisplayStudentExamResult displayStudentExamResult = new DisplayStudentExamResult();
+					displayStudentExamResult.setsAnswer(ws.getAnswer());
+					displayStudentExamResult.settAnswer(teacherAnswer);
+					displayStudentExamResult.setScore(ws.getScore());
+					displayStudentExamResult.setSid(ws.getSid());
+					displayStudentExamResult.setWid(ws.getWid());
+					ds.add(displayStudentExamResult);
+					tScore += ws.getScore();
+				}
+
+				req.setAttribute("result", ds);
+				req.setAttribute("total", tScore + "");
+				req.setAttribute("exam", exam);
+				req.getRequestDispatcher("/jsp/student_exam_result.jsp").forward(req, resp);
+			}else{
+				// else show nothing.
+				req.setAttribute("message", StringConfig.SCORE_NOT_PUBLISHED);
+				req.getRequestDispatcher("/jsp/non_student.jsp").forward(req, resp);
 			}
-			
-			
-			req.setAttribute("result", ds);
-			req.setAttribute("total", tScore + "");
-			req.setAttribute("exam", exam);
-			req.getRequestDispatcher("/jsp/student_exam_result.jsp").forward(req, resp);
 		} else { // go to take the exam
-			List<ExamWord> words = wordService.getAllWordsByEid(eid); 
+			List<ExamWord> words = wordService.getAllWordsByEid(eid);
 			int totalWords = words.size();
-			
+
 			List<WordVideo> wordVideos = null;
-//			List<ExamVideo> videos = examVideoService.getAllVideosByEid(eid);
+			// List<ExamVideo> videos = examVideoService.getAllVideosByEid(eid);
 			if (words == null || words.size() == 0) {
 				req.setAttribute("message", "the exam has not been published");
 				req.getRequestDispatcher("/jsp/non_student.jsp").forward(req, resp);
@@ -503,7 +536,7 @@ public class StudentServlet extends HttpServlet {
 				int index = path.indexOf("/upload");
 				String p = req.getContextPath() + path.substring(index);
 				word.setPath(p);
-				/*********here******/
+				/********* here ******/
 				for (int i = 0; i < wordVideos.size(); i++) {
 					WordVideo v = wordVideos.get(i);
 					String vPath = v.getPath();
@@ -560,6 +593,7 @@ public class StudentServlet extends HttpServlet {
 
 	/**
 	 * ta-new-word-details(for delete or upload word video)
+	 * 
 	 * @param req
 	 * @param resp
 	 * @throws ServletException
@@ -582,10 +616,10 @@ public class StudentServlet extends HttpServlet {
 		req.setAttribute("videos", videos);
 		req.getRequestDispatcher("/jsp/new_ta_exam_word_details.jsp").forward(req, resp);
 	}
-	
-	
+
 	/**
 	 * ta-exam-add-word
+	 * 
 	 * @param req
 	 * @param resp
 	 * @throws ServletException
@@ -628,7 +662,8 @@ public class StudentServlet extends HttpServlet {
 							// forward
 						} else {
 							String basePath = getServletContext()
-									.getRealPath("/upload/" + lesson.getName().replaceAll(" ", "_") + "/" + exam.getName().replaceAll(" ", "_") + "/");
+									.getRealPath("/upload/" + lesson.getName().replaceAll(" ", "_") + "/"
+											+ exam.getName().replaceAll(" ", "_") + "/");
 							File dir = new File(basePath);
 							if (!dir.exists() && !dir.isDirectory()) {
 								dir.mkdirs();

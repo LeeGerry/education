@@ -599,6 +599,7 @@ public class TeacherServlet extends HttpServlet {
 		String edesc = req.getParameter("edesc");
 		String type = req.getParameter("etype");
 		String edue = req.getParameter("edue");
+		String isPrac = req.getParameter("isprac");
 		if (!StringUtils.isNullOrEmpty(ename) && !StringUtils.isNullOrEmpty(edesc)
 				&& !StringUtils.isNullOrEmpty(edue)) {
 			Exam e = new Exam();
@@ -617,6 +618,7 @@ public class TeacherServlet extends HttpServlet {
 			e.setLname(lesson.getName());
 			e.setEdesc(edesc);
 			e.setEtype(Integer.parseInt(type));
+			e.setIfPractice(Integer.parseInt(isPrac));
 			e.setUid(uid);
 			e.setUname(user);
 			examService.addExam(e);

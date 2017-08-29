@@ -44,6 +44,7 @@ create table lesson_file(
 drop table if exists `exam`;
 create table exam(
 	eid integer auto_increment primary key,
+	ispractice integer,
 	name varchar(50),
 	edesc varchar(200),
 	edue datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
