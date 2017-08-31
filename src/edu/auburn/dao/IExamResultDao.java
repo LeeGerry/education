@@ -9,4 +9,5 @@ public interface IExamResultDao {
 	boolean deleteResult(int uid, int eid);
 	ExamResult getResultByUidAndEid(int uid, int eid);
 	List<ExamResult> teacherCheckResultByEid(int eid);
+	
 }
