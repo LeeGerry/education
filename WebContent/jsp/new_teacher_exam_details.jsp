@@ -129,6 +129,7 @@ body {
 
 				<script type="text/javascript">
 					var undo = "";
+					var keyLenArr = [];
 					function copyText(value) {
 						var str1 = unescape(value.replace(
 								/\\(u[0-9a-fA-F]{4})/gm, '%$1'));
@@ -139,106 +140,124 @@ body {
 					function backspace() {
 						//document.getElementById("getSymble").value="";
 						var text = document.getElementById("ta").value;
-						text = text.slice(0, -1);
+						
+						var keyLen = keyLenArr.pop()
+						text = text.slice(0, keyLen*-1);
+							
 						document.getElementById("ta").value = text;
 					}
 					function clean() {
 						document.getElementById("ta").value = "";
 					}
+					
+					function setkeyLen(pressedKey){
+						keyLenArr.push(pressedKey.length);
+					}
 				</script>
-				<div style="margin-right: auto; margin-left: auto;">
+				<div class="row w3-center">
 					<button class="btn btn btn-default" onclick="copyText(value)"
-						value="p" style="width: 30px; height: 30px;">p</button>
-					<button class="btn btn btn-default" onclick="copyText(value)"
-						value="t" style="width: 30px; height: 30px;">t</button>
-					<button class="btn btn btn-default" onclick="copyText(value)"
-						value="k" style="width: 30px; height: 30px;">k</button>
-					<button class="btn btn btn-default" onclick="copyText(value)"
-						value="b" style="width: 30px; height: 30px;">b</button>
-					<button class="btn btn btn-default" onclick="copyText(value)"
-						value="d" style="width: 30px; height: 30px;">d</button>
-					<button class="btn btn btn-default" onclick="copyText(value)"
-						value="ɡ" style="width: 30px; height: 30px;">ɡ</button>
-					<button class="btn btn btn-default" onclick="copyText(value)"
-						value="t͡ʃ" style="width: 30px; height: 30px;">t͡ʃ</button>
-					<button class="btn btn btn-default" onclick="copyText(value)"
-						value="d͡ʒ" style="width: 30px; height: 30px;">d͡ʒ</button>
-					<button class="btn btn btn-default" onclick="copyText(value)"
-						value="s" style="width: 30px; height: 30px;">s</button>
-					<button class="btn btn btn-default" onclick="copyText(value)"
-						value="ʃ" style="width: 30px; height: 30px;">ʃ</button>
-					<button class="btn btn btn-default" onclick="copyText(value)"
-						value="z" style="width: 30px; height: 30px;">z</button>
+						value="p" style="width: 40px; height: 40px;">p</button>
+					<button class="btn btn btn-default" onclick="copyText(value);setkeyLen(value);"
+						value="t" style="width: 40px; height: 40px;">t</button>
+					<button class="btn btn btn-default" onclick="copyText(value);setkeyLen(value);"
+						value="k" style="width: 40px; height: 40px;">k</button>
+					<button class="btn btn btn-default" onclick="copyText(value);setkeyLen(value);"
+						value="b" style="width: 40px; height: 40px;">b</button>
+					<button class="btn btn btn-default" onclick="copyText(value);setkeyLen(value);"
+						value="d" style="width: 40px; height: 40px;">d</button>
+					<button class="btn btn btn-default" onclick="copyText(value);setkeyLen(value);"
+						value="ɡ" style="width: 40px; height: 40px;">ɡ</button>
+					<button class="btn btn btn-default" onclick="copyText(value);setkeyLen(value);"
+						value="t͡ʃ" style="width: 40px; height: 40px;">t͡ʃ</button>
+					<button class="btn btn btn-default" onclick="copyText(value);setkeyLen(value);"
+						value="d͡ʒ" style="width: 40px; height: 40px;">d͡ʒ</button>
+					<button class="btn btn btn-default" onclick="copyText(value);setkeyLen(value);"
+						value="s" style="width: 40px; height: 40px;">s</button>
 					<br>
-					<button class="btn btn btn-default" onclick="copyText(value)"
-						value="ʒ" style="width: 30px; height: 30px;">ʒ</button>
-					<button class="btn btn btn-default" onclick="copyText(value)"
-						value="f" style="width: 30px; height: 30px;">f</button>
-					<button class="btn btn btn-default" onclick="copyText(value)"
-						value="θ" style="width: 30px; height: 30px;">θ</button>
-					<button class="btn btn btn-default" onclick="copyText(value)"
-						value="v" style="width: 30px; height: 30px;">v</button>
-					<button class="btn btn btn-default" onclick="copyText(value)"
-						value="ð" style="width: 30px; height: 30px;">ð</button>
-
-					<button class="btn btn btn-default" onclick="copyText(value)"
-						value="h" style="width: 30px; height: 30px;">h</button>
-					<button class="btn btn btn-default" onclick="copyText(value)"
-						value="n" style="width: 30px; height: 30px;">n</button>
-					<button class="btn btn btn-default" onclick="copyText(value)"
-						value="m" style="width: 30px; height: 30px;">m</button>
-					<button class="btn btn btn-default" onclick="copyText(value)"
-						value="ŋ" style="width: 30px; height: 30px;">ŋ</button>
-					<button class="btn btn btn-default" onclick="copyText(value)"
-						value="ʔ" style="width: 30px; height: 30px;">ʔ</button>
-					<button class="btn btn btn-default" onclick="copyText(value)"
-						value="l" style="width: 30px; height: 30px;">l</button>
+					<button class="btn btn btn-default" onclick="copyText(value);setkeyLen(value);"
+						value="ʃ" style="width: 40px; height: 40px;">ʃ</button>
+					<button class="btn btn btn-default" onclick="copyText(value);setkeyLen(value);"
+						value="z" style="width: 40px; height: 40px;">z</button>
+					<button class="btn btn btn-default" onclick="copyText(value);setkeyLen(value);"
+						value="ʒ" style="width: 40px; height: 40px;">ʒ</button>
+					<button class="btn btn btn-default" onclick="copyText(value);setkeyLen(value);"
+						value="f" style="width: 40px; height: 40px;">f</button>
+					<button class="btn btn btn-default" onclick="copyText(value);setkeyLen(value);"
+						value="θ" style="width: 40px; height: 40px;">θ</button>
+					<button class="btn btn btn-default" onclick="copyText(value);setkeyLen(value);"
+						value="v" style="width: 40px; height: 40px;">v</button>
+					<button class="btn btn btn-default" onclick="copyText(value);setkeyLen(value);"
+						value="ð" style="width: 40px; height: 40px;">ð</button>
+					<button class="btn btn btn-default" onclick="copyText(value);setkeyLen(value);"
+						value="h" style="width: 40px; height: 40px;">h</button>
+					<button class="btn btn btn-default" onclick="copyText(value);setkeyLen(value);"
+						value="n" style="width: 40px; height: 40px;">n</button>
 					<br>
-					<button class="btn btn btn-default" onclick="copyText(value)"
-						value="r" style="width: 30px; height: 30px;">r</button>
-					<button class="btn btn btn-default" onclick="copyText(value)"
-						value="w" style="width: 30px; height: 30px;">w</button>
-					<button class="btn btn btn-default" onclick="copyText(value)"
-						value="j" style="width: 30px; height: 30px;">j</button>
-					<button class="btn btn btn-default" onclick="copyText(value)"
-						value="ɾ" style="width: 30px; height: 30px;">ɾ</button>
-					<button class="btn btn btn-default" onclick="copyText(value)"
-						value="ɫ" style="width: 30px; height: 30px;">ɫ</button>
-					<button class="btn btn btn-default" onclick="copyText(value)"
-						value="i" style="width: 30px; height: 30px;">i</button>
-					<button class="btn btn btn-default" onclick="copyText(value)"
-						value="ɪ" style="width: 30px; height: 30px;">ɪ</button>
-					<button class="btn btn btn-default" onclick="copyText(value)"
-						value="ɛ" style="width: 30px; height: 30px;">ɛ</button>
-					<button class="btn btn btn-default" onclick="copyText(value)"
-						value="e͡ɪ" style="width: 30px; height: 30px;">e͡ɪ</button>
-					<button class="btn btn btn-default" onclick="copyText(value)"
-						value="æ" style="width: 30px; height: 30px;">æ</button>
-					<button class="btn btn btn-default" onclick="copyText(value)"
-						value="ɑ" style="width: 30px; height: 30px;">ɑ</button>
+					<button class="btn btn btn-default" onclick="copyText(value);setkeyLen(value);"
+						value="m" style="width: 40px; height: 40px;">m</button>
+					<button class="btn btn btn-default" onclick="copyText(value);setkeyLen(value);"
+						value="ŋ" style="width: 40px; height: 40px;">ŋ</button>
+					<button class="btn btn btn-default" onclick="copyText(value);setkeyLen(value);"
+						value="ʔ" style="width: 40px; height: 40px;">ʔ</button>
+					<button class="btn btn btn-default" onclick="copyText(value);setkeyLen(value);"
+						value="l" style="width: 40px; height: 40px;">l</button>
+					<button class="btn btn btn-default" onclick="copyText(value);setkeyLen(value);"
+						value="r" style="width: 40px; height: 40px;">r</button>
+					<button class="btn btn btn-default" onclick="copyText(value);setkeyLen(value);"
+						value="w" style="width: 40px; height: 40px;">w</button>
+					<button class="btn btn btn-default" onclick="copyText(value);setkeyLen(value);"
+						value="j" style="width: 40px; height: 40px;">j</button>
+					<button class="btn btn btn-default" onclick="copyText(value);setkeyLen(value);"
+						value="ɾ" style="width: 40px; height: 40px;">ɾ</button>
+					<button class="btn btn btn-default" onclick="copyText(value);setkeyLen(value);"
+						value="ɫ" style="width: 40px; height: 40px;">ɫ</button>
 					<br>
-					<button class="btn btn btn-default" onclick="copyText(value)"
-						value="ɑ͡u" style="width: 30px; height: 30px;">ɑ͡u</button>
-					<button class="btn btn btn-default" onclick="copyText(value)"
-						value="ɑ͡ɪ" style="width: 30px; height: 30px;">ɑ͡ɪ</button>
-					<button class="btn btn btn-default" onclick="copyText(value)"
-						value="ʌ" style="width: 30px; height: 30px;">ʌ</button>
-					<button class="btn btn btn-default" onclick="copyText(value)"
-						value="ɔ" style="width: 30px; height: 30px;">ɔ</button>
-					<button class="btn btn btn-default" onclick="copyText(value)"
-						value="ɔ͡ɪ" style="width: 30px; height: 30px;">ɔ͡ɪ</button>
-					<button class="btn btn btn-default" onclick="copyText(value)"
-						value="o͡ʊ" style="width: 30px; height: 30px;">o͡ʊ</button>
-					<button class="btn btn btn-default" onclick="copyText(value)"
-						value="ʊ" style="width: 30px; height: 30px;">ʊ</button>
-					<button class="btn btn btn-default" onclick="copyText(value)"
-						value="u" style="width: 30px; height: 30px;">u</button>
-					<button class="btn btn btn-default" onclick="copyText(value)"
-						value="ɝ" style="width: 30px; height: 30px;">ɝ</button>
-					<button class="btn btn btn-default" onclick="copyText(value)"
-						value="ə" style="width: 30px; height: 30px;">ə</button>
-					<button class="btn btn btn-default" onclick="copyText(value)"
-						value="ɚ" style="width: 30px; height: 30px;">ɚ</button>
+					<button class="btn btn btn-default" onclick="copyText(value);setkeyLen(value);"
+						value="i" style="width: 40px; height: 40px;">i</button>
+					<button class="btn btn btn-default" onclick="copyText(value);setkeyLen(value);"
+						value="ɪ" style="width: 40px; height: 40px;">ɪ</button>
+					<button class="btn btn btn-default" onclick="copyText(value);setkeyLen(value);"
+						value="ɛ" style="width: 40px; height: 40px;">ɛ</button>
+					<button class="btn btn btn-default" onclick="copyText(value);setkeyLen(value);"
+						value="e͡ɪ" style="width: 40px; height: 40px;">e͡ɪ</button>
+					<button class="btn btn btn-default" onclick="copyText(value);setkeyLen(value);"
+						value="æ" style="width: 40px; height: 40px;">æ</button>
+					<button class="btn btn btn-default" onclick="copyText(value);setkeyLen(value);"
+						value="ɑ" style="width: 40px; height: 40px;">ɑ</button>
+					<button class="btn btn btn-default" onclick="copyText(value);setkeyLen(value);"
+						value="ɑ͡u" style="width: 40px; height: 40px;">ɑ͡u</button>
+					<button class="btn btn btn-default" onclick="copyText(value);setkeyLen(value);"
+						value="ɑ͡ɪ" style="width: 40px; height: 40px;">ɑ͡ɪ</button>
+					<button class="btn btn btn-default" onclick="copyText(value);setkeyLen(value);"
+						value="ʌ" style="width: 40px; height: 40px;">ʌ</button>
+					<button class="btn btn btn-default" onclick="copyText(value);setkeyLen(value);"
+						value="ɔ" style="width: 40px; height: 40px;">ɔ</button>
+					<br>
+					<button class="btn btn btn-default" onclick="copyText(value);setkeyLen(value);"
+						value="ɔ͡ɪ" style="width: 40px; height: 40px;">ɔ͡ɪ</button>
+					<button class="btn btn btn-default" onclick="copyText(value);setkeyLen(value);"
+						value="o͡ʊ" style="width: 40px; height: 40px;">o͡ʊ</button>
+					<button class="btn btn btn-default" onclick="copyText(value);setkeyLen(value);"
+						value="ʊ" style="width: 40px; height: 40px;">ʊ</button>
+					<button class="btn btn btn-default" onclick="copyText(value);setkeyLen(value);"
+						value="u" style="width: 40px; height: 40px;">u</button>
+					<button class="btn btn btn-default" onclick="copyText(value);setkeyLen(value);"
+						value="ɝ" style="width: 40px; height: 40px;">ɝ</button>
+					<button class="btn btn btn-default" onclick="copyText(value);setkeyLen(value);"
+						value="ə" style="width: 40px; height: 40px;">ə</button>
+					<button class="btn btn btn-default" onclick="copyText(value);setkeyLen(value);"
+						value="ɚ" style="width: 40px; height: 40px;">ɚ</button>
+					<button class="btn btn btn-default" onclick="copyText(value);setkeyLen(value);"
+						value="n̩" style="width: 40px; height: 40px;">n̩</button>
+					<button class="btn btn btn-default" onclick="copyText(value);setkeyLen(value);"
+						value="m̩" style="width: 40px; height: 40px;">m̩</button>
+					<button class="btn btn btn-default" onclick="copyText(value);setkeyLen(value);"
+						value="l̩" style="width: 40px; height: 40px;">l̩</button>
+					<br>
+					<button class="btn btn btn-default" onclick="backspace()"
+					style="width: 100px; height: 40px;">Backspace</button>
+					<button class="btn btn btn-default" onclick="clean()"
+					style="width: 100px; height: 40px;">Clear</button>
 				</div>
 			</div>
 
@@ -260,7 +279,7 @@ body {
 					<div class="row w3-center">
 						<div class="col-sm-10">
 							<input type="text" class="form-control" id="ta"
-								placeholder="Please input the ipa letters" name="ipa">
+								placeholder="Please input the ipa letters" name="ipa"  readonly="true">
 						</div>
 
 
