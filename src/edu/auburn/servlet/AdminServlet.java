@@ -60,7 +60,6 @@ public class AdminServlet extends HttpServlet {
 						}
 						showuser(req, resp);
 					}
-					
 				}else{
 					resp.sendRedirect(req.getContextPath()+"");
 				}
