@@ -154,8 +154,8 @@ body {
 						keyLenArr.push(pressedKey.length);
 					}
 				</script>
-				<div class="row w3-center">
-					<button class="btn btn btn-default" onclick="copyText(value)"
+				<!-- <div class="row w3-center">
+					<button class="btn btn btn-default" onclick="copyText(value);setkeyLen(value);"
 						value="p" style="width: 40px; height: 40px;">p</button>
 					<button class="btn btn btn-default" onclick="copyText(value);setkeyLen(value);"
 						value="t" style="width: 40px; height: 40px;">t</button>
@@ -259,9 +259,9 @@ body {
 					<button class="btn btn btn-default" onclick="clean()"
 					style="width: 100px; height: 40px;">Clear</button>
 				</div>
-			</div>
+			</div> -->
 
-
+			<%@include file="public/keyboard1.jsp" %>
 
 
 

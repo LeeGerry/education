@@ -1,5 +1,6 @@
 package edu.auburn.service.impl;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,7 +33,7 @@ public class ExamResultService implements IExamResultService {
 		er.setEid(eid);
 		er.setUid(uid);
 		List<String> studentAnswers = new ArrayList<>();
-		String [] sa = sAnswers.split("/");
+		String [] sa = sAnswers.split(File.separator);
 		for(int i = 0; i<sa.length; i++){
 			studentAnswers.add(sa[i]);
 		}

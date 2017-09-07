@@ -224,8 +224,8 @@ public class StudentServlet extends HttpServlet {
 							// forward
 						} else {
 							String basePath = getServletContext()
-									.getRealPath("/upload/" + lesson.getName().replaceAll(" ", "_") + "/"
-											+ exam.getName().replaceAll(" ", "_") + "/" + word.getFid() + "/");
+									.getRealPath(File.separator+"upload"+File.separator + lesson.getName().replaceAll(" ", "_") + File.separator
+											+ exam.getName().replaceAll(" ", "_") + File.separator + word.getFid() + File.separator);
 							File dir = new File(basePath);
 							if (!dir.exists() && !dir.isDirectory()) {
 								dir.mkdirs();
@@ -236,7 +236,7 @@ public class StudentServlet extends HttpServlet {
 							video.setName(name);
 							video.setEid(eid);
 							video.setWid(wid);
-							video.setPath(basePath + "/" + name);
+							video.setPath(basePath + File.separator + name);
 							wordVideoService.addVideo(video);
 						}
 					}
@@ -349,14 +349,14 @@ public class StudentServlet extends HttpServlet {
 		List<WordVideo> videos = wordVideoService.getAllVideosByWid(word.getFid());
 		int total = words.size();
 		String path = word.getPath();
-		int index = path.indexOf("/upload");
+		int index = path.indexOf(File.separator+"upload");
 		String p = req.getContextPath() + path.substring(index);
 		word.setPath(p);
 
 		for (int i = 0; i < videos.size(); i++) {
 			WordVideo v = videos.get(i);
 			String vPath = v.getPath();
-			int pos = vPath.indexOf("/upload/");
+			int pos = vPath.indexOf(File.separator+"upload"+File.separator);
 			String pa = req.getContextPath() + vPath.substring(pos);
 			v.setPath(pa);
 		}
@@ -533,14 +533,14 @@ public class StudentServlet extends HttpServlet {
 				wordVideos = wordVideoService.getAllVideosByWid(words.get(0).getFid());
 				ExamWord word = words.get(0);
 				String path = word.getPath();
-				int index = path.indexOf("/upload");
+				int index = path.indexOf(File.separator+"upload");
 				String p = req.getContextPath() + path.substring(index);
 				word.setPath(p);
 				/********* here ******/
 				for (int i = 0; i < wordVideos.size(); i++) {
 					WordVideo v = wordVideos.get(i);
 					String vPath = v.getPath();
-					int pos = vPath.indexOf("/upload/");
+					int pos = vPath.indexOf(File.separator+"upload"+File.separator);
 					String pa = req.getContextPath() + vPath.substring(pos);
 					v.setPath(pa);
 				}
@@ -662,8 +662,8 @@ public class StudentServlet extends HttpServlet {
 							// forward
 						} else {
 							String basePath = getServletContext()
-									.getRealPath("/upload/" + lesson.getName().replaceAll(" ", "_") + "/"
-											+ exam.getName().replaceAll(" ", "_") + "/");
+									.getRealPath(File.separator+"upload"+File.separator + lesson.getName().replaceAll(" ", "_") + File.separator
+											+ exam.getName().replaceAll(" ", "_") + File.separator);
 							File dir = new File(basePath);
 							if (!dir.exists() && !dir.isDirectory()) {
 								dir.mkdirs();
@@ -673,7 +673,7 @@ public class StudentServlet extends HttpServlet {
 							item.delete();
 							word.setName(name);
 							word.setEid(eid);
-							word.setPath(basePath + "/" + name);
+							word.setPath(basePath + File.separator + name);
 							word.setType(type);
 							wordService.addWord(word);
 						}
@@ -751,7 +751,7 @@ public class StudentServlet extends HttpServlet {
 							// forward
 						} else {
 							String basePath = getServletContext()
-									.getRealPath("/upload/" + lesson.getName() + "/" + exam.getName() + "/");
+									.getRealPath(File.separator+"upload"+File.separator + lesson.getName() + File.separator + exam.getName() + File.separator);
 							File dir = new File(basePath);
 							if (!dir.exists() && !dir.isDirectory()) {
 								dir.mkdirs();
@@ -761,7 +761,7 @@ public class StudentServlet extends HttpServlet {
 							item.delete();
 							video.setName(name);
 							video.setEid(eid);
-							video.setPath(basePath + "/" + name);
+							video.setPath(basePath + File.separator + name);
 							video.setType(type);
 							examVideoService.addVideo(video);
 						}
@@ -889,7 +889,7 @@ public class StudentServlet extends HttpServlet {
 							req.getRequestDispatcher("/jsp/error.jsp").forward(req, resp);
 							// forward
 						} else {
-							String basePath = getServletContext().getRealPath("/upload/" + lesson.getName() + "/");
+							String basePath = getServletContext().getRealPath(File.separator+"upload"+File.separator + lesson.getName() + File.separator);
 							File dir = new File(basePath);
 							if (!dir.exists() && !dir.isDirectory()) {
 								dir.mkdirs();
@@ -900,7 +900,7 @@ public class StudentServlet extends HttpServlet {
 							lessonFile.setName(name);
 							lessonFile.setFtype(type);
 							lessonFile.setLid(lid);
-							lessonFile.setPath(basePath + "/" + name);
+							lessonFile.setPath(basePath + File.separator + name);
 							lessonFileService.addFile(lessonFile);
 						}
 					}
@@ -953,7 +953,7 @@ public class StudentServlet extends HttpServlet {
 		for(int i = 0; i<files.size(); i++){
 			LessonFile f = files.get(i);
 			String oldPath = f.getPath();
-			int index = oldPath.indexOf("/upload/");
+			int index = oldPath.indexOf(File.separator+"upload"+File.separator);
 			String path = req.getContextPath()+oldPath.substring(index);
 			f.setPath(path);
 		}

@@ -247,7 +247,7 @@ public class TeacherServlet extends HttpServlet {
 							req.setAttribute("message", message);
 							// forward
 						} else {
-							String basePath = getServletContext().getRealPath("/upload/" + lesson.getName().replaceAll(" ", "_") + "/" + exam.getName().replaceAll(" ", "_") + "/" + word.getFid() + "/");
+							String basePath = getServletContext().getRealPath(File.separator+"upload"+File.separator + lesson.getName().replaceAll(" ", "_") + File.separator + exam.getName().replaceAll(" ", "_") + File.separator + word.getFid() + File.separator);
 							File dir = new File(basePath);
 							if (!dir.exists() && !dir.isDirectory()) {
 								dir.mkdirs();
@@ -258,7 +258,7 @@ public class TeacherServlet extends HttpServlet {
 							video.setName(name);
 							video.setEid(eid);
 							video.setWid(wid);
-							video.setPath(basePath + "/" + name);
+							video.setPath(basePath + File.separator + name);
 							wordVideoService.addVideo(video);
 						}
 					}
@@ -406,7 +406,7 @@ public class TeacherServlet extends HttpServlet {
 							req.setAttribute("message", message);
 							// forward
 						} else {
-							String basePath = getServletContext().getRealPath("/upload/" + lesson.getName().replaceAll(" ", "_") + "/" + exam.getName().replaceAll(" ", "_") + "/");
+							String basePath = getServletContext().getRealPath(File.separator+"upload"+File.separator + lesson.getName().replaceAll(" ", "_") + File.separator + exam.getName().replaceAll(" ", "_") + File.separator);
 							File dir = new File(basePath);
 							if (!dir.exists() && !dir.isDirectory()) {
 								dir.mkdirs();
@@ -416,7 +416,7 @@ public class TeacherServlet extends HttpServlet {
 							item.delete();
 							word.setName(name);
 							word.setEid(eid);
-							word.setPath(basePath + "/" + name);
+							word.setPath(basePath + File.separator + name);
 							word.setType(type);
 							wordService.addWord(word);
 						}
@@ -507,7 +507,7 @@ public class TeacherServlet extends HttpServlet {
 							req.setAttribute("message", message);
 							// forward
 						} else {
-							String basePath = getServletContext().getRealPath("/upload/" + lesson.getName() + "/" + exam.getName() + "/");
+							String basePath = getServletContext().getRealPath(File.separator+"upload"+File.separator + lesson.getName() + File.separator + exam.getName() + File.separator);
 							File dir = new File(basePath);
 							if (!dir.exists() && !dir.isDirectory()) {
 								dir.mkdirs();
@@ -517,7 +517,7 @@ public class TeacherServlet extends HttpServlet {
 							item.delete();
 							video.setName(name);
 							video.setEid(eid);
-							video.setPath(basePath + "/" + name);
+							video.setPath(basePath + File.separator + name);
 							video.setType(type);
 							videoService.addVideo(video);
 						}
@@ -784,7 +784,7 @@ public class TeacherServlet extends HttpServlet {
 							request.setAttribute("message", message);
 							// forward
 						} else {
-							String basePath = getServletContext().getRealPath("/upload/" + lesson.getName() + "/");
+							String basePath = getServletContext().getRealPath(File.separator+"upload"+File.separator + lesson.getName() + File.separator);
 							File dir = new File(basePath);
 							if (!dir.exists() && !dir.isDirectory()) {
 								dir.mkdirs();
@@ -795,7 +795,7 @@ public class TeacherServlet extends HttpServlet {
 							lessonFile.setName(name);
 							lessonFile.setFtype(type);
 							lessonFile.setLid(lid);
-							lessonFile.setPath(basePath + "/" + name);
+							lessonFile.setPath(basePath + File.separator + name);
 							fileService.addFile(lessonFile);
 						}
 					}
