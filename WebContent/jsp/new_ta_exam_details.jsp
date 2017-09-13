@@ -155,7 +155,14 @@ body {
 						keyLenArr.push(pressedKey.length);
 					}
 				</script>
-				<%@include file="public/keyboard1.jsp" %>
+				<c:choose>
+    		<c:when test="${exam.etype == 0}">
+        		<%@include file="public/keyboard1.jsp" %>
+    		</c:when>    
+    		<c:otherwise>
+        		 <%@include file="public/keyboard2.jsp" %>
+    		</c:otherwise>
+	</c:choose>
 </div>
 
 

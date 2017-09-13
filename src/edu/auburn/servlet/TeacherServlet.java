@@ -306,8 +306,10 @@ public class TeacherServlet extends HttpServlet {
 			ds.add(studentResult);
 		}
 		
-		
+		float aveScore = examResult.getTotal() / wordStudents.size();
+		req.setAttribute("ave", aveScore);
 		req.setAttribute("result", ds);
+		
 		req.setAttribute("total", examResult.getTotal()+"");
 		req.setAttribute("exam", exam);
 		req.setAttribute("uname", user.getName());

@@ -116,13 +116,11 @@ body {
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="control-label col-sm-2" for="level">Choose the level:</label>
+					<label class="control-label col-sm-2" for="level">Choose the keyboard:</label>
 					<div class="col-sm-10">
 						<select name="etype">
-							<option value="1">1</option>
-							<option value="2">2</option>
-							<option value="3">3</option>
-							<option value="4">4</option>
+							<option value="0">Basic keyboard</option>
+							<option value="1">Advanced keyboard</option>
 						</select>
 					</div>
 				</div>

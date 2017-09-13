@@ -323,6 +323,8 @@ public class StudentServlet extends HttpServlet {
 			r.setScore(scores.get(i));
 			ds.add(r);
 		}
+		float aveScore = examResult.getTotal()/ds.size();
+		req.setAttribute("ave", aveScore);
 		req.setAttribute("exam", exam);
 		req.setAttribute("result", ds);
 		req.setAttribute("total", examResult.getTotal() + "");
@@ -417,6 +419,8 @@ public class StudentServlet extends HttpServlet {
 										// answer.
 			req.setAttribute("exam", exam);
 			req.setAttribute("result", ds);
+			float aveScore = er.getTotal()/list.size();
+			req.setAttribute("ave", aveScore);
 			req.setAttribute("total", er.getTotal() + "");
 			req.getRequestDispatcher("/jsp/student_exam_result.jsp").forward(req, resp);
 		} else {// exam
@@ -426,6 +430,8 @@ public class StudentServlet extends HttpServlet {
 			if (currentTime > dueDate) {
 				req.setAttribute("exam", exam);
 				req.setAttribute("result", ds);
+				float aveScore = er.getTotal()/list.size();
+				req.setAttribute("ave", aveScore);
 				req.setAttribute("total", er.getTotal() + "");
 				req.getRequestDispatcher("/jsp/student_exam_result.jsp").forward(req, resp);
 			} else {
@@ -510,7 +516,8 @@ public class StudentServlet extends HttpServlet {
 					ds.add(displayStudentExamResult);
 					tScore += ws.getScore();
 				}
-
+				float aveScore = tScore/list.size();
+				req.setAttribute("ave", aveScore);
 				req.setAttribute("result", ds);
 				req.setAttribute("total", tScore + "");
 				req.setAttribute("exam", exam);
@@ -521,6 +528,11 @@ public class StudentServlet extends HttpServlet {
 				req.getRequestDispatcher("/jsp/non_student.jsp").forward(req, resp);
 			}
 		} else { // go to take the exam
+			if(System.currentTimeMillis() > exam.getEdue().getTime()){
+				req.setAttribute("message", StringConfig.PASS_DUE_DATE);
+				req.getRequestDispatcher("/jsp/non_student.jsp").forward(req, resp);
+			}
+			
 			List<ExamWord> words = wordService.getAllWordsByEid(eid);
 			int totalWords = words.size();
 

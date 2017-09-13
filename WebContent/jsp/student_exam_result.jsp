@@ -38,6 +38,7 @@ body {
 			   <%
 		Exam e = (Exam) (request.getAttribute("exam"));
 		String total = (String) (request.getAttribute("total"));
+		float ave = (float)(request.getAttribute("ave"));
 	%>
 			<button
 				onclick="window.location.href='${pageContext.request.contextPath }/student'"
@@ -92,7 +93,7 @@ body {
 				</c:forEach>
 			</tbody>
 		</table>
-		<p>Total score: <%out.print(total); %></p>
+		<p>Total score: <%out.print(total); %>, Average distance: <%out.print(ave); %></p>
 	</div>
 </body>
 </html>

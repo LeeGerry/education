@@ -6,5 +6,6 @@ public class StringConfig {
 	public static final String FILENOTSUPPORTED = "file format is not supported";
 	public static final String SCORE_CALCULATE_ERROR = "score calculate error...";
 	public static final String SCORE_NOT_PUBLISHED = "The result has not been published...";
+	public static final String PASS_DUE_DATE = "The exam has passed due date.";
 	
 }
