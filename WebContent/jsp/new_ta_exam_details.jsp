@@ -127,7 +127,7 @@ body {
 					only support WAV.</p>
 
 
-
+				<!-- 
 				<script type="text/javascript">
 					var undo = "";
 					var keyLenArr = [];
@@ -155,6 +155,8 @@ body {
 						keyLenArr.push(pressedKey.length);
 					}
 				</script>
+				
+				 -->
 				<c:choose>
     		<c:when test="${exam.etype == 0}">
         		<%@include file="public/keyboard1.jsp" %>

@@ -69,75 +69,7 @@ hr {
 		List<ExamWord> words = (List<ExamWord>)request.getAttribute("words");
 		List<WordVideo> videos = (List<WordVideo>)request.getAttribute("videos");
 	%>
-	<script type="text/javascript">
-		var undo = "";
-		var keyLenArr = [];
-		function copyText(value) {
-			var str1 = unescape(value.replace(/\\(u[0-9a-fA-F]{4})/gm, '%$1'));
-			var next = document.getElementById("ta").value;
-			next += str1;
-			document.getElementById("ta").value = next;
-		}
 	
-		function clean() {
-			document.getElementById("ta").value = "";
-		}
-		
-		
-		function save() {
-			var select = document.getElementById("select");
-			var index = select.selectedIndex ;  
-			var showIndex = "answer" + index;
-			var showLabel = document.getElementById(showIndex);
-			var ans = document.getElementById("ta");
-			showLabel.innerHTML = ans.value;
-		}
-		
-		
-		function submitResult(number) {
-	       var arr = "";
-	       for (var i = 0; i < number; i++) {  
-	        	var showIndex = "answer" + i;
-				var showLabel = document.getElementById(showIndex);
-				arr += showLabel.innerHTML + "/";
-	        } 
-	       var url = document.getElementById("sub").value;
-	       //url += "&result="+arr;
-	       /* alert(result); */
-	      	/* alert(arr); */
-			var myForm = document.createElement("form");  
-	        myForm.method = "post";  
-	        myForm.action = url;  
-	        
-	        var myInput = document.createElement("input");  
-	        myInput.name = "result";
-	        myInput.value = arr;
-	        myForm.appendChild(myInput);  
-	        document.body.appendChild(myForm);  
-	        myForm.submit();  
-	        return myForm;
-		}
-		
-		
-		
-		function backspace() {
-			//document.getElementById("getSymble").value="";
-			var text = document.getElementById("ta").value;
-			
-			var keyLen = keyLenArr.pop()
-			text = text.slice(0, keyLen*-1);
-				
-			document.getElementById("ta").value = text;
-		}
-		
-		
-		function setkeyLen(pressedKey){
-			keyLenArr.push(pressedKey.length);
-		}
-		
-		
-		
-	</script>
 
 	<nav class="navbar navbar-inverse">
 		 
