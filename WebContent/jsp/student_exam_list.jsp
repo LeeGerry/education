@@ -90,7 +90,7 @@ body {
 						<td>${item.name }</td>
 						<td>${item.edue }</td>
 						<td>${item.uname }</td>
-						<td><a href="${pageContext.request.contextPath }/student?method=takeexam&lid=<%out.print(l.getLid()); %>&eid=${item.eid}">Take exam</a></td>
+						<td><a style="color: blue" href="${pageContext.request.contextPath }/student?method=takeexam&lid=<%out.print(l.getLid()); %>&eid=${item.eid}">Take exam</a></td>
 					</tr>
 
 				</c:forEach>

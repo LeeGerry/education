@@ -3,6 +3,12 @@ package edu.auburn.domain;
 import java.sql.Date;
 
 public class Lesson {
+//	lid integer auto_increment primary key,
+//	name varchar(50),
+//	ldesc varchar(200),
+//	udate datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+//	uid integer,
+//	ltype integer
 	private int lid;
 	private String name;
 	private String desc;

@@ -55,6 +55,7 @@ import edu.auburn.service.impl.LessonStudentService;
 import edu.auburn.service.impl.UserService;
 import edu.auburn.service.impl.WordStudentService;
 import edu.auburn.service.impl.WordVideoService;
+import edu.auburn.utils.CalculateScore;
 import edu.auburn.utils.DownloadUtils;
 import edu.auburn.utils.LessonFileType;
 import edu.auburn.utils.StringConfig;
@@ -294,6 +295,7 @@ public class TeacherServlet extends HttpServlet {
 		
 		List<DisplayStudentExamResult> ds = new ArrayList<>();
 		List<WordStudent> wordStudents = wordStudentService.getStudentAnswerListBySidAndEid(uid, eid);
+		float totalPercentage = 0;
 		for(int i = 0; i < wordStudents.size(); i++){
 			WordStudent ws = wordStudents.get(i);
 			DisplayStudentExamResult studentResult = new DisplayStudentExamResult();
@@ -303,12 +305,25 @@ public class TeacherServlet extends HttpServlet {
 			studentResult.setsAnswer(ws.getAnswer());
 			ExamWord ew = wordService.getExamWordByFid(ws.getWid());
 			studentResult.settAnswer(ew.getPron());
+			String percentage = CalculateScore.getPercentage(ws.getAnswer(), ew.getPron(), ws.getScore());
+			studentResult.setPercentage(percentage);
+			
+			totalPercentage += Float.parseFloat(percentage.substring(0, percentage.length() - 1));
+			
 			ds.add(studentResult);
 		}
 		
 		float aveScore = examResult.getTotal() / wordStudents.size();
+		aveScore = (float) Math.round(aveScore * 100) / 100;
 		req.setAttribute("ave", aveScore);
 		req.setAttribute("result", ds);
+		
+		totalPercentage = (float) Math.round(totalPercentage * 100000) / 100000;
+		req.setAttribute("totalp", totalPercentage + "%");
+		float temp = totalPercentage / ds.size();
+		float aveP = (float) Math.round(temp * 1000) / 1000;
+		req.setAttribute("averagep", aveP + "%");
+		
 		
 		req.setAttribute("total", examResult.getTotal()+"");
 		req.setAttribute("exam", exam);

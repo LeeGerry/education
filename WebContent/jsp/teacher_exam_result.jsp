@@ -89,7 +89,7 @@ body {
 			<thead>
 				<tr>
 					<th>Student</th>
-					<th>Score</th>
+					<th>Distance</th>
 					<th>Details</th>
 				</tr>
 			</thead>

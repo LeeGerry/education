@@ -1,5 +1,7 @@
 package edu.auburn.utils.scal;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class MatchInstanceTestWithWeight {
@@ -9,18 +11,66 @@ public class MatchInstanceTestWithWeight {
 		PreProcess prePro = new PreProcess();
 		
 		
-		String[] str1 = {"kitten", "blah", "ba", "abcd", "a", "d", "abcdefg", "abcdefg", "cat", "k@t", "dagi", "SuSuSu", "dagiwagilagimagi", "feT", "fT", "fes",
-				"strIG", "TIkInig", "@nImxl", "-n-m-l", "nml", "kar", "gEr", "gV", "gV", "snobal", "gxzEl", "t\u0361ʃis", "te\u0361ɪisisiis"};
+//		String[] str1 = {"kitten", "blah", "ba", "abcd", "a", "d", "abcdefg", "abcdefg", "cat", "k@t", "dagi", "SuSuSu", "dagiwagilagimagi", "feT", "fT", "fes",
+//				"strIG", "TIkInig", "@nImxl", "-n-m-l", "nml", "kar", "gEr", "gV", "gV", "snobal", "gxzEl", "t\u0361ʃis", "te\u0361ɪisisiis"};
+//		
+//		String[] str2 = {"sitting", "blah", "ab", "dcba", "abcde", "abcdef", "bcd", "ceg", "cat1", "k@t1", "dagiz", "dabaS", "glu", "Tef", "Tf", "ruf",
+//				"sIG", "TIkInIn", "flEmxnxv", "fl-m-n-v", "flmnv", "krar", "grErt", "glV", "gl1V", "balun", "zElIs", "t\u0361ʃii", "teɪisisiis"};
+//		
+//		
+		
+		String[] str1 = { "kitten", "blah", "ba", "abcd", "a", "d", "abcdefg", "abcdefg", "cat", "k@t", "dagi", "SuSuSu", "dagiwagilagimagi", "feT", "fT", "fes",
+				"strIG", "TIkInig", "@nImxl", "-n-m-l", "nml", "kar", "gEr", "gV", "gV", "snobal", "gxzEl", "t\u0361ʃis",  "te\u0361ɪisisiis", "aa", "d̥" ,"d̥","d̥" , "", "",
+				"dɪʃɪz",
+				"dɪʃɪz",
+				"dɪʃɪz",
+				"ko͡ʊːt",
+				"kætnɪp",
+				"d̥ɪnɚ" ,
+				"ski" ,
+				"pʌt̚",
+				"kʰɪŋ",
+				"ˌkʰɪŋ",
+				"kʰɪŋ",
+				"rɛdi",
+				"radi",
+				"rɑ͡ɪɾɪŋ", 
+				"rɪtn̩" ,
+				"rɪtn̩",
+				"rɪtn̩",
+				"rɪtn̩",
+				"rɪtm̩",
+				"gʊd",
+				"ɪkʰŋ",
+				"ɪkʰŋ",
+				"dd̥"};
+		
 		
 		String[] str2 = {"sitting", "blah", "ab", "dcba", "abcde", "abcdef", "bcd", "ceg", "cat1", "k@t1", "dagiz", "dabaS", "glu", "Tef", "Tf", "ruf",
-				"sIG", "TIkInIn", "flEmxnxv", "fl-m-n-v", "flmnv", "krar", "grErt", "glV", "gl1V", "balun", "zElIs", "t\u0361ʃii", "teɪisisiis"};
-		
-		
-		
-//		String[] str1 = {"te\u0361ɪisisiis"};
-//		
-//		
-//		String[] str2 = {"teɪisisiis"};
+				"sIG", "TIkInIn", "flEmxnxv", "fl-m-n-v", "flmnv", "krar", "grErt", "glV", "gl1V", "balun", "zElIs", "t\u0361ʃii", "teɪisisiis","","","d","a", "d̥" ,"aa",
+				"d̥ɪʃɪz",
+				"ˈdɪʃɪz",
+				"ˌdɪʃɪz",
+				"ko͡ʊt",
+				"kæt.nɪp",
+				"dɪnɚ",
+				"skis̃",
+				"pʌt",
+				"kɪŋ",
+				"kʰɪŋ",
+				"ˌkʰɪŋ",
+				"rɛ̃di",
+				"rɛ̃di",
+				"rɑ͡ɪtɪŋ",
+				"rɪtn",
+				"rɪta",
+				"rɪtl̩",
+				"rɪtm",
+				"rɪtm",
+				"gʊdi",
+				"ɪˌkʰŋ",
+				"ɪˌˌˌkʰŋ",
+				"dd"};
 		
 		System.out.println("------------Cases from excel file--------------------------------");	
 
@@ -32,8 +82,8 @@ public class MatchInstanceTestWithWeight {
 			
 			List<String> strs1 = prePro.generateListOfStrings(str1[i]);
 			List<String> strs2 = prePro.generateListOfStrings(str2[i]);
-//			System.out.println(strs1.size());
-//			System.out.println(strs2.size());
+			//System.out.println(strs1.size());
+			//System.out.println(strs2.size());
 			String string1 = "";
 			for (String str : strs1) {
 				//System.out.println(str);
@@ -41,7 +91,7 @@ public class MatchInstanceTestWithWeight {
 				
 			}
 			
-			System.out.println();
+			//System.out.println();
 			
 			String string2 = "";
 			for (String str : strs2) {
@@ -50,9 +100,11 @@ public class MatchInstanceTestWithWeight {
 				
 			}
 			
+			//System.out.println();
+			
 			double Score = editDistance.dynamicEditDistance(strs1, strs2) ;
 			String result = editDistance.printActualEdits(strs1, strs2);
-			System.out.println("case" + "\t" + (i + 1) +  "\t" + string1 + ", " + string2 + ": " + "result: " + result + " Score: " + Score);
+			System.out.println("case" + "\t" + (i + 1) +  "\t" + str1[i] + ", " + str2[i] + ": " + "result: " + result + " Score: " + Score);
 		}
 		
 		System.out.println("------------------------------end-----------------------------------");

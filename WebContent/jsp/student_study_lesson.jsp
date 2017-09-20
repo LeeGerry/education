@@ -102,28 +102,7 @@ video::-webkit-media-controls-panel {
 				out.print(l.getDesc());
 			%>
 		</p>
-		<%-- <table class="table table-hover">
-			<thead>
-				<tr>
-					<th>File</th>
-					<!-- <th>Action</th> -->
-				</tr>
-			</thead>
-			<tbody>
-
-
-				<c:forEach items="${files }" var="item" varStatus="counter">
-					<tr>
-						<td>${item.path }</td>
-						<td><c:url var="url" value="/student">
-								<c:param name="method" value="download"></c:param>
-								<c:param name="fid" value="${item.fid }"></c:param>
-							</c:url> <a href="${url }">download</a></td>
-					</tr>
-				</c:forEach>
-			</tbody>
-			
-		</table> --%>
+		
 		
 		<c:forEach items="${files }" var="item" varStatus="counter">
 			<video height="30%" width="30%" controls="controls">
@@ -131,8 +110,34 @@ video::-webkit-media-controls-panel {
 				<source src="${item.path}" type="video/mp4" />
 				Your browser does not support the video tag.
 			</video>
+			<p>File description: <b>${item.fdesc}</b></p>
 			<br>
 		</c:forEach>
+		
+		
+		
+		<table class="table table-hover">
+			<thead>
+				<tr>
+					<th>Other file</th>
+					<th>Action</th>
+				</tr>
+			</thead>
+			<tbody>
+
+
+				<c:forEach items="${dFile }" var="item" varStatus="counter">
+					<tr>
+						<td>${item.name }</td>
+						<td><c:url var="url" value="/student">
+								<c:param name="method" value="download"></c:param>
+								<c:param name="fid" value="${item.fid }"></c:param>
+							</c:url> <a style="color: blue;" href="${url }">download</a></td>
+					</tr>
+				</c:forEach>
+			</tbody>
+			
+		</table>
 	</div>
 
 </body>

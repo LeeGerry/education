@@ -21,17 +21,20 @@ public class Phonetic {
 			//"l","r","w","j","V", "\u02A7\u0361", "\u02A4\u0361", "\u0283", "\u0292", "\u03B8", "\u00F0", "\u014B", "\u026B", "\u027E", "\u0294", "\u029D", "\u0267"};
 	//
 	
-	private String[] Vowels={"ɪ","ɚ","ɝ","ə","ɑ","e","ʊ","a","ʌ","ɛ","æ","i","ɜ","u","ɔ","ɑ","e","ɪ","ɔ","o", "e\u0361ɪ", "ɑ\u0361u","ɑ\u0361ɪ", "ɔ\u0361ɪ", "o\u0361ʊ"};//, "ɪr", "ɛr", "ʊr"};
+	private String[] Vowels={"ɪ","ə","ɑ","e","ʊ","a","ʌ","ɛ","æ","i","ɜ","u","ɔ","ɑ","e","ɪ","ɔ","o", "e\u0361ɪ", "ɑ\u0361u","ɑ\u0361ɪ", "ɔ\u0361ɪ", "o\u0361ʊ", "m̩","n̩", "l̩" };//, "ɪr", "ɛr", "ʊr"};
 		//
-	private String[] Consonants={"ʔ","ɾ","ɫ","t\u0361ʃ", "d\u0361ʒ", "p","r","t","f","θ","s","ʃ","b","d","ɡ","v","z","ʒ","h","m","n","ŋ","l","r","j","w", "l","r","w", "ð"};//, "dʒ","dr", "dz", "tr", "ts", "tʃ","ð"};
+	private String[] Consonants={"t\u0361ʃ", "d\u0361ʒ", "p","r","t","f","θ","s","ʃ","b","d","g","v","z","ʒ","h","m","n","ŋ","l","r","j","w", "l","r","w", "ð"};//, "dʒ","dr", "dz", "tr", "ts", "tʃ","ð"};
 	private String[] Number={"1","2","3","4","5","6","7","8","9","0"};
 	
-	private String[] Dicritics={};
+	private String[] Dicritics1={"ˈ", "ˌ"};
+	//private String[] Dicritics2={" ̃", " ͊", " ͋", "ː",  " ̥", " ̬", "ʰ", " ̝",  " ̞", " ̟", " ̠", " ̚", " ̤", " ̰", "m̩"};
+	private String[] Dicritics2={"\u0303", "\u034A", "\u034B", "ː", "\u0325", "\u032C", "\u036A", "\u031D", "\u031E", "\u031F", "\u0320", "\u031A","\0324", "\0330", "\u0329", "ʰ"};
 	
 	private List<String> ConsonantList=Arrays.asList(Consonants);
 	private List<String> VowelsList=Arrays.asList(Vowels);
 	private List<String> NumberList=Arrays.asList(Number);
-	private List<String> DicriticsList=Arrays.asList(Dicritics);
+	private List<String> DicriticsList1=Arrays.asList(Dicritics1);
+	private List<String> DicriticsList2=Arrays.asList(Dicritics2);
 	
 	public List<String> getConsonantList() {
 		return ConsonantList;
@@ -57,13 +60,22 @@ public class Phonetic {
 		NumberList = numberList;
 	}
 	
-	public List<String> getDicriticsList() {
-		return DicriticsList;
+	public List<String> getDicriticsList1() {
+		return DicriticsList1;
 	}
 
-	public void setDicriticsList(List<String> dicriticsList) {
-		DicriticsList = dicriticsList;
+	public void setDicriticsList1(List<String> dicriticsList1) {
+		DicriticsList1 = dicriticsList1;
 	}
+	
+	public List<String> getDicriticsList2() {
+		return DicriticsList2;
+	}
+
+	public void setDicriticsList2(List<String> dicriticsList2) {
+		DicriticsList2 = dicriticsList2;
+	}
+
 
 	
 	
@@ -107,8 +119,12 @@ public class Phonetic {
 		return Vowels;
 	}
 	
-	public String[] getDicritics() {
-		return Dicritics;
+	public String[] getDicritics1() {
+		return Dicritics1;
+	}
+	
+	public String[] getDicritics2() {
+		return Dicritics2;
 	}
 
 	public void setVowels(String[] vowels) {
@@ -128,9 +144,14 @@ public class Phonetic {
 		//return Dicritics;
 	//}
 
-	public void setDicritics(String[] dicritics) {
-		Consonants = dicritics;
+	public void setDicritics1(String[] dicritics1) {
+		Dicritics1 = dicritics1;
 	}
+	
+	public void setDicritics2(String[] dicritics2) {
+		Dicritics2 = dicritics2;
+	}
+	
 	
 	
 	

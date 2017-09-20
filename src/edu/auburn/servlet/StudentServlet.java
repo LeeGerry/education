@@ -57,6 +57,7 @@ import edu.auburn.service.impl.WordVideoService;
 import edu.auburn.utils.CalculateScore;
 import edu.auburn.utils.DownloadUtils;
 import edu.auburn.utils.LessonFileType;
+import edu.auburn.utils.ScoreUtils;
 import edu.auburn.utils.StringConfig;
 
 @WebServlet("/student")
@@ -316,18 +317,36 @@ public class StudentServlet extends HttpServlet {
 		List<String> sAnswer = examResult.getsAnswers();
 		List<String> tAnswer = examResult.gettAnswers();
 		List<Float> scores = examResult.getScoreList();
+		float totalPercentage = 0;
+		
 		for (int i = 0; i < sAnswer.size(); i++) {
 			DisplayStudentExamResult r = new DisplayStudentExamResult();
+			float distance = scores.get(i);
+			String stuAns = sAnswer.get(i);
+			String tAns = tAnswer.get(i);
 			r.setsAnswer(sAnswer.get(i));
 			r.settAnswer(tAnswer.get(i));
-			r.setScore(scores.get(i));
+			r.setScore(distance);
+			String percentage = CalculateScore.getPercentage(stuAns, tAns, distance);
+			r.setPercentage(percentage);
+			
+			totalPercentage += Float.parseFloat(percentage.substring(0, percentage.length() - 1));
+			
 			ds.add(r);
 		}
 		float aveScore = examResult.getTotal()/ds.size();
+		aveScore = (float) Math.round(aveScore * 100) / 100;
 		req.setAttribute("ave", aveScore);
 		req.setAttribute("exam", exam);
 		req.setAttribute("result", ds);
 		req.setAttribute("total", examResult.getTotal() + "");
+		
+		totalPercentage = (float) Math.round(totalPercentage * 100000) / 100000;
+		req.setAttribute("totalp", totalPercentage + "%");
+		float temp = totalPercentage / ds.size();
+		float aveP = (float) Math.round(temp * 1000) / 1000;
+		req.setAttribute("averagep", aveP + "%");
+		
 		req.getRequestDispatcher("/jsp/student_exam_result.jsp").forward(req, resp);
 	}
 
@@ -394,6 +413,8 @@ public class StudentServlet extends HttpServlet {
 		studentExamService.takeExam(eid, uid);
 		Exam exam = examService.getExamById(eid);
 		float tScore = 0;
+		
+		float totalPercentage = 0;
 		// result
 		List<DisplayStudentExamResult> ds = new ArrayList<>();
 		for (int i = 0; i < list.size(); i++) {
@@ -405,11 +426,24 @@ public class StudentServlet extends HttpServlet {
 			displayStudentExamResult.setScore(ws.getScore());
 			displayStudentExamResult.setSid(ws.getSid());
 			displayStudentExamResult.setWid(ws.getWid());
+			String percentage = CalculateScore.getPercentage(ws.getAnswer(), teacherAnswer, ws.getScore());
+			displayStudentExamResult.setPercentage(percentage);
+			totalPercentage += Float.parseFloat(percentage.substring(0, percentage.length() - 1));
 			ds.add(displayStudentExamResult);
 			tScore += ws.getScore();
-
+			
 		}
 
+		
+		
+		
+		totalPercentage = (float) Math.round(totalPercentage * 10000) / 10000;
+		float temp = totalPercentage / list.size();
+		float aveP = (float) Math.round(temp * 1000) / 1000;
+		
+		
+		
+		
 		ExamResult er = new ExamResult();
 		er.setEid(eid);
 		er.setUid(uid);
@@ -420,8 +454,13 @@ public class StudentServlet extends HttpServlet {
 			req.setAttribute("exam", exam);
 			req.setAttribute("result", ds);
 			float aveScore = er.getTotal()/list.size();
+			aveScore = (float) Math.round(aveScore * 100) / 100;
 			req.setAttribute("ave", aveScore);
 			req.setAttribute("total", er.getTotal() + "");
+			
+			req.setAttribute("averagep", aveP + "%");
+			req.setAttribute("totalp", totalPercentage + "%");
+			
 			req.getRequestDispatcher("/jsp/student_exam_result.jsp").forward(req, resp);
 		} else {// exam
 			long currentTime = System.currentTimeMillis();
@@ -431,8 +470,13 @@ public class StudentServlet extends HttpServlet {
 				req.setAttribute("exam", exam);
 				req.setAttribute("result", ds);
 				float aveScore = er.getTotal()/list.size();
+				aveScore = (float) Math.round(aveScore * 100) / 100;
 				req.setAttribute("ave", aveScore);
 				req.setAttribute("total", er.getTotal() + "");
+				
+				req.setAttribute("averagep", aveP + "%");
+				req.setAttribute("totalp", totalPercentage + "%");
+				
 				req.getRequestDispatcher("/jsp/student_exam_result.jsp").forward(req, resp);
 			} else {
 				// else show nothing.
@@ -504,6 +548,7 @@ public class StudentServlet extends HttpServlet {
 				List<WordStudent> list = wordStudentService.getStudentAnswerListBySidAndEid(uid, eid);
 				List<DisplayStudentExamResult> ds = new ArrayList<>();
 				float tScore = 0;
+				float totalPercentage = 0;
 				for (int i = 0; i < list.size(); i++) {
 					WordStudent ws = list.get(i);
 					String teacherAnswer = wordService.getExamWordByFid(ws.getWid()).getPron();
@@ -513,14 +558,30 @@ public class StudentServlet extends HttpServlet {
 					displayStudentExamResult.setScore(ws.getScore());
 					displayStudentExamResult.setSid(ws.getSid());
 					displayStudentExamResult.setWid(ws.getWid());
+					String percentage = CalculateScore.getPercentage(ws.getAnswer(), teacherAnswer, ws.getScore());
+					displayStudentExamResult.setPercentage(percentage);
+					
+					totalPercentage += Float.parseFloat(percentage.substring(0, percentage.length()-1));
+					
 					ds.add(displayStudentExamResult);
 					tScore += ws.getScore();
 				}
+				
+				
+				
 				float aveScore = tScore/list.size();
+				aveScore = (float) Math.round(aveScore * 100) / 100;
 				req.setAttribute("ave", aveScore);
 				req.setAttribute("result", ds);
 				req.setAttribute("total", tScore + "");
 				req.setAttribute("exam", exam);
+				totalPercentage = (float) Math.round(totalPercentage * 100000) / 100000;
+				req.setAttribute("totalp", totalPercentage + "%");
+				float temp = totalPercentage / list.size();
+				float aveP = (float) Math.round(temp * 1000) / 1000;
+				req.setAttribute("averagep", aveP + "%");
+				
+				
 				req.getRequestDispatcher("/jsp/student_exam_result.jsp").forward(req, resp);
 			}else{
 				// else show nothing.
@@ -962,14 +1023,24 @@ public class StudentServlet extends HttpServlet {
 		Lesson lesson = lessonService.getLessonByLid(lid);
 		req.setAttribute("lesson", lesson);
 		List<LessonFile> files = lessonFileService.getAllFileByLid(lid);
+		List<LessonFile> vFile = new ArrayList<>();
+		List<LessonFile> dFile = new ArrayList<>();
 		for(int i = 0; i<files.size(); i++){
 			LessonFile f = files.get(i);
 			String oldPath = f.getPath();
 			int index = oldPath.indexOf(File.separator+"upload"+File.separator);
 			String path = req.getContextPath()+oldPath.substring(index);
 			f.setPath(path);
+			String ext = f.getFtype().toLowerCase();
+			if(ext.equals("mp4") || ext.equals("wav")){
+				vFile.add(f);
+			}else{
+				dFile.add(f);
+			}
 		}
-		req.setAttribute("files", files);
+		
+		req.setAttribute("files", vFile);
+		req.setAttribute("dFile", dFile);
 		LessonStudent lessonStudent = lsService.getLSByUidAndLid(uid, lid);
 		if (1 == lessonStudent.getType()) {// ta
 			req.getRequestDispatcher("/jsp/ta_lesson_detail.jsp").forward(req, resp);
@@ -1046,6 +1117,9 @@ public class StudentServlet extends HttpServlet {
 	 */
 	private void showLessons(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		List<Lesson> allLessons = lessonService.getAllLessons();
+		if (null == allLessons || allLessons.size() == 0){
+			allLessons = new ArrayList<>();
+		}
 		List<LessonStudent> registeredLessons = lsService.getLSBySid(uid);
 		req.setAttribute("allLessons", allLessons);
 		req.setAttribute("registeredLessons", registeredLessons);

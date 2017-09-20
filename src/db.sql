@@ -17,7 +17,7 @@ drop table if exists `lesson`;
 create table lesson(
 	lid integer auto_increment primary key,
 	name varchar(50),
-	ldesc varchar(200),
+	ldesc varchar(2000),
 	udate datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	uid integer,
 	ltype integer

@@ -6,8 +6,14 @@ public class DisplayStudentExamResult {
 	private String sAnswer;
 	private String tAnswer;
 	private float score;
+	private String percentage;
 	
-	
+	public String getPercentage() {
+		return percentage;
+	}
+	public void setPercentage(String percentage) {
+		this.percentage = percentage;
+	}
 	public int getWid() {
 		return wid;
 	}

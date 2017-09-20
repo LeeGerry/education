@@ -140,7 +140,7 @@ public class EDistanceWithOutput {
 
 	public static void main(String args[]) {
 		String str1 = "dagiwagilagimagi";
-		String str2 = "glu";
+		String str2 = "rɑ͡ɪɾɪŋ";
 		System.out.println(str1);
 		System.out.println(str2);
 		EDistanceWithOutput editDistance = new EDistanceWithOutput();

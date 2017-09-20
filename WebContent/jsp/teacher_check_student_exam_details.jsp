@@ -80,7 +80,8 @@ body {
 			<thead>
 				<tr>
 					<th>Student answer</th>
-					<th>Right answer</th>
+					<th>Professor answer</th>
+					<th>Distance</th>
 					<th>Score</th>
 				</tr>
 			</thead>
@@ -90,11 +91,13 @@ body {
 						<td>${item.sAnswer }</td>
 						<td>${item.tAnswer }</td>
 						<td>${item.score }</td>
+						<td>${item.percentage }</td>
 					</tr>
 				</c:forEach>
 			</tbody>
 		</table>
-		<p>Total score: ${total}, Average score: ${ave }</p>
+		<p>Total distance: ${total}. Average distance: ${ave }</p>
+		<p>Total score: ${totalp}. Average score: ${averagep }</p>
 	</div>
 </body>
 </html>
