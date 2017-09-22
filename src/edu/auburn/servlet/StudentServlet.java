@@ -518,7 +518,7 @@ public class StudentServlet extends HttpServlet {
 
 		ws.setScore(score);
 		WordStudent exist = wordStudentService.getStudentAnswerModelBySidAndWid(uid, wid);
-		if (null != exist && !"".equals(exist.getAnswer())) {
+		if (null != exist) {
 			wordStudentService.updateAnswer(ws);
 		} else {
 			wordStudentService.addStudentAnswerForWord(ws);
