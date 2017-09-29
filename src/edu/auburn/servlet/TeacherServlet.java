@@ -146,11 +146,28 @@ public class TeacherServlet extends HttpServlet {
 					wordAddVideo(req, resp);
 				} else if (method.equals("deleteWordVideo")){
 					deleteWordVideo(req, resp);
+				} else if (method.equals("edite")){
+					editExam(req, resp);
 				}
 			} else {
 				resp.sendRedirect(req.getContextPath() + "");
 			}
 		}
+	}
+	
+	/**
+	 * teacher-edit-exam here...............
+	 * @param req
+	 * @param resp
+	 * @throws ServletException
+	 * @throws IOException
+	 */
+	private void editExam(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		String id = req.getParameter("eid");
+		int eid = Integer.parseInt(id);
+		id = req.getParameter("lid");
+		int lid = Integer.parseInt(id);
+		resp.getWriter().write("lid:" + lid + ", eid"+eid);
 	}
 	
 	/**

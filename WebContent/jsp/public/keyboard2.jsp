@@ -91,7 +91,6 @@
 				stressFlag = false;
 			}
 			else{
-
 				diaCount = 0;
 				stressFlag = false;
 			}
@@ -139,7 +138,6 @@
 			}
 		}
 		
-
 		window.onload = disableKeys;
 	</script>
 <div class="row w3-center">
@@ -227,6 +225,9 @@
 	<button class="btn btn btn-default consonant"
 		onclick="copyText(value);setkeyLen(value);setFlags('consonant');disableKeys();"
 		value="ɫ" style="width: 40px; height: 40px;">ɫ</button>
+	<button class="btn btn btn-default"
+		onclick="copyText(value);setkeyLen(value);setFlags('consonant');disableKeys();" value="ɹ"
+		style="width: 40px; height: 40px;">ɹ</button>
 	<br>
 	<button class="btn btn btn-default vowel"
 		onclick="copyText(value);setkeyLen(value);setFlags('vowel');disableKeys();"
@@ -296,6 +297,9 @@
 	<button class="btn btn btn-default stress"
 		onclick="copyText(value);setkeyLen(value);setFlags('stress');disableKeys();"
 		value="ˌ" style="width: 40px; height: 40px;">ˌ</button>
+	<button class="btn btn btn-default stress"
+		onclick="copyText(value);setkeyLen(value);setFlags('stress');disableKeys();"
+		value="." style="width: 40px; height: 40px;">.</button>
 	<button class="btn btn btn-default diacrit"
 		onclick="copyText(value);setkeyLen(value);setFlags('diacrit');disableKeys();"
 		value="̃" style="width: 40px; height: 40px;">̃</button>

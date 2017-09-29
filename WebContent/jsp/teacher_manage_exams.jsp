@@ -86,6 +86,7 @@ body {
 					<th>Created by</th>
 					<th>Delete</th>
 					<th>Result</th>
+					<th>Edit</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -98,6 +99,7 @@ body {
 						<td>${item.uname }</td>
 						<td><a href="${pageContext.request.contextPath }/teacher?method=delexam&lid=<%out.print(l.getLid()); %>&eid=${item.eid}">x</a></td>
 						<td><a href="${pageContext.request.contextPath }/teacher?method=checke&lid=<%out.print(l.getLid()); %>&eid=${item.eid}">check</a></td>
+						<td><a href="${pageContext.request.contextPath }/teacher?method=edite&lid=<%out.print(l.getLid()); %>&eid=${item.eid}">edit</a></td>
 					</tr>
 
 				</c:forEach>

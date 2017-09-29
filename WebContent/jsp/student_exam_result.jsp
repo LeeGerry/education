@@ -96,7 +96,7 @@ body {
 			</tbody>
 		</table>
 		<p>Total distance: <%out.print(total); %>. Average distance: <%out.print(ave); %></p>
-		<p>Total score: ${totalp }. Average score:${averagep }</p>
+		<p>Average score:${averagep }</p>
 	</div>
 </body>
 </html>

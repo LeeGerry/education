@@ -1,75 +1,67 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <script type="text/javascript">
-		var undo = "";
-		var keyLenArr = [];
-		function copyText(value) {
-			var str1 = unescape(value.replace(/\\(u[0-9a-fA-F]{4})/gm, '%$1'));
-			var next = document.getElementById("ta").value;
-			next += str1;
-			document.getElementById("ta").value = next;
-		}
-	
-		function clean() {
-			document.getElementById("ta").value = "";
-		}
-		
-		
-		function save() {
-			var select = document.getElementById("select");
-			var index = select.selectedIndex ;  
-			var showIndex = "answer" + index;
+	var undo = "";
+	var keyLenArr = [];
+	function copyText(value) {
+		var str1 = unescape(value.replace(/\\(u[0-9a-fA-F]{4})/gm, '%$1'));
+		var next = document.getElementById("ta").value;
+		next += str1;
+		document.getElementById("ta").value = next;
+	}
+
+	function clean() {
+		document.getElementById("ta").value = "";
+	}
+
+	function save() {
+		var select = document.getElementById("select");
+		var index = select.selectedIndex;
+		var showIndex = "answer" + index;
+		var showLabel = document.getElementById(showIndex);
+		var ans = document.getElementById("ta");
+		showLabel.innerHTML = ans.value;
+	}
+
+	function submitResult(number) {
+		var arr = "";
+		for (var i = 0; i < number; i++) {
+			var showIndex = "answer" + i;
 			var showLabel = document.getElementById(showIndex);
-			var ans = document.getElementById("ta");
-			showLabel.innerHTML = ans.value;
+			arr += showLabel.innerHTML + "/";
 		}
-		
-		
-		function submitResult(number) {
-	       var arr = "";
-	       for (var i = 0; i < number; i++) {  
-	        	var showIndex = "answer" + i;
-				var showLabel = document.getElementById(showIndex);
-				arr += showLabel.innerHTML + "/";
-	        } 
-	       var url = document.getElementById("sub").value;
-	       //url += "&result="+arr;
-	       /* alert(result); */
-	      	/* alert(arr); */
-			var myForm = document.createElement("form");  
-	        myForm.method = "post";  
-	        myForm.action = url;  
-	        
-	        var myInput = document.createElement("input");  
-	        myInput.name = "result";
-	        myInput.value = arr;
-	        myForm.appendChild(myInput);  
-	        document.body.appendChild(myForm);  
-	        myForm.submit();  
-	        return myForm;
-		}
-		
-		
-		
-		function backspace() {
-			//document.getElementById("getSymble").value="";
-			var text = document.getElementById("ta").value;
-			
-			var keyLen = keyLenArr.pop()
-			text = text.slice(0, keyLen*-1);
-				
-			document.getElementById("ta").value = text;
-		}
-		
-		
-		function setkeyLen(pressedKey){
-			keyLenArr.push(pressedKey.length);
-		}
-		
-		
-		
-	</script>
+		var url = document.getElementById("sub").value;
+		//url += "&result="+arr;
+		/* alert(result); */
+		/* alert(arr); */
+		var myForm = document.createElement("form");
+		myForm.method = "post";
+		myForm.action = url;
+
+		var myInput = document.createElement("input");
+		myInput.name = "result";
+		myInput.value = arr;
+		myForm.appendChild(myInput);
+		document.body.appendChild(myForm);
+		myForm.submit();
+		return myForm;
+	}
+
+	function backspace() {
+		//document.getElementById("getSymble").value="";
+		var text = document.getElementById("ta").value;
+
+		var keyLen = keyLenArr.pop()
+		text = text.slice(0, keyLen * -1);
+
+		document.getElementById("ta").value = text;
+	}
+
+	function setkeyLen(pressedKey) {
+		keyLenArr.push(pressedKey.length);
+	}
+</script>
 <div class="row w3-center">
 	<button class="btn btn btn-default"
 		onclick="copyText(value);setkeyLen(value);" value="p"
@@ -154,6 +146,9 @@
 	<button class="btn btn btn-default"
 		onclick="copyText(value);setkeyLen(value);" value="ɫ"
 		style="width: 40px; height: 40px;">ɫ</button>
+	<button class="btn btn btn-default"
+		onclick="copyText(value);setkeyLen(value);" value="ɹ"
+		style="width: 40px; height: 40px;">ɹ</button>
 	<br>
 	<button class="btn btn btn-default"
 		onclick="copyText(value);setkeyLen(value);" value="i"
@@ -221,5 +216,4 @@
 		style="width: 100px; height: 40px;">Backspace</button>
 	<button class="btn btn btn-default" onclick="clean()"
 		style="width: 100px; height: 40px;">Clear</button>
-</div>
 </div>

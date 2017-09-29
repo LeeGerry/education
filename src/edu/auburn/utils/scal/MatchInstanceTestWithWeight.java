@@ -43,7 +43,21 @@ public class MatchInstanceTestWithWeight {
 				"gʊd",
 				"ɪkʰŋ",
 				"ɪkʰŋ",
-				"dd̥"};
+				"dd̥",
+				"klow",
+				"klo͡ʊn",
+				"klo͡ʊo͡ʊo͡ʊn",
+				"go͡ʊt",
+				"geɪ͡t",
+				"glot",
+				"gɑ\u0361ɪt",
+				"gɑ\u0361ɪt",
+				"pa͡ʊ",
+				"pe\u0361ɪd\u0361ʒ",
+				"pæʃ",
+				"pæd\u0361ʒ",
+				"pɑ",
+				"pɛ"};
 		
 		
 		String[] str2 = {"sitting", "blah", "ab", "dcba", "abcde", "abcdef", "bcd", "ceg", "cat1", "k@t1", "dagiz", "dabaS", "glu", "Tef", "Tf", "ruf",
@@ -70,7 +84,21 @@ public class MatchInstanceTestWithWeight {
 				"gʊdi",
 				"ɪˌkʰŋ",
 				"ɪˌˌˌkʰŋ",
-				"dd"};
+				"dd",
+				"klo͡ʊn",
+				"klow",
+				"clooow",
+				"ge͡ɪt",
+				"go͡ʊt",
+				"glo\u0361ʊt",
+				"ge\u0361ɪt",
+				"geɪ\u0361t",
+				"pa",
+				"pe\u0361ɪ",
+				"pæt\u0361ʃ",
+				"pæt",
+				"pa\u0361ɪ",
+				"pe\u0361ɪ"};
 		
 		System.out.println("------------Cases from excel file--------------------------------");	
 
@@ -108,6 +136,7 @@ public class MatchInstanceTestWithWeight {
 		}
 		
 		System.out.println("------------------------------end-----------------------------------");
+		//System.out.println("go͡ʊt".length());
 		//System.out.println("t1508".equals("t͡ʃ"));
 
 	}

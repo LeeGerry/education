@@ -74,6 +74,7 @@ public class EDistanceWithOutputWithWeight {
 				if ( strs1.get(i - 1).equals(strs2.get(j-1)) ) {
 					temp[i][j] = temp[i - 1][j - 1];
 					//System.out.print(temp[i][j] + " ");
+					//System.out.print(temp[i][j] + " " + "...");
 				} else {
 					
 					double cost_dist = Arrays.asList(phonetic.getNumber()).contains( String.valueOf(strs2.get(j-1) )) || String.valueOf(strs2.get(j-1)).equals(".") || String.valueOf(strs1.get(i-1)).equals(".") ? 0.5 : 1.0;
@@ -100,6 +101,24 @@ public class EDistanceWithOutputWithWeight {
 //						cost_dist = 0.5;
 						//System.out.println("Are we also ssss here????");
 						
+						// add on 26/09/2017
+//						
+//						if ( Arrays.asList(phonetic.getVowels()).contains(String.valueOf(strs1.get(i-1))) || 
+//								Arrays.asList(phonetic.getVowels()).contains(String.valueOf(strs2.get(j-1) )) ) {
+//							cost_dist = 0.0;
+//						}	
+//						
+//						else if (Arrays.asList(phonetic.getConsonants()).contains(String.valueOf(strs1.get(i-1))) ||
+//								Arrays.asList(phonetic.getConsonants()).contains(String.valueOf(strs2.get(j-1) )) ) {
+//							cost_dist = 0.0;
+//							
+//						}
+						// end of adding
+						//System.out.println(strs1.get(i-1) + " " + strs2.get(j-1));
+						//System.out.println(strs1.get(i-1).length() + " " + strs2.get(j-1).length());
+						//System.out.println(strs1.get(i-1).charAt(2) == '\u0361');
+
+						
 						if ( ( Arrays.asList(phonetic.getDicritics1()).contains(String.valueOf(String.valueOf(strs1.get(i-1)).charAt(0))) && 
 								String.valueOf(strs1.get(i-1).substring(1)).equals(String.valueOf(strs2.get(j-1))))  || ( Arrays.asList(phonetic.getDicritics1()).contains(String.valueOf(String.valueOf(strs2.get(j-1)).charAt(0))) && 
 										String.valueOf(strs2.get(j-1).substring(1)).equals(String.valueOf(strs1.get(i-1)))) ){
@@ -113,6 +132,12 @@ public class EDistanceWithOutputWithWeight {
 //								System.out.println("pppp");
 							}
 //							System.out.println();
+						
+						
+						else if (strs1.get(i-1).length() == 5 && strs2.get(j-1).length() == 5 ){
+							cost_dist = 1.0;
+						}
+						
 
 							
 						else {
@@ -128,7 +153,13 @@ public class EDistanceWithOutputWithWeight {
 //						cost_dist = 0.5;
 						//System.out.println("Are we also here????");
 						
-					
+// add on 26/09/17
+						
+//						 if ( Arrays.asList(phonetic.getVowels()).contains(String.valueOf(strs1.get(i-1))) || 
+//							Arrays.asList(phonetic.getConsonants()).contains(String.valueOf(strs1.get(i-1))) ) 
+//							cost_dist = 0.0;
+//						// end of adding 
+
 						
 						if (Arrays.asList(phonetic.getDicritics1()).contains(String.valueOf(String.valueOf(strs1.get(i-1)).charAt(0))) && 
 								String.valueOf(strs1.get(i-1).substring(1)).equals(String.valueOf(strs2.get(j-1))  )){
@@ -142,8 +173,12 @@ public class EDistanceWithOutputWithWeight {
 //								System.out.println("pppp");
 							}
 //							System.out.println();
-
+						else if (strs1.get(i-1).length() == 5 ){
+							cost_dist = 1.0;
+						} 
 							
+						
+						
 						else {
 								cost_dist = 1.5;
 							}
@@ -165,6 +200,18 @@ public class EDistanceWithOutputWithWeight {
 //						System.out.print(strs2.get(j-1).substring(0, strs2.get(j-1).length() - 1));
 						//System.out.print("Are we?");
 						
+						// add on 26/09/2017
+//						if ( 
+//								Arrays.asList(phonetic.getVowels()).contains(String.valueOf(strs2.get(j-1) )) 
+//								|| Arrays.asList(phonetic.getConsonants()).contains(String.valueOf(strs2.get(j-1)))  ) 
+//							cost_dist = 0.0;
+//						
+//						
+//						// end of editing
+						//System.out.println(strs2.get(j-1).length() == 3);
+						//System.out.println(strs2.get(j-1).length());
+
+						
 						if (Arrays.asList(phonetic.getDicritics1()).contains(String.valueOf(String.valueOf(strs2.get(j-1)).charAt(0))) && 
 								String.valueOf(strs2.get(j-1).substring(1)).equals(String.valueOf(strs1.get(i-1))  )){
 							    //System.out.println("Are we here?");
@@ -177,6 +224,12 @@ public class EDistanceWithOutputWithWeight {
 //							System.out.println("pppp");
 						}
 						
+						else if  (strs2.get(j-1).length() == 5 ){
+							cost_dist = 1.0;
+							//System.out.println("QAAAAA!");
+						}
+						
+
 
 //						System.out.println();
 						
