@@ -3,7 +3,11 @@ package edu.auburn.dao.impl;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import com.mysql.jdbc.Connection;
@@ -38,7 +42,7 @@ public class ExamDao implements IExamDao {
 			ps = (PreparedStatement) connection.prepareStatement(sql);
 			ps.setString(1, exam.getName());
 			ps.setString(2, exam.getEdesc());
-			ps.setDate(3, new Date(exam.getEdue().getTime()));
+			ps.setTimestamp(3, new Timestamp(exam.getEdue().getTime()));
 			ps.setInt(4, exam.getEtype());
 			ps.setInt(5, exam.getLid());
 			ps.setInt(6, exam.getUid());
@@ -92,7 +96,8 @@ public class ExamDao implements IExamDao {
 				e.setEid(rs.getInt("eid"));
 				e.setName(rs.getString("name"));
 				e.setEdesc(rs.getString("edesc"));
-				e.setEdue(rs.getDate("edue"));
+				Timestamp ts = rs.getTimestamp("edue");
+				e.setEdue(new java.util.Date(ts.getTime()));
 				e.setEtype(rs.getInt("etype"));
 				e.setIfPractice(rs.getInt("ispractice"));
 				e.setLid(lid);
@@ -133,7 +138,9 @@ public class ExamDao implements IExamDao {
 				e.setEid(rs.getInt("eid"));
 				e.setName(rs.getString("name"));
 				e.setEdesc(rs.getString("edesc"));
-				e.setEdue(rs.getDate("edue"));
+				Timestamp ts = rs.getTimestamp("edue");
+				Date d = new Date(ts.getTime());
+				e.setEdue(d);
 				e.setEtype(rs.getInt("etype"));
 				int lid = rs.getInt("lid");
 				e.setIfPractice(rs.getInt("ispractice"));
@@ -153,6 +160,28 @@ public class ExamDao implements IExamDao {
 				e.setUname(uname);
 			}
 			return e;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		} finally {
+			JDBCUtil.close(connection, ps);
+		}
+	}
+
+	@Override
+	public boolean updateDueDateAndTypeByEid(long date, int type, int eid, int keyboard) {
+		String sql = "update exam set edue = ?, ispractice = ?, etype = ? where eid = ?";
+		
+		Connection connection = JDBCUtil.getConnection();
+		PreparedStatement ps = null;
+		try {
+			ps = (PreparedStatement) connection.prepareStatement(sql);
+			ps.setTimestamp(1, new Timestamp(date));
+			ps.setInt(2, type);
+			ps.setInt(3, keyboard);
+			ps.setInt(4, eid);
+			int result = ps.executeUpdate();
+			return result > 0;
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new RuntimeException(e);

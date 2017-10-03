@@ -148,6 +148,8 @@ public class TeacherServlet extends HttpServlet {
 					deleteWordVideo(req, resp);
 				} else if (method.equals("edite")){
 					editExam(req, resp);
+				} else if (method.equals("updateexam")){
+					updateExam(req, resp);
 				}
 			} else {
 				resp.sendRedirect(req.getContextPath() + "");
@@ -167,7 +169,41 @@ public class TeacherServlet extends HttpServlet {
 		int eid = Integer.parseInt(id);
 		id = req.getParameter("lid");
 		int lid = Integer.parseInt(id);
-		resp.getWriter().write("lid:" + lid + ", eid"+eid);
+		Lesson l = lessonService.getLessonByLid(lid);
+		Exam e = examService.getExamById(eid);
+		req.setAttribute("exam", e);
+		req.setAttribute("lesson", l);
+		req.getRequestDispatcher("/jsp/teacher_edit_exams.jsp").forward(req, resp);
+	}
+	/**
+	 * teacher-update-exam
+	 * @param req
+	 * @param resp
+	 * @throws ServletException
+	 * @throws IOException
+	 */
+	private void updateExam(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		String id = req.getParameter("eid");
+		int eid = Integer.parseInt(id);
+		id = req.getParameter("lid");
+		int lid = Integer.parseInt(id);
+		Exam e = examService.getExamById(eid);
+		String edue = req.getParameter("edue");
+		String isPrac = req.getParameter("isprac");
+		String etype = req.getParameter("etype");
+		String d = edue.substring(0, 10) + " " + edue.substring(11, edue.length());
+		SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd hh:mm");
+		java.util.Date date = null;
+		try {
+			date = f.parse(d);
+		} catch (ParseException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		examService.updateDueDateAndTypeByEid(date.getTime(), Integer.parseInt(isPrac), eid, Integer.parseInt(etype));
+		req.setAttribute("lid", lid);
+		req.setAttribute("eid", eid);
+		examList(req, resp);
 	}
 	
 	/**
@@ -675,6 +711,7 @@ public class TeacherServlet extends HttpServlet {
 		req.setAttribute("lid", lid);
 		req.setAttribute("lesson", lesson);
 		List<Exam> list = examService.getExamsByLid(lid);
+		
 		req.setAttribute("list", list);
 		req.getRequestDispatcher("/jsp/teacher_manage_exams.jsp").forward(req, resp);
 	}

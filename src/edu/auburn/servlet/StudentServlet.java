@@ -25,6 +25,7 @@ import edu.auburn.domain.EduUser;
 import edu.auburn.domain.Exam;
 import edu.auburn.domain.ExamResult;
 import edu.auburn.domain.ExamScore;
+import edu.auburn.domain.ExamShowStudent;
 import edu.auburn.domain.ExamVideo;
 import edu.auburn.domain.ExamWord;
 import edu.auburn.domain.Lesson;
@@ -74,7 +75,7 @@ public class StudentServlet extends HttpServlet {
 	private IStudentExamService studentExamService = new StudentExamService();
 	private IWordStudentService wordStudentService = new WordStudentService();
 	private IExamResultService examResultService = new ExamResultService();
-
+//	private 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		req.setCharacterEncoding("utf-8");
@@ -644,7 +645,17 @@ public class StudentServlet extends HttpServlet {
 		int lid = Integer.parseInt(lessonId);
 		Lesson lesson = lessonService.getLessonByLid(lid);
 		List<Exam> exams = examService.getExamsByLid(lid);
+		List<ExamShowStudent> examForStudent = new ArrayList<>();
+		for(int i = 0; i<exams.size(); i++){
+			Exam e = exams.get(i);
+			ExamShowStudent es = new ExamShowStudent();
+			es.setExam(e);
+			boolean boo = studentExamService.checkIfExamTakenByStudent(e.getEid(), uid);
+			es.setShowAction(boo?"Check result":"Take exam");
+			examForStudent.add(es);
+		}
 		req.setAttribute("exams", exams);
+		req.setAttribute("sexams", examForStudent);
 		req.setAttribute("lesson", lesson);
 		req.getRequestDispatcher("/jsp/student_exam_list.jsp").forward(req, resp);
 	}

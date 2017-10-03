@@ -85,12 +85,12 @@ body {
 				</tr>
 			</thead>
 			<tbody>
-				<c:forEach items="${exams }" var="item" varStatus="counter">
+				<c:forEach items="${sexams }" var="item" varStatus="counter">
 					<tr>
-						<td>${item.name }</td>
-						<td>${item.edue }</td>
-						<td>${item.uname }</td>
-						<td><a style="color: blue" href="${pageContext.request.contextPath }/student?method=takeexam&lid=<%out.print(l.getLid()); %>&eid=${item.eid}">Take exam</a></td>
+						<td>${item.exam.name }</td>
+						<td>${item.exam.edue }</td>
+						<td>${item.exam.uname }</td>
+						<td><a style="color: blue" href="${pageContext.request.contextPath }/student?method=takeexam&lid=<%out.print(l.getLid()); %>&eid=${item.exam.eid}">${item.showAction}</a></td>
 					</tr>
 
 				</c:forEach>

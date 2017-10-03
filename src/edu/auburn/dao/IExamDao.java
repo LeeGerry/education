@@ -9,4 +9,5 @@ public interface IExamDao {
 	boolean delExamById(int id);
 	List<Exam> getExamsByLid(int Lid);
 	Exam getExamById(int eid);
+	boolean updateDueDateAndTypeByEid(long date, int type, int eid, int keyboard);
 }

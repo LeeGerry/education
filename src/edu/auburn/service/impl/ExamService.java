@@ -33,4 +33,10 @@ public class ExamService implements IExamService {
 		return dao.getExamById(eid);
 	}
 
+	@Override
+	public boolean updateDueDateAndTypeByEid(long date, int type, int eid, int keyboard) {
+		// TODO Auto-generated method stub
+		return dao.updateDueDateAndTypeByEid(date, type, eid, keyboard);
+	}
+
 }
