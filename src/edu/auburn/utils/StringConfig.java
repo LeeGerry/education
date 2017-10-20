@@ -5,7 +5,10 @@ public class StringConfig {
 	public static final String EMAILHASREG = "This email has been registered, please login derectly.";
 	public static final String FILENOTSUPPORTED = "file format is not supported";
 	public static final String SCORE_CALCULATE_ERROR = "score calculate error...";
-	public static final String SCORE_NOT_PUBLISHED = "The result has not been published...";
+	public static final String SCORE_NOT_PUBLISHED = "You exam has been submitted.  Results will be available after ";
 	public static final String PASS_DUE_DATE = "The exam has passed due date.";
+	public static final String COMMENT_SIZE = "Input text length[5, 2000].";
+	public static final String COMMENT_SUCCESS = "You have submited your comment successfully!";
+	
 	
 }

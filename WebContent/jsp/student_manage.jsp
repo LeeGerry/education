@@ -67,10 +67,10 @@ body {
 
 					<br> <br> <span class="glyphicon glyphicon-edit"></span><br />
 					Learn Lessons <br> 
-				<%-- <a href="${pageContext.request.contextPath }/exammanage"
+				 <a href="${pageContext.request.contextPath }/student?method=comment"
 					class="w3-btn btn-sq w3-cyan w3-circle w3-xxxlarge w3-ripple">
 						<br> <br> <span class="glyphicon glyphicon-inbox"></span><br />
-						Take Exams <br></a>  --%>
+						Comment <br></a>  
 				
 				<a></a>
 		</div>

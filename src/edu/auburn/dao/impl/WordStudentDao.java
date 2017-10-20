@@ -126,4 +126,35 @@ public class WordStudentDao implements IWordStudentDao {
 		}
 	}
 
+	@Override
+	public List<WordStudent> getStudentAnswerListByEidAndWid(int eid, int wid) {
+		String sql = "select * from word_student where eid = ? and wid = ?";
+		Connection connection = JDBCUtil.getConnection();
+		PreparedStatement ps = null;
+		try {
+			ps = (PreparedStatement) connection.prepareStatement(sql);
+			ps.setInt(1, eid);
+			ps.setInt(2, wid);
+			ResultSet rs = ps.executeQuery();
+			WordStudent ws = null;
+			List<WordStudent> result = new ArrayList<>();
+			while (rs.next()) {
+				ws = new WordStudent();
+				ws.setWsid(rs.getInt("wsid"));
+				ws.setAnswer(rs.getString("answer"));
+				ws.setEid(rs.getInt("eid"));
+				ws.setScore(rs.getFloat("score"));
+				ws.setSid(rs.getInt("sid"));
+				ws.setWid(rs.getInt("wid"));
+				result.add(ws);
+			}
+			return result;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		} finally {
+			JDBCUtil.close(connection, ps);
+		}
+	}
+
 }

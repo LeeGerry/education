@@ -46,7 +46,7 @@ create table exam(
 	eid integer auto_increment primary key,
 	ispractice integer,
 	name varchar(50),
-	edesc varchar(200),
+	edesc varchar(2000),
 	edue datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	etype integer,
 	lid integer,
@@ -119,7 +119,13 @@ create table word_student(
 	score float 
 )engine = myisam  default charset = utf8;
 
-
+drop table if exists `comment`;
+create table comment(
+	cid integer auto_increment primary key,
+	uid integer,
+	commentdate datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	comment varchar(2000)
+)engine = myisam  default charset = utf8;
 
 
 

@@ -9,4 +9,5 @@ public interface IWordStudentService {
 	boolean updateAnswer(WordStudent ws);
 	WordStudent getStudentAnswerModelBySidAndWid(int sid, int wid);
 	List<WordStudent> getStudentAnswerListBySidAndEid(int sid, int eid);
+	List<WordStudent> getStudentAnswerListByEidAndWid(int eid, int wid);
 }

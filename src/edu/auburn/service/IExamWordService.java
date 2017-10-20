@@ -9,4 +9,5 @@ public interface IExamWordService {
 	boolean delWordById(int fid);
 	List<ExamWord> getAllWordsByEid(int eid);
 	ExamWord getExamWordByFid(int fid);
+	ExamWord getExamWordByEidAndWid(int eid, int wid);
 }

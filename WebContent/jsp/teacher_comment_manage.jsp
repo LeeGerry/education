@@ -1,13 +1,11 @@
-﻿<%@page import="java.util.List"%>
-<%@ page language="java" import="edu.auburn.domain.*"
-	contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-
+﻿<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>Exam Result</title>
+<title>Teacher Comment</title>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
  
@@ -33,16 +31,14 @@ body {
 			   
 			<div class="navbar-header">
 				      <a class="navbar-brand"
-					href="${pageContext.request.contextPath }/student">ALT</a>      
+					href="${pageContext.request.contextPath }">ALT</a>    
 			</div>
-			   <%
-		Exam e = (Exam) (request.getAttribute("exam"));
-		String total = (String) (request.getAttribute("total"));
-		float ave = (float)(request.getAttribute("ave"));
-	%>
 			<button
-				onclick="window.location.href='${pageContext.request.contextPath }/student'"
+				onclick="window.location.href='${pageContext.request.contextPath }/teacher'"
 				class="w3-button w3-blue">Return Main Page</button>
+			<!-- 
+			<button onclick="window.location.href='/edu_system/LessonManageServlet'" class="w3-button w3-green">Edit Lessons</button>
+			 -->
 			<ul class="nav navbar-nav navbar-right">
 				      
 				<li><a href="#"><span class="glyphicon glyphicon-user"></span>
@@ -56,7 +52,7 @@ body {
  %> <%
  	}
  %> </a></li>   
- <li>
+				<li>
 					<button
 						onclick="window.location.href='${pageContext.request.contextPath }/logout'"
 						class="btn btn-danger navbar-btn">
@@ -68,37 +64,50 @@ body {
 		</div>
 	</nav>
 	<div class="container">
-		<h1>
-			<%
-				out.print(e.getName());
-			%>
-		</h1>
-		You have taken this exam.
-		<hr>
-		<table class="table table-hover">
+		<h1>Comment List</h1>
+		<table  class="table table-hover" style="table-layout:fixed">
 			<thead>
 				<tr>
-					<th>Your answer</th>
-					<th>Professor answer</th>
-					<th>Distance</th>
-					<th>Score</th> 
-					<th>Check others' answer</th> 
+					<th style="width: 10%">User</th>
+					<th>Comment</th>
+					<th style="width: 20%">Date</th>
 				</tr>
 			</thead>
 			<tbody>
-				<c:forEach items="${result }" var="item" varStatus="counter">
+				<c:forEach items="${list }" var="item" varStatus="counter">
 					<tr>
-						<td>${item.sAnswer }</td>
-						<td>${item.tAnswer }</td>
-						<td>${item.score }</td>
-						<td>${item.percentage }</td>
-						<td style="color: blue"><a href="${pageContext.request.contextPath }/student?method=checkotheranswer&wid=${item.wid }&eid=<%out.print(e.getEid()); %>">check</a></td>
+						<td><c:out value="${item.uname }" /></td>
+						<td><c:out value="${item.comment }" /></td>
+						<td><c:out value="${item.date }" /></td>
 					</tr>
 				</c:forEach>
 			</tbody>
 		</table>
-		<p>Total distance: <%out.print(total); %>. Average distance: <%out.print(ave); %></p>
-		<p>Average score:${averagep }</p>
+		
+		Please input your comments here. Character number(5-2000).
+				<br>
+	<form class="form-horizontal"
+		action="${pageContext.request.contextPath }/teacher?method=addComment"
+		method="post">
+		<div class="center">
+			<div class="col-sm-12">
+				
+				<textarea name="comment" rows="5" cols="130"></textarea>
+			</div>
+
+
+		</div>
+		<div class="w3-center">
+			<button type="submit"
+				class="w3-button w3-teal w3-round-large w3-center" value="Submit">Submit</button>
+		</div>
+	</form>
+	<%String message = (String)request.getAttribute("message"); %>
+	<div class="container w3-center">
+		<h3 style="color: red">${message }</h3>
+
 	</div>
+	</div>
+	
 </body>
 </html>

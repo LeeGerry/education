@@ -2,6 +2,7 @@ package edu.auburn.servlet;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,6 +21,8 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 import com.mysql.jdbc.StringUtils;
 
+import edu.auburn.dao.ICommentDao;
+import edu.auburn.domain.Comment;
 import edu.auburn.domain.DisplayStudentExamResult;
 import edu.auburn.domain.EduUser;
 import edu.auburn.domain.Exam;
@@ -33,6 +36,7 @@ import edu.auburn.domain.LessonFile;
 import edu.auburn.domain.LessonStudent;
 import edu.auburn.domain.WordStudent;
 import edu.auburn.domain.WordVideo;
+import edu.auburn.service.ICommentService;
 import edu.auburn.service.IExamResultService;
 import edu.auburn.service.IExamService;
 import edu.auburn.service.IExamVideoService;
@@ -44,6 +48,7 @@ import edu.auburn.service.IStudentExamService;
 import edu.auburn.service.IUserService;
 import edu.auburn.service.IWordStudentService;
 import edu.auburn.service.IWordVideoService;
+import edu.auburn.service.impl.CommentService;
 import edu.auburn.service.impl.ExamResultService;
 import edu.auburn.service.impl.ExamService;
 import edu.auburn.service.impl.ExamVideoService;
@@ -75,7 +80,9 @@ public class StudentServlet extends HttpServlet {
 	private IStudentExamService studentExamService = new StudentExamService();
 	private IWordStudentService wordStudentService = new WordStudentService();
 	private IExamResultService examResultService = new ExamResultService();
-//	private 
+	private ICommentService commentService = new CommentService();
+
+	// private
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		req.setCharacterEncoding("utf-8");
@@ -145,13 +152,69 @@ public class StudentServlet extends HttpServlet {
 							studentSaveAnswer(req, resp);
 						} else if (method.equals("submitresult")) {
 							studentSubmitResult(req, resp);
+						} else if (method.equals("comment")) {
+							commentPage(req, resp);
+						} else if (method.equals("addComment")) {
+							addComment(req, resp);
+						} else if (method.equals("checkotheranswer")){
+							checkOtherAnswer(req, resp);
 						}
+						
 					} else {
 						resp.sendRedirect(req.getContextPath() + "");
 					}
 				}
 			}
 		}
+	}
+
+	
+	private void checkOtherAnswer(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		String s_eid = req.getParameter("eid");
+		String s_wid = req.getParameter("wid");
+		int eid = Integer.parseInt(s_eid);
+		int wid = Integer.parseInt(s_wid);
+		Exam exam = examService.getExamById(eid);
+		ExamWord ew = wordService.getExamWordByEidAndWid(eid, wid);
+		List<WordStudent> result =  wordStudentService.getStudentAnswerListByEidAndWid(eid, wid);
+		req.setAttribute("exam", exam);
+		req.setAttribute("result", result);
+		req.setAttribute("ew", ew);
+		req.getRequestDispatcher("/jsp/student_word_answer_result.jsp").forward(req, resp);
+	}
+	
+	/**
+	 * student - add - comment
+	 * 
+	 * @param req
+	 * @param resp
+	 */
+	private void addComment(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		String c = req.getParameter("comment");
+		if (c.length() < 5 || c.length() > 2000) {
+			req.setAttribute("message", StringConfig.COMMENT_SIZE);
+		} else {
+			Comment comment = new Comment();
+			comment.setUid(uid);
+			comment.setComment(c);
+			commentService.addComment(comment);
+			req.setAttribute("message", StringConfig.COMMENT_SUCCESS);
+		}
+		commentPage(req, resp);
+	}
+
+	/**
+	 * student-comment
+	 * 
+	 * @param req
+	 * @param resp
+	 * @throws ServletException
+	 * @throws IOException
+	 */
+	private void commentPage(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		List<Comment> comments = commentService.getAll();
+		req.setAttribute("list", comments);
+		req.getRequestDispatcher("/jsp/student_comment_manage.jsp").forward(req, resp);
 	}
 
 	/**
@@ -225,9 +288,10 @@ public class StudentServlet extends HttpServlet {
 							req.setAttribute("message", message);
 							// forward
 						} else {
-							String basePath = getServletContext()
-									.getRealPath(File.separator+"upload"+File.separator + lesson.getName().replaceAll(" ", "_") + File.separator
-											+ exam.getName().replaceAll(" ", "_") + File.separator + word.getFid() + File.separator);
+							String basePath = getServletContext().getRealPath(
+									File.separator + "upload" + File.separator + lesson.getName().replaceAll(" ", "_")
+											+ File.separator + exam.getName().replaceAll(" ", "_") + File.separator
+											+ word.getFid() + File.separator);
 							File dir = new File(basePath);
 							if (!dir.exists() && !dir.isDirectory()) {
 								dir.mkdirs();
@@ -319,7 +383,7 @@ public class StudentServlet extends HttpServlet {
 		List<String> tAnswer = examResult.gettAnswers();
 		List<Float> scores = examResult.getScoreList();
 		float totalPercentage = 0;
-		
+
 		for (int i = 0; i < sAnswer.size(); i++) {
 			DisplayStudentExamResult r = new DisplayStudentExamResult();
 			float distance = scores.get(i);
@@ -330,24 +394,24 @@ public class StudentServlet extends HttpServlet {
 			r.setScore(distance);
 			String percentage = CalculateScore.getPercentage(stuAns, tAns, distance);
 			r.setPercentage(percentage);
-			
+
 			totalPercentage += Float.parseFloat(percentage.substring(0, percentage.length() - 1));
-			
+
 			ds.add(r);
 		}
-		float aveScore = examResult.getTotal()/ds.size();
+		float aveScore = examResult.getTotal() / ds.size();
 		aveScore = (float) Math.round(aveScore * 100) / 100;
 		req.setAttribute("ave", aveScore);
 		req.setAttribute("exam", exam);
 		req.setAttribute("result", ds);
 		req.setAttribute("total", examResult.getTotal() + "");
-		
+
 		totalPercentage = (float) Math.round(totalPercentage * 100000) / 100000;
 		req.setAttribute("totalp", totalPercentage + "%");
 		float temp = totalPercentage / ds.size();
 		float aveP = (float) Math.round(temp * 1000) / 1000;
 		req.setAttribute("averagep", aveP + "%");
-		
+
 		req.getRequestDispatcher("/jsp/student_exam_result.jsp").forward(req, resp);
 	}
 
@@ -371,14 +435,14 @@ public class StudentServlet extends HttpServlet {
 		List<WordVideo> videos = wordVideoService.getAllVideosByWid(word.getFid());
 		int total = words.size();
 		String path = word.getPath();
-		int index = path.indexOf(File.separator+"upload");
+		int index = path.indexOf(File.separator + "upload");
 		String p = req.getContextPath() + path.substring(index);
 		word.setPath(p);
 
 		for (int i = 0; i < videos.size(); i++) {
 			WordVideo v = videos.get(i);
 			String vPath = v.getPath();
-			int pos = vPath.indexOf(File.separator+"upload"+File.separator);
+			int pos = vPath.indexOf(File.separator + "upload" + File.separator);
 			String pa = req.getContextPath() + vPath.substring(pos);
 			v.setPath(pa);
 		}
@@ -394,7 +458,7 @@ public class StudentServlet extends HttpServlet {
 		req.setAttribute("word", word);
 		req.setAttribute("exam", exam);
 		req.setAttribute("words", words);
-		req.getRequestDispatcher("/jsp/new_takingexam.jsp").forward(req, resp);
+		req.getRequestDispatcher("/jsp/new_takingexam_progress.jsp").forward(req, resp);
 	}
 
 	/**
@@ -414,7 +478,7 @@ public class StudentServlet extends HttpServlet {
 		studentExamService.takeExam(eid, uid);
 		Exam exam = examService.getExamById(eid);
 		float tScore = 0;
-		
+
 		float totalPercentage = 0;
 		// result
 		List<DisplayStudentExamResult> ds = new ArrayList<>();
@@ -432,19 +496,13 @@ public class StudentServlet extends HttpServlet {
 			totalPercentage += Float.parseFloat(percentage.substring(0, percentage.length() - 1));
 			ds.add(displayStudentExamResult);
 			tScore += ws.getScore();
-			
+
 		}
 
-		
-		
-		
 		totalPercentage = (float) Math.round(totalPercentage * 10000) / 10000;
 		float temp = totalPercentage / list.size();
 		float aveP = (float) Math.round(temp * 1000) / 1000;
-		
-		
-		
-		
+
 		ExamResult er = new ExamResult();
 		er.setEid(eid);
 		er.setUid(uid);
@@ -454,14 +512,14 @@ public class StudentServlet extends HttpServlet {
 										// answer.
 			req.setAttribute("exam", exam);
 			req.setAttribute("result", ds);
-			float aveScore = er.getTotal()/list.size();
+			float aveScore = er.getTotal() / list.size();
 			aveScore = (float) Math.round(aveScore * 100) / 100;
 			req.setAttribute("ave", aveScore);
 			req.setAttribute("total", er.getTotal() + "");
-			
+
 			req.setAttribute("averagep", aveP + "%");
 			req.setAttribute("totalp", totalPercentage + "%");
-			
+
 			req.getRequestDispatcher("/jsp/student_exam_result.jsp").forward(req, resp);
 		} else {// exam
 			long currentTime = System.currentTimeMillis();
@@ -470,18 +528,20 @@ public class StudentServlet extends HttpServlet {
 			if (currentTime > dueDate) {
 				req.setAttribute("exam", exam);
 				req.setAttribute("result", ds);
-				float aveScore = er.getTotal()/list.size();
+				float aveScore = er.getTotal() / list.size();
 				aveScore = (float) Math.round(aveScore * 100) / 100;
 				req.setAttribute("ave", aveScore);
 				req.setAttribute("total", er.getTotal() + "");
-				
+
 				req.setAttribute("averagep", aveP + "%");
 				req.setAttribute("totalp", totalPercentage + "%");
-				
+
 				req.getRequestDispatcher("/jsp/student_exam_result.jsp").forward(req, resp);
 			} else {
 				// else show nothing.
-				req.setAttribute("message", StringConfig.SCORE_NOT_PUBLISHED);
+				SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+				String d = sdf.format(exam.getEdue());
+				req.setAttribute("message", StringConfig.SCORE_NOT_PUBLISHED + d);
 				req.getRequestDispatcher("/jsp/non_student.jsp").forward(req, resp);
 			}
 
@@ -561,16 +621,14 @@ public class StudentServlet extends HttpServlet {
 					displayStudentExamResult.setWid(ws.getWid());
 					String percentage = CalculateScore.getPercentage(ws.getAnswer(), teacherAnswer, ws.getScore());
 					displayStudentExamResult.setPercentage(percentage);
-					
-					totalPercentage += Float.parseFloat(percentage.substring(0, percentage.length()-1));
-					
+
+					totalPercentage += Float.parseFloat(percentage.substring(0, percentage.length() - 1));
+
 					ds.add(displayStudentExamResult);
 					tScore += ws.getScore();
 				}
-				
-				
-				
-				float aveScore = tScore/list.size();
+
+				float aveScore = tScore / list.size();
 				aveScore = (float) Math.round(aveScore * 100) / 100;
 				req.setAttribute("ave", aveScore);
 				req.setAttribute("result", ds);
@@ -581,20 +639,19 @@ public class StudentServlet extends HttpServlet {
 				float temp = totalPercentage / list.size();
 				float aveP = (float) Math.round(temp * 1000) / 1000;
 				req.setAttribute("averagep", aveP + "%");
-				
-				
+
 				req.getRequestDispatcher("/jsp/student_exam_result.jsp").forward(req, resp);
-			}else{
+			} else {
 				// else show nothing.
 				req.setAttribute("message", StringConfig.SCORE_NOT_PUBLISHED);
 				req.getRequestDispatcher("/jsp/non_student.jsp").forward(req, resp);
 			}
 		} else { // go to take the exam
-			if(System.currentTimeMillis() > exam.getEdue().getTime()){
+			if (System.currentTimeMillis() > exam.getEdue().getTime()) {
 				req.setAttribute("message", StringConfig.PASS_DUE_DATE);
 				req.getRequestDispatcher("/jsp/non_student.jsp").forward(req, resp);
 			}
-			
+
 			List<ExamWord> words = wordService.getAllWordsByEid(eid);
 			int totalWords = words.size();
 
@@ -607,14 +664,14 @@ public class StudentServlet extends HttpServlet {
 				wordVideos = wordVideoService.getAllVideosByWid(words.get(0).getFid());
 				ExamWord word = words.get(0);
 				String path = word.getPath();
-				int index = path.indexOf(File.separator+"upload");
+				int index = path.indexOf(File.separator + "upload");
 				String p = req.getContextPath() + path.substring(index);
 				word.setPath(p);
 				/********* here ******/
 				for (int i = 0; i < wordVideos.size(); i++) {
 					WordVideo v = wordVideos.get(i);
 					String vPath = v.getPath();
-					int pos = vPath.indexOf(File.separator+"upload"+File.separator);
+					int pos = vPath.indexOf(File.separator + "upload" + File.separator);
 					String pa = req.getContextPath() + vPath.substring(pos);
 					v.setPath(pa);
 				}
@@ -624,7 +681,7 @@ public class StudentServlet extends HttpServlet {
 				req.setAttribute("word", word);
 				req.setAttribute("exam", exam);
 				req.setAttribute("words", words);
-				req.getRequestDispatcher("/jsp/new_takingexam.jsp").forward(req, resp);
+				req.getRequestDispatcher("/jsp/new_takingexam_progress.jsp").forward(req, resp);
 			}
 
 		}
@@ -646,12 +703,12 @@ public class StudentServlet extends HttpServlet {
 		Lesson lesson = lessonService.getLessonByLid(lid);
 		List<Exam> exams = examService.getExamsByLid(lid);
 		List<ExamShowStudent> examForStudent = new ArrayList<>();
-		for(int i = 0; i<exams.size(); i++){
+		for (int i = 0; i < exams.size(); i++) {
 			Exam e = exams.get(i);
 			ExamShowStudent es = new ExamShowStudent();
 			es.setExam(e);
 			boolean boo = studentExamService.checkIfExamTakenByStudent(e.getEid(), uid);
-			es.setShowAction(boo?"Check result":"Take exam");
+			es.setShowAction(boo ? "Check result" : "Take exam");
 			examForStudent.add(es);
 		}
 		req.setAttribute("exams", exams);
@@ -745,9 +802,9 @@ public class StudentServlet extends HttpServlet {
 							req.setAttribute("message", message);
 							// forward
 						} else {
-							String basePath = getServletContext()
-									.getRealPath(File.separator+"upload"+File.separator + lesson.getName().replaceAll(" ", "_") + File.separator
-											+ exam.getName().replaceAll(" ", "_") + File.separator);
+							String basePath = getServletContext().getRealPath(
+									File.separator + "upload" + File.separator + lesson.getName().replaceAll(" ", "_")
+											+ File.separator + exam.getName().replaceAll(" ", "_") + File.separator);
 							File dir = new File(basePath);
 							if (!dir.exists() && !dir.isDirectory()) {
 								dir.mkdirs();
@@ -834,8 +891,8 @@ public class StudentServlet extends HttpServlet {
 							req.getRequestDispatcher("/jsp/error.jsp").forward(req, resp);
 							// forward
 						} else {
-							String basePath = getServletContext()
-									.getRealPath(File.separator+"upload"+File.separator + lesson.getName() + File.separator + exam.getName() + File.separator);
+							String basePath = getServletContext().getRealPath(File.separator + "upload" + File.separator
+									+ lesson.getName() + File.separator + exam.getName() + File.separator);
 							File dir = new File(basePath);
 							if (!dir.exists() && !dir.isDirectory()) {
 								dir.mkdirs();
@@ -973,7 +1030,8 @@ public class StudentServlet extends HttpServlet {
 							req.getRequestDispatcher("/jsp/error.jsp").forward(req, resp);
 							// forward
 						} else {
-							String basePath = getServletContext().getRealPath(File.separator+"upload"+File.separator + lesson.getName() + File.separator);
+							String basePath = getServletContext().getRealPath(
+									File.separator + "upload" + File.separator + lesson.getName() + File.separator);
 							File dir = new File(basePath);
 							if (!dir.exists() && !dir.isDirectory()) {
 								dir.mkdirs();
@@ -1036,20 +1094,20 @@ public class StudentServlet extends HttpServlet {
 		List<LessonFile> files = lessonFileService.getAllFileByLid(lid);
 		List<LessonFile> vFile = new ArrayList<>();
 		List<LessonFile> dFile = new ArrayList<>();
-		for(int i = 0; i<files.size(); i++){
+		for (int i = 0; i < files.size(); i++) {
 			LessonFile f = files.get(i);
 			String oldPath = f.getPath();
-			int index = oldPath.indexOf(File.separator+"upload"+File.separator);
-			String path = req.getContextPath()+oldPath.substring(index);
+			int index = oldPath.indexOf(File.separator + "upload" + File.separator);
+			String path = req.getContextPath() + oldPath.substring(index);
 			f.setPath(path);
 			String ext = f.getFtype().toLowerCase();
-			if(ext.equals("mp4") || ext.equals("wav")){
+			if (ext.equals("mp4") || ext.equals("wav")) {
 				vFile.add(f);
-			}else{
+			} else {
 				dFile.add(f);
 			}
 		}
-		
+
 		req.setAttribute("files", vFile);
 		req.setAttribute("dFile", dFile);
 		LessonStudent lessonStudent = lsService.getLSByUidAndLid(uid, lid);
@@ -1128,7 +1186,7 @@ public class StudentServlet extends HttpServlet {
 	 */
 	private void showLessons(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		List<Lesson> allLessons = lessonService.getAllLessons();
-		if (null == allLessons || allLessons.size() == 0){
+		if (null == allLessons || allLessons.size() == 0) {
 			allLessons = new ArrayList<>();
 		}
 		List<LessonStudent> registeredLessons = lsService.getLSBySid(uid);

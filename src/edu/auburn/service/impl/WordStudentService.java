@@ -29,4 +29,10 @@ public class WordStudentService implements IWordStudentService {
 		return wsDao.getStudentAnswerListBySidAndEid(sid, eid);
 	}
 
+	@Override
+	public List<WordStudent> getStudentAnswerListByEidAndWid(int eid, int wid) {
+		// TODO Auto-generated method stub
+		return wsDao.getStudentAnswerListByEidAndWid(eid, wid);
+	}
+
 }

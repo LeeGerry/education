@@ -116,4 +116,34 @@ public class ExamWordDao implements IExamWordDao {
 		}
 	}
 
+	@Override
+	public ExamWord getExamWordByEidAndWid(int eid, int wid) {
+		String sql = "select * from exam_word where eid = ? & fid = ?";
+		Connection connection = JDBCUtil.getConnection();
+		PreparedStatement ps = null;
+		try {
+			ps = (PreparedStatement) connection.prepareStatement(sql);
+			ps.setInt(1, eid);
+			ps.setInt(2, wid);
+			ResultSet rs = ps.executeQuery();
+			ExamWord file = null;
+			while (rs.next()) {
+				file = new ExamWord();
+				file.setFid(rs.getInt("fid"));
+				file.setPron(rs.getString("pronunciation"));
+				file.setPath(rs.getString("path"));
+				file.setType(rs.getString("ftype"));
+				file.setDesc(rs.getString("fdesc"));
+				file.setEid(rs.getInt("eid"));
+				file.setName(rs.getString("name"));
+			}
+			return file;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		} finally {
+			JDBCUtil.close(connection, ps);
+		}
+	}
+
 }

@@ -42,4 +42,10 @@ public class ExamWordService implements IExamWordService {
 		return dao.getExamWordByVid(fid);
 	}
 
+	@Override
+	public ExamWord getExamWordByEidAndWid(int eid, int wid) {
+		// TODO Auto-generated method stub
+		return dao.getExamWordByEidAndWid(eid, wid);
+	}
+
 }

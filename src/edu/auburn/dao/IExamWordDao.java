@@ -9,4 +9,5 @@ public interface IExamWordDao {
 	boolean delWordById(int fid);
 	List<ExamWord> getAllWordsByEid(int eid);
 	ExamWord getExamWordByVid(int fid);
+	ExamWord getExamWordByEidAndWid(int eid, int wid);
 }

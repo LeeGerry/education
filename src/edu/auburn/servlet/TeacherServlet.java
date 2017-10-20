@@ -23,6 +23,7 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 import com.mysql.jdbc.StringUtils;
 
+import edu.auburn.domain.Comment;
 import edu.auburn.domain.DisplayStudentExamResult;
 import edu.auburn.domain.EduUser;
 import edu.auburn.domain.Exam;
@@ -35,6 +36,7 @@ import edu.auburn.domain.LessonFile;
 import edu.auburn.domain.LessonStudent;
 import edu.auburn.domain.WordStudent;
 import edu.auburn.domain.WordVideo;
+import edu.auburn.service.ICommentService;
 import edu.auburn.service.IExamResultService;
 import edu.auburn.service.IExamService;
 import edu.auburn.service.IExamVideoService;
@@ -45,6 +47,7 @@ import edu.auburn.service.ILessonStudentService;
 import edu.auburn.service.IUserService;
 import edu.auburn.service.IWordStudentService;
 import edu.auburn.service.IWordVideoService;
+import edu.auburn.service.impl.CommentService;
 import edu.auburn.service.impl.ExamResultService;
 import edu.auburn.service.impl.ExamService;
 import edu.auburn.service.impl.ExamVideoService;
@@ -73,7 +76,7 @@ public class TeacherServlet extends HttpServlet {
 	private IExamResultService resultService = new ExamResultService();
 	private IWordVideoService wordVideoService = new WordVideoService();
 	private IWordStudentService wordStudentService = new WordStudentService();
-	
+	private ICommentService commentService = new CommentService();
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		req.setCharacterEncoding("utf-8");
@@ -150,6 +153,10 @@ public class TeacherServlet extends HttpServlet {
 					editExam(req, resp);
 				} else if (method.equals("updateexam")){
 					updateExam(req, resp);
+				} else if (method.equals("addComment")){
+					addComment(req, resp);
+				} else if (method.equals("comments")){
+					commentPage(req, resp);
 				}
 			} else {
 				resp.sendRedirect(req.getContextPath() + "");
@@ -157,6 +164,41 @@ public class TeacherServlet extends HttpServlet {
 		}
 	}
 	
+	
+	
+	/**
+	 * teacher - add - comment
+	 * 
+	 * @param req
+	 * @param resp
+	 */
+	private void addComment(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		String c = req.getParameter("comment");
+		if (c.length() < 5 || c.length() > 2000) {
+			req.setAttribute("message", StringConfig.COMMENT_SIZE);
+		} else {
+			Comment comment = new Comment();
+			comment.setUid(uid);
+			comment.setComment(c);
+			commentService.addComment(comment);
+			req.setAttribute("message", StringConfig.COMMENT_SUCCESS);
+		}
+		commentPage(req, resp);
+	}
+
+	/**
+	 * teacher-comment
+	 * 
+	 * @param req
+	 * @param resp
+	 * @throws ServletException
+	 * @throws IOException
+	 */
+	private void commentPage(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		List<Comment> comments = commentService.getAll();
+		req.setAttribute("list", comments);
+		req.getRequestDispatcher("/jsp/teacher_comment_manage.jsp").forward(req, resp);
+	}
 	/**
 	 * teacher-edit-exam here...............
 	 * @param req
