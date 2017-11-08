@@ -36,6 +36,7 @@ body {
 					href="${pageContext.request.contextPath }/student">ALT</a>      
 			</div>
 			   <%
+					WordStudent ws = (WordStudent) (request.getAttribute("wordstudent"));
 					Exam e = (Exam) (request.getAttribute("exam"));
 					ExamWord ew = (ExamWord) (request.getAttribute("ew"));
 				%>
@@ -67,9 +68,30 @@ body {
 		</div>
 	</nav>
 	<div class="container">
-		<h1>Professor's answer:   <% out.print(ew.getPron());%></h1>
+		<h1>Professor's answer:   <% out.print(ew.getPron());%>&nbsp;&nbsp;&nbsp;&nbsp;
+		Your answer:   <% out.print(ws.getAnswer());%></h1>
 		<hr>
-		<h1>Students' answer:</h1>
+		
+		<script type="text/javascript">
+			function playA() {
+				
+				var audio = document.getElementById("playaudio");
+				//alert(audio.src);
+				audio.play();
+			}
+		</script>
+	
+		 Listen to the word by clicking the icon:
+		 <audio hidden="true" id="playaudio" src="${ew.getPath() }"
+				controls="controls">
+			</audio>
+		<button onclick="playA()"
+				class="w3-button w3-circle w3-teal  w3-small">
+				<span class="glyphicon glyphicon-play-circle"></span>
+		</button>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<a style="color: BLUE;" href="${pageContext.request.contextPath }/student?method=checkdistribution&eid=<%out.print(e.getEid());%>&wid=<%out.print(ew.getFid());%>">Click here to see the distribution.</a>
+		<br>Other students' answer:
 		<table class="table table-hover">
 			<thead>
 				<tr>

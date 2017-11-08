@@ -118,7 +118,7 @@ public class ExamWordDao implements IExamWordDao {
 
 	@Override
 	public ExamWord getExamWordByEidAndWid(int eid, int wid) {
-		String sql = "select * from exam_word where eid = ? & fid = ?";
+		String sql = "select * from exam_word where eid = ? and fid = ?";
 		Connection connection = JDBCUtil.getConnection();
 		PreparedStatement ps = null;
 		try {
@@ -130,7 +130,8 @@ public class ExamWordDao implements IExamWordDao {
 			while (rs.next()) {
 				file = new ExamWord();
 				file.setFid(rs.getInt("fid"));
-				file.setPron(rs.getString("pronunciation"));
+				String pron = rs.getString("pronunciation");
+				file.setPron(null == pron ? "":pron);
 				file.setPath(rs.getString("path"));
 				file.setType(rs.getString("ftype"));
 				file.setDesc(rs.getString("fdesc"));

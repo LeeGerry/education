@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -21,13 +22,11 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 import com.mysql.jdbc.StringUtils;
 
-import edu.auburn.dao.ICommentDao;
 import edu.auburn.domain.Comment;
 import edu.auburn.domain.DisplayStudentExamResult;
 import edu.auburn.domain.EduUser;
 import edu.auburn.domain.Exam;
 import edu.auburn.domain.ExamResult;
-import edu.auburn.domain.ExamScore;
 import edu.auburn.domain.ExamShowStudent;
 import edu.auburn.domain.ExamVideo;
 import edu.auburn.domain.ExamWord;
@@ -37,6 +36,7 @@ import edu.auburn.domain.LessonStudent;
 import edu.auburn.domain.WordStudent;
 import edu.auburn.domain.WordVideo;
 import edu.auburn.service.ICommentService;
+import edu.auburn.service.IDistributeService;
 import edu.auburn.service.IExamResultService;
 import edu.auburn.service.IExamService;
 import edu.auburn.service.IExamVideoService;
@@ -49,6 +49,7 @@ import edu.auburn.service.IUserService;
 import edu.auburn.service.IWordStudentService;
 import edu.auburn.service.IWordVideoService;
 import edu.auburn.service.impl.CommentService;
+import edu.auburn.service.impl.DistributeService;
 import edu.auburn.service.impl.ExamResultService;
 import edu.auburn.service.impl.ExamService;
 import edu.auburn.service.impl.ExamVideoService;
@@ -63,7 +64,6 @@ import edu.auburn.service.impl.WordVideoService;
 import edu.auburn.utils.CalculateScore;
 import edu.auburn.utils.DownloadUtils;
 import edu.auburn.utils.LessonFileType;
-import edu.auburn.utils.ScoreUtils;
 import edu.auburn.utils.StringConfig;
 
 @WebServlet("/student")
@@ -158,6 +158,8 @@ public class StudentServlet extends HttpServlet {
 							addComment(req, resp);
 						} else if (method.equals("checkotheranswer")){
 							checkOtherAnswer(req, resp);
+						} else if (method.equals("checkdistribution")){
+							checkDistribution(req, resp);
 						}
 						
 					} else {
@@ -167,8 +169,31 @@ public class StudentServlet extends HttpServlet {
 			}
 		}
 	}
-
+	IDistributeService distributeService = new DistributeService();
 	
+	private void checkDistribution(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		int wid = Integer.parseInt(req.getParameter("wid"));
+		int eid = Integer.parseInt(req.getParameter("eid"));
+		HashMap<String, Integer> pieChart = distributeService.getAnswerGroup(eid, wid);
+		ArrayList<Integer> barChart = distributeService.getDistanceGroup(eid, wid);
+		List<Integer> position = distributeService.getPositionAndCount(uid, eid, wid);
+		Exam exam = examService.getExamById(eid);
+//		resp.getWriter().write(""+barChart.toString() + "," + pieChart.toString() + ","+position.toString());
+		req.setAttribute("bar", barChart);
+		req.setAttribute("pie", pieChart);
+		req.setAttribute("exam", exam);
+		req.setAttribute("position", position);
+		req.getRequestDispatcher("/jsp/student_check_distance_distribution.jsp").forward(req, resp);
+	}
+	
+	
+	/**
+	 * student_check_other_answers
+	 * @param req
+	 * @param resp
+	 * @throws ServletException
+	 * @throws IOException
+	 */
 	private void checkOtherAnswer(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		String s_eid = req.getParameter("eid");
 		String s_wid = req.getParameter("wid");
@@ -176,10 +201,16 @@ public class StudentServlet extends HttpServlet {
 		int wid = Integer.parseInt(s_wid);
 		Exam exam = examService.getExamById(eid);
 		ExamWord ew = wordService.getExamWordByEidAndWid(eid, wid);
+		WordStudent wordStudent = wordStudentService.getStudentAnswerModelBySidAndWid(uid, wid);
+		String path = ew.getPath();
+		int index = path.indexOf(File.separator + "upload");
+		String p = req.getContextPath() + path.substring(index);
+		ew.setPath(p);
 		List<WordStudent> result =  wordStudentService.getStudentAnswerListByEidAndWid(eid, wid);
 		req.setAttribute("exam", exam);
 		req.setAttribute("result", result);
 		req.setAttribute("ew", ew);
+		req.setAttribute("wordstudent", wordStudent);
 		req.getRequestDispatcher("/jsp/student_word_answer_result.jsp").forward(req, resp);
 	}
 	
@@ -438,7 +469,6 @@ public class StudentServlet extends HttpServlet {
 		int index = path.indexOf(File.separator + "upload");
 		String p = req.getContextPath() + path.substring(index);
 		word.setPath(p);
-
 		for (int i = 0; i < videos.size(); i++) {
 			WordVideo v = videos.get(i);
 			String vPath = v.getPath();

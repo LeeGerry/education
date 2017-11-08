@@ -1,41 +1,24 @@
-﻿<%@page import="java.util.List"%>
+﻿<%@page import="java.util.*"%>
 <%@ page language="java" import="edu.auburn.domain.*"
 	contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>Exam Result</title>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
- 
+<title>Exam Distance Distribution</title>
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<script src="js/zingchart.min.js"></script>
+<meta charset="utf-8">
 <style>
 body {
 	background-image: url("gray.jpg");
 }
-
-.pie-legend li span {
-    width: 1em;
-    height: 1em;
-    display: inline-block;
-    margin-right: 5px;
-}
-
-.pie-legend {
-    list-style: none;
-}
 </style>
 <script src="js/Chart.min.js"></script>
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
- 
-<script
-	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
 </head>
 <body>
 	<nav class="navbar navbar-inverse">
@@ -47,8 +30,10 @@ body {
 					href="${pageContext.request.contextPath }/teacher">ALT</a>      
 			</div>
 			   <%
-		Exam e = (Exam) (request.getAttribute("exam"));
-		List<DisplayStudentExamResult> ds = (List<DisplayStudentExamResult>) (request.getAttribute("result"));
+		Exam exam = (Exam) (request.getAttribute("exam"));
+		HashMap<String, Integer> pieChart = (HashMap<String, Integer>) (request.getAttribute("pie"));;
+		ArrayList<Integer> barChart = (ArrayList<Integer>)(request.getAttribute("bar"));
+		List<Integer> position = (List<Integer>)(request.getAttribute("position"));
 	%>
 			<button
 				onclick="window.location.href='${pageContext.request.contextPath }/teacher'"
@@ -66,7 +51,7 @@ body {
  %> <%
  	}
  %> </a></li>   
- <li>
+				<li>
 					<button
 						onclick="window.location.href='${pageContext.request.contextPath }/logout'"
 						class="btn btn-danger navbar-btn">
@@ -74,48 +59,8 @@ body {
 					</button>
 				</li>   
 			</ul>
-			 
 		</div>
 	</nav>
-	<div class="container">
-		<h1>
-			<%
-				out.print(e.getName());
-			%>
-		</h1>
-		You have taken this exam.
-		<hr>
-		<table class="table table-hover">
-			<thead>
-				<tr>
-					<th>Student</th>
-					<th>Distance</th>
-					<th>Details</th>
-				</tr>
-			</thead>
-			<tbody>
-				<c:forEach items="${result }" var="item" varStatus="counter">
-					<tr>
-						<td>${item.stuName }</td>
-						<td>${item.score }</td>
-						<td>
-						<a href="${pageContext.request.contextPath }/teacher?method=checkse&eid=${item.eid}&uid=${item.sid}">Check</a>
-						
-						</td>
-					</tr>
-				</c:forEach>
-			</tbody>
-		</table>
-		
-		<div class="pie-chart">
-	 		<a href="${pageContext.request.contextPath }/teacher?method=checkdistance&eid=<%out.print(e.getEid()); %>" style="color: BLUE;">Distance distribution</a>
-	 	</div> 
-	 	
-	</div>
-	
-	
-	
-	
-	 	
+	<%out.print(pieChart.toString() + "," + barChart.toString() + ", "+position.toString()); %>
 </body>
 </html>

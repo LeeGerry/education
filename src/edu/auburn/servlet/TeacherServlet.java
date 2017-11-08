@@ -34,6 +34,7 @@ import edu.auburn.domain.ExamWord;
 import edu.auburn.domain.Lesson;
 import edu.auburn.domain.LessonFile;
 import edu.auburn.domain.LessonStudent;
+import edu.auburn.domain.ResultScoreDistribute;
 import edu.auburn.domain.WordStudent;
 import edu.auburn.domain.WordVideo;
 import edu.auburn.service.ICommentService;
@@ -44,6 +45,7 @@ import edu.auburn.service.IExamWordService;
 import edu.auburn.service.ILessonFileService;
 import edu.auburn.service.ILessonService;
 import edu.auburn.service.ILessonStudentService;
+import edu.auburn.service.IResultScoreDistributeService;
 import edu.auburn.service.IUserService;
 import edu.auburn.service.IWordStudentService;
 import edu.auburn.service.IWordVideoService;
@@ -55,6 +57,7 @@ import edu.auburn.service.impl.ExamWordService;
 import edu.auburn.service.impl.LessonFileService;
 import edu.auburn.service.impl.LessonService;
 import edu.auburn.service.impl.LessonStudentService;
+import edu.auburn.service.impl.ResultScoreDistributeService;
 import edu.auburn.service.impl.UserService;
 import edu.auburn.service.impl.WordStudentService;
 import edu.auburn.service.impl.WordVideoService;
@@ -157,14 +160,23 @@ public class TeacherServlet extends HttpServlet {
 					addComment(req, resp);
 				} else if (method.equals("comments")){
 					commentPage(req, resp);
+				} else if (method.equals("checkdistance")){
+					checkDistance(req, resp);
 				}
 			} else {
 				resp.sendRedirect(req.getContextPath() + "");
 			}
 		}
 	}
-	
-	
+	private IResultScoreDistributeService distanceService = new ResultScoreDistributeService();
+	private void checkDistance(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		int eid = Integer.parseInt(req.getParameter("eid"));
+		Exam exam = examService.getExamById(eid);
+		ResultScoreDistribute distanceDistribute = distanceService.getDistanceDistribute(eid);
+		req.setAttribute("exam", exam);
+		req.setAttribute("distribute", distanceDistribute);
+		req.getRequestDispatcher("/jsp/teacher_check_distance_distribution.jsp").forward(req, resp);
+	}
 	
 	/**
 	 * teacher - add - comment

@@ -160,6 +160,7 @@ hr {
 		<script type="text/javascript">
 			function playA() {
 				var audio = document.getElementById("playaudio");
+				//alert(audio.src);
 				audio.play();
 			}
 		</script>

@@ -11,7 +11,13 @@ create table euser(
 	email varchar(50),
 	utype integer
 )engine = myisam  default charset = utf8;
-insert into euser (name, password, email, utype) values ("admin","shelby2303","admin@auburn.edu",1);
+insert into euser (name, password, email, utype) values ("admin","test","admin@auburn.edu",1);
+insert into euser (name, password, email, utype) values ("teacher","teacher","teacher@auburn.edu",2);
+insert into euser (name, password, email, utype) values ("student","student","student@auburn.edu",4);
+insert into euser (name, password, email, utype) values ("student1","student1","student1@auburn.edu",4);
+insert into euser (name, password, email, utype) values ("student2","student2","student2@auburn.edu",4);
+insert into euser (name, password, email, utype) values ("student3","student3","student3@auburn.edu",4);
+insert into euser (name, password, email, utype) values ("student4","student4","student4@auburn.edu",4);
 
 drop table if exists `lesson`;
 create table lesson(
