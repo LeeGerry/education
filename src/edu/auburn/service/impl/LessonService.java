@@ -39,4 +39,10 @@ public class LessonService implements ILessonService{
 		return dao.getAllLessons();
 	}
 
+	@Override
+	public List<Lesson> getAllLessonsOrderByName(int uid) {
+		// TODO Auto-generated method stub
+		return dao.getAllLessonsOrderedByName(uid);
+	}
+
 }

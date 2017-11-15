@@ -6,6 +6,7 @@ import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -38,6 +39,7 @@ import edu.auburn.domain.ResultScoreDistribute;
 import edu.auburn.domain.WordStudent;
 import edu.auburn.domain.WordVideo;
 import edu.auburn.service.ICommentService;
+import edu.auburn.service.IDistributeService;
 import edu.auburn.service.IExamResultService;
 import edu.auburn.service.IExamService;
 import edu.auburn.service.IExamVideoService;
@@ -50,6 +52,7 @@ import edu.auburn.service.IUserService;
 import edu.auburn.service.IWordStudentService;
 import edu.auburn.service.IWordVideoService;
 import edu.auburn.service.impl.CommentService;
+import edu.auburn.service.impl.DistributeService;
 import edu.auburn.service.impl.ExamResultService;
 import edu.auburn.service.impl.ExamService;
 import edu.auburn.service.impl.ExamVideoService;
@@ -162,12 +165,73 @@ public class TeacherServlet extends HttpServlet {
 					commentPage(req, resp);
 				} else if (method.equals("checkdistance")){
 					checkDistance(req, resp);
+				} else if (method.equals("checkotheranswer")){
+					checkOtherAnswer(req, resp);
+				} else if (method.equals("checkdistribution")){
+					checkDistribution(req, resp);
 				}
 			} else {
 				resp.sendRedirect(req.getContextPath() + "");
 			}
 		}
 	}
+	
+	
+	IDistributeService distributeService = new DistributeService();
+	/**
+	 * teacher-check-word-distribution
+	 * @param req
+	 * @param resp
+	 * @throws ServletException
+	 * @throws IOException
+	 */
+	private void checkDistribution(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		int wid = Integer.parseInt(req.getParameter("wid"));
+		int eid = Integer.parseInt(req.getParameter("eid"));
+		int sid = Integer.parseInt(req.getParameter("sid"));
+		HashMap<String, Integer> pieChart = distributeService.getAnswerGroup(eid, wid);
+		ArrayList<Integer> barChart = distributeService.getDistanceGroup(eid, wid);
+		List<Integer> position = distributeService.getPositionAndCount(sid, eid, wid);
+		String sname = userService.getUserById(sid).getName();
+		Exam exam = examService.getExamById(eid);
+//		resp.getWriter().write(""+barChart.toString() + "," + pieChart.toString() + ","+position.toString());
+		req.setAttribute("bar", barChart);
+		req.setAttribute("pie", pieChart);
+		req.setAttribute("exam", exam);
+		req.setAttribute("position", position);
+		req.setAttribute("sname", sname);
+		req.getRequestDispatcher("/jsp/new_teacher_check_distance_distribution.jsp").forward(req, resp);
+	}
+	/**
+	 * teacher_check_other_answers
+	 * @param req
+	 * @param resp
+	 * @throws ServletException
+	 * @throws IOException
+	 */
+	private void checkOtherAnswer(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		String s_eid = req.getParameter("eid");
+		String s_wid = req.getParameter("wid");
+		String stu_id = req.getParameter("sid");
+		int sid = Integer.parseInt(stu_id);
+		int eid = Integer.parseInt(s_eid);
+		int wid = Integer.parseInt(s_wid);
+		Exam exam = examService.getExamById(eid);
+		ExamWord ew = wordService.getExamWordByEidAndWid(eid, wid);
+		WordStudent wordStudent = wordStudentService.getStudentAnswerModelBySidAndWid(sid, wid);
+		String path = ew.getPath();
+		int index = path.indexOf(File.separator + "upload");
+		String p = req.getContextPath() + path.substring(index);
+		ew.setPath(p);
+		List<WordStudent> result =  wordStudentService.getStudentAnswerListByEidAndWid(eid, wid);
+		req.setAttribute("exam", exam);
+		req.setAttribute("result", result);
+		req.setAttribute("ew", ew);
+		req.setAttribute("wordstudent", wordStudent);
+		req.getRequestDispatcher("/jsp/teacher_check_word_answer_result_list.jsp").forward(req, resp);
+	}
+	
+	
 	private IResultScoreDistributeService distanceService = new ResultScoreDistributeService();
 	private void checkDistance(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		int eid = Integer.parseInt(req.getParameter("eid"));
@@ -430,7 +494,7 @@ public class TeacherServlet extends HttpServlet {
 		float temp = totalPercentage / ds.size();
 		float aveP = (float) Math.round(temp * 1000) / 1000;
 		req.setAttribute("averagep", aveP + "%");
-		
+		req.setAttribute("sid", uid);
 		
 		req.setAttribute("total", examResult.getTotal()+"");
 		req.setAttribute("exam", exam);
@@ -994,7 +1058,14 @@ public class TeacherServlet extends HttpServlet {
 	 * @throws IOException
 	 */
 	private void showlessons(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		List<Lesson> list = lessonService.getLessonsByUid(uid);
+		String by = req.getParameter("orderby");
+		List<Lesson> list;
+		if(null == by || "".equals(by.trim())){
+			list = lessonService.getLessonsByUid(uid);
+		}else{
+			list = lessonService.getAllLessonsOrderByName(uid);
+		}
+		
 		req.setAttribute("list", list);
 		req.getRequestDispatcher("/jsp/manage_lesson.jsp").forward(req, resp);
 	}

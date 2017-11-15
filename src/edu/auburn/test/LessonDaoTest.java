@@ -31,6 +31,10 @@ public class LessonDaoTest {
 		dao.addLesson(lesson);
 	}
 	@Test
+	public void testLessonsOrderByName(){
+		//System.out.println(dao.getAllLessonsOrderedByName(1));
+	}
+	@Test
 	public void testDel(){
 		dao.delLessonById(1);
 	}

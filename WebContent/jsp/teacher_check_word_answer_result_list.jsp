@@ -7,7 +7,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>Exam Result</title>
+<title>Word Result</title>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
  
@@ -33,18 +33,16 @@ body {
 			   
 			<div class="navbar-header">
 				      <a class="navbar-brand"
-					href="${pageContext.request.contextPath }/teacher">ALT</a>      
+					href="${pageContext.request.contextPath }/student">ALT</a>      
 			</div>
 			   <%
-		Exam e = (Exam) (request.getAttribute("exam"));
-		String uname = (String) (request.getAttribute("uname"));
-		String total = (String) (request.getAttribute("total"));
-		float ave = (float)(request.getAttribute("ave"));
-		int sid = (int)(request.getAttribute("sid"));
-	%>
+					WordStudent ws = (WordStudent) (request.getAttribute("wordstudent"));
+					Exam e = (Exam) (request.getAttribute("exam"));
+					ExamWord ew = (ExamWord) (request.getAttribute("ew"));
+				%>
 			<button
-				onclick="window.location.href='${pageContext.request.contextPath }/teacher'"
-				class="w3-button w3-blue">Return Main Page</button>
+				onclick="javascript:history.back(-1);"
+				class="w3-button w3-blue">Return</button>
 			<ul class="nav navbar-nav navbar-right">
 				      
 				<li><a href="#"><span class="glyphicon glyphicon-user"></span>
@@ -70,38 +68,46 @@ body {
 		</div>
 	</nav>
 	<div class="container">
-		<h1>
-			<%
-				out.print(e.getName());
-			%>
-		</h1>
-		<h3>The student you are checking is: <%out.print(uname); %></h3>
+		<h1>Professor's answer:   <% out.print(ew.getPron());%>&nbsp;&nbsp;&nbsp;&nbsp;
+		Student's answer:   <% out.print(ws.getAnswer());%></h1>
 		<hr>
+		
+		<script type="text/javascript">
+			function playA() {
+				
+				var audio = document.getElementById("playaudio");
+				//alert(audio.src);
+				audio.play();
+			}
+		</script>
+	
+		 Listen to the word by clicking the icon:
+		 <audio hidden="true" id="playaudio" src="${ew.getPath() }"
+				controls="controls">
+			</audio>
+		<button onclick="playA()"
+				class="w3-button w3-circle w3-teal  w3-small">
+				<span class="glyphicon glyphicon-play-circle"></span>
+		</button>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<a style="color: BLUE;" href="${pageContext.request.contextPath }/teacher?method=checkdistribution&eid=<%out.print(e.getEid());%>&wid=<%out.print(ew.getFid());%>&sid=<%out.print(ws.getSid());%>">Click here to see the distribution.</a>
+		<br>All students' answer:
 		<table class="table table-hover">
 			<thead>
 				<tr>
-					<th>Student answer</th>
-					<th>Professor answer</th>
-					<th>Distance</th>
-					<th>Score</th>
-					<th>Word Summary</th>
+					<th style="width: 10%;">Index</th>
+					<th>Answer</th> 
 				</tr>
 			</thead>
 			<tbody>
 				<c:forEach items="${result }" var="item" varStatus="counter">
 					<tr>
-						<td>${item.sAnswer }</td>
-						<td>${item.tAnswer }</td>
-						<td>${item.score }</td>
-						<td>${item.percentage }</td>
-						<td style="color: blue"><a href="${pageContext.request.contextPath }/teacher?method=checkotheranswer&sid=<%out.print(sid); %>&wid=${item.wid }&eid=<%out.print(e.getEid()); %>">check</a></td>
-
+						<td>${counter.index+1 }</td>
+						<td>${item.answer }</td>
 					</tr>
 				</c:forEach>
 			</tbody>
 		</table>
-		<p>Total distance: ${total}. Average distance: ${ave }</p>
-		<p>Average score: ${averagep }</p>
 	</div>
 </body>
 </html>

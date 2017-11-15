@@ -572,7 +572,7 @@ public class StudentServlet extends HttpServlet {
 				SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
 				String d = sdf.format(exam.getEdue());
 				req.setAttribute("message", StringConfig.SCORE_NOT_PUBLISHED + d);
-				req.getRequestDispatcher("/jsp/non_student.jsp").forward(req, resp);
+				req.getRequestDispatcher("/jsp/when_student_finish_exam.jsp").forward(req, resp);
 			}
 
 		}

@@ -63,6 +63,7 @@ body {
 	</nav>
 	<div class="container">
 		<h1>Current Lessons</h1>
+		<a style="color:blue" href="${pageContext.request.contextPath }/teacher?method=lessonlist">Order by created time</a>&emsp;<a style="color:blue" href="${pageContext.request.contextPath }/teacher?method=lessonlist&orderby=1">Order by alphabetical</a>
 		<table class="table table-hover">
 			<thead>
 				<tr>

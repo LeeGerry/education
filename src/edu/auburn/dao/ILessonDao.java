@@ -10,4 +10,5 @@ public interface ILessonDao {
 	List<Lesson> getLessonsByUid(int uid);
 	Lesson getLessonById(int lid);
 	List<Lesson> getAllLessons();
+	List<Lesson> getAllLessonsOrderedByName(int uid);
 }

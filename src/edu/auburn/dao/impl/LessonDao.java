@@ -176,4 +176,41 @@ public class LessonDao implements ILessonDao {
 		}
 	}
 
+	@Override
+	public List<Lesson> getAllLessonsOrderedByName(int uid) {
+		String sql = "select * from lesson where uid = ? order by name";
+		Connection connection = JDBCUtil.getConnection();
+		PreparedStatement ps = null;
+		try {
+			ps = (PreparedStatement) connection.prepareStatement(sql);
+			ps.setInt(1, uid);
+			ResultSet rs = ps.executeQuery();
+			Lesson l = null;
+			List<Lesson> result = new ArrayList<>();
+			IUserDao udao = new UserDao();
+			String uname = udao.getUserById(uid).getName();
+			if (StringUtils.isNullOrEmpty(uname))
+				uname = "";
+			while (rs.next()) {
+				l = new Lesson();
+				// String sql = "insert into lesson (name, ldesc, udate, uid,
+				// ltype) values (?,?,?,?,?)";
+				l.setLid(rs.getInt("lid"));
+				l.setName(rs.getString("name"));
+				l.setDesc(rs.getString("ldesc"));
+				l.setDate(rs.getDate("udate"));
+				l.setUid(rs.getInt("uid"));
+				l.setType(rs.getInt("ltype"));
+				l.setUname(uname);
+				result.add(l);
+			}
+			return result;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		} finally {
+			JDBCUtil.close(connection, ps);
+		}
+	}
+
 }

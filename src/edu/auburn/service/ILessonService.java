@@ -10,4 +10,5 @@ public interface ILessonService {
 	List<Lesson> getLessonsByUid(int uid);
 	Lesson getLessonByLid(int lid);
 	List<Lesson> getAllLessons();
+	List<Lesson> getAllLessonsOrderByName(int uid);
 }
