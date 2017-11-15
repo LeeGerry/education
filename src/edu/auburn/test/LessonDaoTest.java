@@ -32,7 +32,7 @@ public class LessonDaoTest {
 	}
 	@Test
 	public void testLessonsOrderByName(){
-		//System.out.println(dao.getAllLessonsOrderedByName(1));
+		System.out.println(dao.getAllLessonsOrderedByName(1));
 	}
 	@Test
 	public void testDel(){
