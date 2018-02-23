@@ -12,6 +12,10 @@
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
 <script src="js/zingchart.min.js"></script>
+
+<script src="js/raphael-min.js" type="text/javascript"></script>
+<script src="js/raphael.bullseye.js" type="text/javascript"></script>
+
 <meta charset="utf-8">
 <style>
 body {
@@ -32,9 +36,11 @@ body {
 			</div>
 			   <%
 		Exam exam = (Exam) (request.getAttribute("exam"));
+		int sid = (int)(request.getAttribute("sid"));
 		HashMap<String, Integer> pieChart = (HashMap<String, Integer>) (request.getAttribute("pie"));;
 		ArrayList<Integer> barChart = (ArrayList<Integer>)(request.getAttribute("bar"));
 		List<Integer> position = (List<Integer>)(request.getAttribute("position"));
+		List<WordStudent> answerList = (List<WordStudent>)request.getAttribute("answerList");
 		double pos = (double)position.get(1) / position.get(0);
 		int pos_int = (int)(pos*100);
 		String pos_string = pos_int + "%";
@@ -228,7 +234,33 @@ a:hover,a:focus{color:#74777b;text-decoration: none;}
 	<div class="container">
 		<div class="row">
 			<div class="col-md-offset-3 col-md-6">
-				<h3 class="progressbar-title">Your position:</h3>
+				<h3 class="progressbar-title">Your position:(Red point) </h3>
+				
+				
+				<div id=canvas></div>
+<script>
+window.onload = function() {
+    var RAD = Math.PI / 180;
+    var bullseye = Raphael('canvas', 550, 550).bullseye({
+        'slices' : [],
+        'rings'  : ['1', '2', '3', '4', '5',  '6',  '7',  '8',  '9', '10']
+    });
+    <%for(int i = 0; i< answerList.size(); i++){%>
+    var text1 = {
+        'label'    : ' ',
+        'angle'    : <%out.print(Math.random());%>*100 * RAD,
+        'distance' : 0.1 * <%out.print(answerList.get(i).getScore());%>,   // 25% of the radius
+        'pointFill': <%if(sid==answerList.get(i).getSid()) out.print("'#ff00ff'"); else out.print("'#00ff00'");%>,
+        'pointSize': <%out.print(sid==answerList.get(i).getSid() ? 10:5);%>
+    };
+    bullseye.addPoint(text1);
+	<%}%>
+   
+}
+</script>
+				
+				
+				
 				<div class="progress">
 					<div class="progress-bar" id="s_p" style="width: <%out.print(pos_string); %>; background:#005394;">
 						<span id="student_position"><%out.print(pos_string); %></span>

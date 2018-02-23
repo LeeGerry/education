@@ -14,7 +14,82 @@ import edu.auburn.utils.JDBCUtil;
 import edu.auburn.utils.UserUtils;
 
 public class UserDao implements IUserDao {
-
+	@Override
+	public boolean addVerifyCodeByEmail(String email, int code) {
+		String sql = "update euser set vcode = ? where email = ?";
+		Connection connection = JDBCUtil.getConnection();
+		PreparedStatement ps = null;
+		try {
+			ps = (PreparedStatement) connection.prepareStatement(sql);
+			ps.setInt(1, code);
+			ps.setString(2, email);
+			int result = ps.executeUpdate();
+			return result > 0;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		} finally {
+			JDBCUtil.close(connection, ps);
+		}
+	}
+	@Override
+	public boolean delVerifyCodeByEmail(String email) {
+		String sql = "update euser set vcode = ? where email = ?";
+		Connection connection = JDBCUtil.getConnection();
+		PreparedStatement ps = null;
+		try {
+			ps = (PreparedStatement) connection.prepareStatement(sql);
+			ps.setInt(1, 0);
+			ps.setString(2, email);
+			int result = ps.executeUpdate();
+			return result > 0;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		} finally {
+			JDBCUtil.close(connection, ps);
+		}
+	}
+	
+	@Override
+	public boolean updatePassword(String mail, String confirm) {
+		String sql = "update euser set password = ? where email = ?";
+		Connection connection = JDBCUtil.getConnection();
+		PreparedStatement ps = null;
+		try {
+			ps = (PreparedStatement) connection.prepareStatement(sql);
+			ps.setString(1, confirm);
+			ps.setString(2, mail);
+			int result = ps.executeUpdate();
+			return result > 0;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		} finally {
+			JDBCUtil.close(connection, ps);
+		}
+	}
+	
+	@Override
+	public boolean checkVerifyCodeByEmail(String email, int code) {
+		String sql = "select * from euser where email = ? and vcode = ?";
+		Connection connection = JDBCUtil.getConnection();
+		PreparedStatement ps = null;
+		try {
+			ps = (PreparedStatement) connection.prepareStatement(sql);
+			ps.setString(1, email);
+			ps.setInt(2, code);
+			ResultSet rs = ps.executeQuery();
+			if (rs.next())
+				return true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		} finally {
+			JDBCUtil.close(connection, ps);
+		}
+		return false;
+	}
 	@Override
 	public boolean addUser(EduUser user) {
 		// create table euser(

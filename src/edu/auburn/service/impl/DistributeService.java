@@ -124,4 +124,10 @@ public class DistributeService implements IDistributeService {
 		return result;
 	}
 
+	@Override
+	public List<WordStudent> getDistanceListByEidAndWid(int eid, int wid) {
+		List<WordStudent> list = wordStudentDao.getStudentAnswerListByEidAndWid(eid, wid);
+		return list;
+	}
+
 }

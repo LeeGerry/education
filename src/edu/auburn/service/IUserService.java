@@ -13,5 +13,8 @@ public interface IUserService {
 	EduUser getUserByEmail(String email);
 	EduUser getUserByName(String name);
 	EduUser getUserById(int uid);
-	
+	boolean addVerifyCodeByEmail(String email, int code);
+	boolean delVerifyCodeByEmail(String email);
+	boolean checkVerifyCodeByEmail(String email, int code);
+	boolean updatePassword(String mail, String confirm);
 }

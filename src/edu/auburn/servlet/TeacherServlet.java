@@ -194,6 +194,9 @@ public class TeacherServlet extends HttpServlet {
 		List<Integer> position = distributeService.getPositionAndCount(sid, eid, wid);
 		String sname = userService.getUserById(sid).getName();
 		Exam exam = examService.getExamById(eid);
+		List<WordStudent> wordStudentList = distributeService.getDistanceListByEidAndWid(eid, wid);
+		req.setAttribute("answerList", wordStudentList);
+		req.setAttribute("sid", sid);
 //		resp.getWriter().write(""+barChart.toString() + "," + pieChart.toString() + ","+position.toString());
 		req.setAttribute("bar", barChart);
 		req.setAttribute("pie", pieChart);

@@ -14,4 +14,8 @@ public interface IUserDao {
 	EduUser getUserByName(String name);
 	boolean checkUserEmailExist(String email);
 	EduUser getUserById(int uid);
+	boolean addVerifyCodeByEmail(String email, int code);
+	boolean delVerifyCodeByEmail(String email);
+	boolean checkVerifyCodeByEmail(String email, int code);
+	boolean updatePassword(String mail, String confirm);
 }

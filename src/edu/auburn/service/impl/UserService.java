@@ -58,4 +58,25 @@ public class UserService implements IUserService{
 		return dao.getUserById(uid);
 	}
 
+	@Override
+	public boolean addVerifyCodeByEmail(String email, int code) {
+		// TODO Auto-generated method stub
+		return dao.addVerifyCodeByEmail(email, code);
+	}
+
+	@Override
+	public boolean delVerifyCodeByEmail(String email) {
+		// TODO Auto-generated method stub
+		return dao.delVerifyCodeByEmail(email);
+	}
+
+	@Override
+	public boolean checkVerifyCodeByEmail(String email, int code) {
+		// TODO Auto-generated method stub
+		return dao.checkVerifyCodeByEmail(email, code);
+	}
+	@Override
+	public boolean updatePassword(String mail, String confirm) {
+		return dao.updatePassword(mail, confirm);
+	}
 }

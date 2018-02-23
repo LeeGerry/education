@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import edu.auburn.domain.WordStudent;
+
 public interface IDistributeService {
 	/**
 	 * for bar chart
@@ -28,4 +30,6 @@ public interface IDistributeService {
 	double getPosition(int eid, int wid);
 	
 	List<Integer> getPositionAndCount(int sid, int eid, int wid);
+	
+	List<WordStudent> getDistanceListByEidAndWid(int eid, int wid);
 }

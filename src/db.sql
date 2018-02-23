@@ -11,6 +11,7 @@ create table euser(
 	email varchar(50),
 	utype integer
 )engine = myisam  default charset = utf8;
+alter table euser add column vcode integer default 0;
 insert into euser (name, password, email, utype) values ("admin","test","admin@auburn.edu",1);
 insert into euser (name, password, email, utype) values ("teacher","teacher","teacher@auburn.edu",2);
 insert into euser (name, password, email, utype) values ("student","student","student@auburn.edu",4);

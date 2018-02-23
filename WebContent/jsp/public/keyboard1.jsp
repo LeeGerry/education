@@ -90,7 +90,7 @@
 		onclick="copyText(value);setkeyLen(value);" value="d"
 		 >d</button>
 	<button class="btn btn btn-default"
-		onclick="copyText(value);setkeyLen(value);" value="ɡ"
+		onclick="copyText(value);setkeyLen(value);" value="g"
 		 >ɡ</button>
 	<button class="btn btn btn-default"
 		onclick="copyText(value);setkeyLen(value);" value="t͡ʃ"
@@ -177,13 +177,13 @@
 		onclick="copyText(value);setkeyLen(value);" value="æ"
 		 >æ</button>
 	<button class="btn btn btn-default"
-		onclick="copyText(value);setkeyLen(value);" value="ɑ"
+		onclick="copyText(value);setkeyLen(value);" value="a"
 		 >ɑ</button>
 	<button class="btn btn btn-default"
-		onclick="copyText(value);setkeyLen(value);" value="ɑ͡u"
+		onclick="copyText(value);setkeyLen(value);" value="a͡u"
 		 >ɑ͡u</button>
 	<button class="btn btn btn-default"
-		onclick="copyText(value);setkeyLen(value);" value="ɑ͡ɪ"
+		onclick="copyText(value);setkeyLen(value);" value="a͡ɪ"
 		 >ɑ͡ɪ</button>
 	<button class="btn btn btn-default"
 		onclick="copyText(value);setkeyLen(value);" value="ʌ"
@@ -191,6 +191,9 @@
 	<button class="btn btn btn-default"
 		onclick="copyText(value);setkeyLen(value);" value="ɔ"
 		 >ɔ</button>
+	<button class="btn btn btn-default"
+		onclick="copyText(value);setkeyLen(value);" value="o"
+		 >o</button>
 	<br>
 	<button class="btn btn btn-default"
 		onclick="copyText(value);setkeyLen(value);" value="ɔ͡ɪ"

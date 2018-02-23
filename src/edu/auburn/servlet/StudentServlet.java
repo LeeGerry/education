@@ -177,12 +177,15 @@ public class StudentServlet extends HttpServlet {
 		HashMap<String, Integer> pieChart = distributeService.getAnswerGroup(eid, wid);
 		ArrayList<Integer> barChart = distributeService.getDistanceGroup(eid, wid);
 		List<Integer> position = distributeService.getPositionAndCount(uid, eid, wid);
+		List<WordStudent> wordStudentList = distributeService.getDistanceListByEidAndWid(eid, wid);
 		Exam exam = examService.getExamById(eid);
 //		resp.getWriter().write(""+barChart.toString() + "," + pieChart.toString() + ","+position.toString());
 		req.setAttribute("bar", barChart);
 		req.setAttribute("pie", pieChart);
 		req.setAttribute("exam", exam);
 		req.setAttribute("position", position);
+		req.setAttribute("answerList", wordStudentList);
+		req.setAttribute("sid", uid);
 		req.getRequestDispatcher("/jsp/student_check_distance_distribution.jsp").forward(req, resp);
 	}
 	

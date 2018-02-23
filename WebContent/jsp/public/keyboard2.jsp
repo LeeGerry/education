@@ -124,7 +124,7 @@
 			if (stressFlag == true){
 				var stressBtns = document.getElementsByClassName("stress");
 				for (i = 0; i < stressBtns.length; i++){
-					stressBtns[i].disabled = true;
+					//stressBtns[i].disabled = true;
 				}
 				var saveBtn = document.getElementById("save");
 				saveBtn.disabled = true;
@@ -162,155 +162,157 @@
 		window.onload = disableKeys;
 	</script>
 <div class="row w3-center">
-
-	<button class="btn btn btn-default consonant"
-		onclick="copyText(value);setkeyLen(value);setFlags('consonant');disableKeys();"
-		value="p"  >p</button>
-	<button class="btn btn btn-default consonant"
-		onclick="copyText(value);setkeyLen(value);setFlags('consonant');disableKeys();"
-		value="t"  >t</button>
-	<button class="btn btn btn-default consonant"
-		onclick="copyText(value);setkeyLen(value);setFlags('consonant');disableKeys();"
-		value="k"  >k</button>
-	<button class="btn btn btn-default consonant"
-		onclick="copyText(value);setkeyLen(value);setFlags('consonant');disableKeys();"
-		value="b"  >b</button>
-	<button class="btn btn btn-default consonant"
-		onclick="copyText(value);setkeyLen(value);setFlags('consonant');disableKeys();"
-		value="d"  >d</button>
-	<button class="btn btn btn-default consonant"
-		onclick="copyText(value);setkeyLen(value);setFlags('consonant');disableKeys();"
-		value="ɡ"  >ɡ</button>
-	<button class="btn btn btn-default consonant"
-		onclick="copyText(value);setkeyLen(value);setFlags('consonant');disableKeys();"
-		value="t͡ʃ"  >t͡ʃ</button>
-	<button class="btn btn btn-default consonant"
-		onclick="copyText(value);setkeyLen(value);setFlags('consonant');disableKeys();"
-		value="d͡ʒ"  >d͡ʒ</button>
-	<button class="btn btn btn-default consonant"
-		onclick="copyText(value);setkeyLen(value);setFlags('consonant');disableKeys();"
-		value="s"  >s</button>
-	<br>
-	<button class="btn btn btn-default consonant"
-		onclick="copyText(value);setkeyLen(value);setFlags('consonant');disableKeys();"
-		value="ʃ"  >ʃ</button>
-	<button class="btn btn btn-default consonant"
-		onclick="copyText(value);setkeyLen(value);setFlags('consonant');disableKeys();"
-		value="z"  >z</button>
-	<button class="btn btn btn-default consonant"
-		onclick="copyText(value);setkeyLen(value);setFlags('consonant');disableKeys();"
-		value="ʒ"  >ʒ</button>
-	<button class="btn btn btn-default consonant"
-		onclick="copyText(value);setkeyLen(value);setFlags('consonant');disableKeys();"
-		value="f"  >f</button>
-	<button class="btn btn btn-default consonant"
-		onclick="copyText(value);setkeyLen(value);setFlags('consonant');disableKeys();"
-		value="θ"  >θ</button>
-	<button class="btn btn btn-default consonant"
-		onclick="copyText(value);setkeyLen(value);setFlags('consonant');disableKeys();"
-		value="v"  >v</button>
-	<button class="btn btn btn-default consonant"
-		onclick="copyText(value);setkeyLen(value);setFlags('consonant');disableKeys();"
-		value="ð"  >ð</button>
-	<button class="btn btn btn-default consonant"
-		onclick="copyText(value);setkeyLen(value);setFlags('consonant');disableKeys();"
-		value="h"  >h</button>
-	<button class="btn btn btn-default consonant"
-		onclick="copyText(value);setkeyLen(value);setFlags('consonant');disableKeys();"
-		value="n"  >n</button>
-	<br>
-	<button class="btn btn btn-default consonant"
-		onclick="copyText(value);setkeyLen(value);setFlags('consonant');disableKeys();"
-		value="m"  >m</button>
-	<button class="btn btn btn-default consonant"
-		onclick="copyText(value);setkeyLen(value);setFlags('consonant');disableKeys();"
-		value="ŋ"  >ŋ</button>
-	<button class="btn btn btn-default consonant"
-		onclick="copyText(value);setkeyLen(value);setFlags('consonant');disableKeys();"
-		value="ʔ"  >ʔ</button>
-	<button class="btn btn btn-default consonant"
-		onclick="copyText(value);setkeyLen(value);setFlags('consonant');disableKeys();"
-		value="l"  >l</button>
-	<button class="btn btn btn-default consonant"
-		onclick="copyText(value);setkeyLen(value);setFlags('consonant');disableKeys();"
-		value="r"  >r</button>
-	<button class="btn btn btn-default consonant"
-		onclick="copyText(value);setkeyLen(value);setFlags('consonant');disableKeys();"
-		value="w"  >w</button>
-	<button class="btn btn btn-default consonant"
-		onclick="copyText(value);setkeyLen(value);setFlags('consonant');disableKeys();"
-		value="j"  >j</button>
-	<button class="btn btn btn-default consonant"
-		onclick="copyText(value);setkeyLen(value);setFlags('consonant');disableKeys();"
-		value="ɾ"  >ɾ</button>
-	<button class="btn btn btn-default consonant"
-		onclick="copyText(value);setkeyLen(value);setFlags('consonant');disableKeys();"
-		value="ɫ"  >ɫ</button>
 	<button class="btn btn btn-default"
-		onclick="copyText(value);setkeyLen(value);setFlags('consonant');disableKeys();" value="ɹ"
+		onclick="copyText(value);setkeyLen(value);" value="p"
+		 >p</button>
+	<button class="btn btn btn-default"
+		onclick="copyText(value);setkeyLen(value);" value="t"
+		 >t</button>
+	<button class="btn btn btn-default"
+		onclick="copyText(value);setkeyLen(value);" value="k"
+		 >k</button>
+	<button class="btn btn btn-default"
+		onclick="copyText(value);setkeyLen(value);" value="b"
+		 >b</button>
+	<button class="btn btn btn-default"
+		onclick="copyText(value);setkeyLen(value);" value="d"
+		 >d</button>
+	<button class="btn btn btn-default"
+		onclick="copyText(value);setkeyLen(value);" value="g"
+		 >ɡ</button>
+	<button class="btn btn btn-default"
+		onclick="copyText(value);setkeyLen(value);" value="t͡ʃ"
+		 >t͡ʃ</button>
+	<button class="btn btn btn-default"
+		onclick="copyText(value);setkeyLen(value);" value="d͡ʒ"
+		 >d͡ʒ</button>
+	<button class="btn btn btn-default"
+		onclick="copyText(value);setkeyLen(value);" value="s"
+		 >s</button>
+	<br>
+	<button class="btn btn btn-default"
+		onclick="copyText(value);setkeyLen(value);" value="ʃ"
+		 >ʃ</button>
+	<button class="btn btn btn-default"
+		onclick="copyText(value);setkeyLen(value);" value="z"
+		 >z</button>
+	<button class="btn btn btn-default"
+		onclick="copyText(value);setkeyLen(value);" value="ʒ"
+		 >ʒ</button>
+	<button class="btn btn btn-default"
+		onclick="copyText(value);setkeyLen(value);" value="f"
+		 >f</button>
+	<button class="btn btn btn-default"
+		onclick="copyText(value);setkeyLen(value);" value="θ"
+		 >θ</button>
+	<button class="btn btn btn-default"
+		onclick="copyText(value);setkeyLen(value);" value="v"
+		 >v</button>
+	<button class="btn btn btn-default"
+		onclick="copyText(value);setkeyLen(value);" value="ð"
+		 >ð</button>
+	<button class="btn btn btn-default"
+		onclick="copyText(value);setkeyLen(value);" value="h"
+		 >h</button>
+	<button class="btn btn btn-default"
+		onclick="copyText(value);setkeyLen(value);" value="n"
+		 >n</button>
+	<br>
+	<button class="btn btn btn-default"
+		onclick="copyText(value);setkeyLen(value);" value="m"
+		 >m</button>
+	<button class="btn btn btn-default"
+		onclick="copyText(value);setkeyLen(value);" value="ŋ"
+		 >ŋ</button>
+	<button class="btn btn btn-default"
+		onclick="copyText(value);setkeyLen(value);" value="ʔ"
+		 >ʔ</button>
+	<button class="btn btn btn-default"
+		onclick="copyText(value);setkeyLen(value);" value="l"
+		 >l</button>
+	<button class="btn btn btn-default"
+		onclick="copyText(value);setkeyLen(value);" value="r"
+		 >r</button>
+	<button class="btn btn btn-default"
+		onclick="copyText(value);setkeyLen(value);" value="w"
+		 >w</button>
+	<button class="btn btn btn-default"
+		onclick="copyText(value);setkeyLen(value);" value="j"
+		 >j</button>
+	<button class="btn btn btn-default"
+		onclick="copyText(value);setkeyLen(value);" value="ɾ"
+		 >ɾ</button>
+	<button class="btn btn btn-default"
+		onclick="copyText(value);setkeyLen(value);" value="ɫ"
+		 >ɫ</button>
+	<button class="btn btn btn-default"
+		onclick="copyText(value);setkeyLen(value);" value="ɹ"
 		 >ɹ</button>
 	<br>
-	<button class="btn btn btn-default vowel"
-		onclick="copyText(value);setkeyLen(value);setFlags('vowel');disableKeys();"
-		value="i"  >i</button>
-	<button class="btn btn btn-default vowel"
-		onclick="copyText(value);setkeyLen(value);setFlags('vowel');disableKeys();"
-		value="ɪ"  >ɪ</button>
-	<button class="btn btn btn-default vowel"
-		onclick="copyText(value);setkeyLen(value);setFlags('vowel');disableKeys();"
-		value="ɛ"  >ɛ</button>
-	<button class="btn btn btn-default vowel"
-		onclick="copyText(value);setkeyLen(value);setFlags('vowel');disableKeys();"
-		value="e͡ɪ"  >e͡ɪ</button>
-	<button class="btn btn btn-default vowel"
-		onclick="copyText(value);setkeyLen(value);setFlags('vowel');disableKeys();"
-		value="æ"  >æ</button>
-	<button class="btn btn btn-default vowel"
-		onclick="copyText(value);setkeyLen(value);setFlags('vowel');disableKeys();"
-		value="ɑ"  >ɑ</button>
-	<button class="btn btn btn-default vowel"
-		onclick="copyText(value);setkeyLen(value);setFlags('vowel');disableKeys();"
-		value="ɑ͡u"  >ɑ͡u</button>
-	<button class="btn btn btn-default vowel"
-		onclick="copyText(value);setkeyLen(value);setFlags('vowel');disableKeys();"
-		value="ɑ͡ɪ"  >ɑ͡ɪ</button>
-	<button class="btn btn btn-default vowel"
-		onclick="copyText(value);setkeyLen(value);setFlags('vowel');disableKeys();"
-		value="ʌ"  >ʌ</button>
-	<button class="btn btn btn-default vowel"
-		onclick="copyText(value);setkeyLen(value);setFlags('vowel');disableKeys();"
-		value="ɔ"  >ɔ</button>
+	<button class="btn btn btn-default"
+		onclick="copyText(value);setkeyLen(value);" value="i"
+		 >i</button>
+	<button class="btn btn btn-default"
+		onclick="copyText(value);setkeyLen(value);" value="ɪ"
+		 >ɪ</button>
+	<button class="btn btn btn-default"
+		onclick="copyText(value);setkeyLen(value);" value="ɛ"
+		 >ɛ</button>
+	<button class="btn btn btn-default"
+		onclick="copyText(value);setkeyLen(value);" value="e͡ɪ"
+		 >e͡ɪ</button>
+	<button class="btn btn btn-default"
+		onclick="copyText(value);setkeyLen(value);" value="æ"
+		 >æ</button>
+	<button class="btn btn btn-default"
+		onclick="copyText(value);setkeyLen(value);" value="a"
+		 >ɑ</button>
+	<button class="btn btn btn-default"
+		onclick="copyText(value);setkeyLen(value);" value="a͡u"
+		 >ɑ͡u</button>
+	<button class="btn btn btn-default"
+		onclick="copyText(value);setkeyLen(value);" value="a͡ɪ"
+		 >ɑ͡ɪ</button>
+	<button class="btn btn btn-default"
+		onclick="copyText(value);setkeyLen(value);" value="ʌ"
+		 >ʌ</button>
+	<button class="btn btn btn-default"
+		onclick="copyText(value);setkeyLen(value);" value="ɔ"
+		 >ɔ</button>
+	<button class="btn btn btn-default"
+		onclick="copyText(value);setkeyLen(value);" value="o"
+		 >o</button>
 	<br>
-	<button class="btn btn btn-default vowel"
-		onclick="copyText(value);setkeyLen(value);setFlags('vowel');disableKeys();"
-		value="ɔ͡ɪ"  >ɔ͡ɪ</button>
-	<button class="btn btn btn-default vowel"
-		onclick="copyText(value);setkeyLen(value);setFlags('vowel');disableKeys();"
-		value="o͡ʊ"  >o͡ʊ</button>
-	<button class="btn btn btn-default vowel"
-		onclick="copyText(value);setkeyLen(value);setFlags('vowel');disableKeys();"
-		value="ʊ"  >ʊ</button>
-	<button class="btn btn btn-default vowel"
-		onclick="copyText(value);setkeyLen(value);setFlags('vowel');disableKeys();"
-		value="u"  >u</button>
-	<button class="btn btn btn-default vowel"
-		onclick="copyText(value);setkeyLen(value);setFlags('vowel');disableKeys();"
-		value="ɝ"  >ɝ</button>
-	<button class="btn btn btn-default vowel"
-		onclick="copyText(value);setkeyLen(value);setFlags('vowel');disableKeys();"
-		value="ə"  >ə</button>
-	<button class="btn btn btn-default vowel"
-		onclick="copyText(value);setkeyLen(value);setFlags('vowel');disableKeys();"
-		value="ɚ"  >ɚ</button>
-	<button class="btn btn btn-default vowel"
-		onclick="copyText(value);setkeyLen(value);setFlags('vowel');disableKeys();"
-		value="n̩"  >n̩</button>
-	<button class="btn btn btn-default vowel"
-		onclick="copyText(value);setkeyLen(value);setFlags('vowel');disableKeys();"
-		value="m̩"  >m̩</button>
-	<button class="btn btn btn-default vowel"
-		onclick="copyText(value);setkeyLen(value);setFlags('vowel');disableKeys();"
-		value="l̩"  >l̩</button>
+	<button class="btn btn btn-default"
+		onclick="copyText(value);setkeyLen(value);" value="ɔ͡ɪ"
+		 >ɔ͡ɪ</button>
+	<button class="btn btn btn-default"
+		onclick="copyText(value);setkeyLen(value);" value="o͡ʊ"
+		 >o͡ʊ</button>
+	<button class="btn btn btn-default"
+		onclick="copyText(value);setkeyLen(value);" value="ʊ"
+		 >ʊ</button>
+	<button class="btn btn btn-default"
+		onclick="copyText(value);setkeyLen(value);" value="u"
+		 >u</button>
+	<button class="btn btn btn-default"
+		onclick="copyText(value);setkeyLen(value);" value="ɝ"
+		 >ɝ</button>
+	<button class="btn btn btn-default"
+		onclick="copyText(value);setkeyLen(value);" value="ə"
+		 >ə</button>
+	<button class="btn btn btn-default"
+		onclick="copyText(value);setkeyLen(value);" value="ɚ"
+		 >ɚ</button>
+	<button class="btn btn btn-default"
+		onclick="copyText(value);setkeyLen(value);" value="n̩"
+		 >n̩</button>
+	<button class="btn btn btn-default"
+		onclick="copyText(value);setkeyLen(value);" value="m̩"
+		 >m̩</button>
+	<button class="btn btn btn-default"
+		onclick="copyText(value);setkeyLen(value);" value="l̩"
+		 >l̩</button>
 	<br>
 	<button class="btn btn btn-default stress"
 		onclick="copyText(value);setkeyLen(value);setFlags('stress');disableKeys();"

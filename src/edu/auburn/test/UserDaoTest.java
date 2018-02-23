@@ -66,4 +66,21 @@ public class UserDaoTest {
 		System.out.println(LessonFileType.PDF);
 //		System.out.println(dao.getUserByName("teacher"));
 	}
+	private String uEmail = "admin@auburn.edu";
+	@Test
+	public void addVcode(){
+		System.out.println(dao.addVerifyCodeByEmail(uEmail, 3322));
+	}
+	@Test
+	public void delCode(){
+		System.out.println(dao.delVerifyCodeByEmail(uEmail));
+	}
+	@Test
+	public void checkCode(){
+		//System.out.println(dao.checkVerifyCodeByEmail(uEmail, 3322));
+		for(int i = 0 ; i<10; i++){
+			int random = (int)((Math.random()*9+1)*100000);
+			System.out.println(random);
+		}
+	}
 }
