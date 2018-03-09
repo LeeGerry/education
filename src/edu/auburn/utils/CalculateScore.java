@@ -17,6 +17,8 @@ public class CalculateScore {
 //		float distance =  ml.finalCalculate(teacherAnswer, studentAnswer);
 //		float score = 1-(distance/Math.max(studentAnswer.length(), teacherAnswer.length()));
 		
+		
+		
 		EDistanceWithOutputWithWeight editDistance = new EDistanceWithOutputWithWeight();
 		PreProcess prePro = new PreProcess();
 		List<String> student = prePro.generateListOfStrings(studentAnswer);
