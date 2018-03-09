@@ -67,7 +67,7 @@ public class UserServlet extends HttpServlet {
 			if(boo){	
 				boolean success = userService.updatePassword(mail, confirm);
 				if(success)
-					message = "<a href='/education'>you have update your password successfully! go to the index page to login.</a>";
+					message = "<a href='"+req.getContextPath()+"'>you have update your password successfully! go to the <u>index page</u> to login.</a>";
 				else	
 					message = "update failed. Please try again.";
 				

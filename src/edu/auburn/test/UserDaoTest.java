@@ -12,6 +12,7 @@ import edu.auburn.dao.IUserDao;
 import edu.auburn.dao.impl.UserDao;
 import edu.auburn.domain.EduUser;
 import edu.auburn.utils.LessonFileType;
+import sun.security.provider.MD5;
 
 public class UserDaoTest {
 	/**
@@ -82,5 +83,9 @@ public class UserDaoTest {
 			int random = (int)((Math.random()*9+1)*100000);
 			System.out.println(random);
 		}
+	}
+	@Test
+	public void checkMd5(){
+//		new MD5().
 	}
 }
